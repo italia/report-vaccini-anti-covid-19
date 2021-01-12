@@ -198,15 +198,15 @@ function App() {
           </div>
         </div>
         <div className="row">
-          <div className="col-12 col-md-6 font-25">
+          <div className="col-12 col-md-6 font-25 mb-2">
             <StaticBlock
-              classes="bg-primary text-white"
+              classes="bg-primary text-white h-100"
               text="Il 27 dicembre sono state consegnate 9.750 dosi di vaccino, interamente somministrate."
             />
           </div>
-          <div className="col-12 col-md-6 font-25">
+          <div className="col-12 col-md-6 font-25 mb-2">
             <StaticBlock
-              classes="bg-primary text-white" 
+              classes="bg-primary text-white h-100" 
               text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 gennaio sono state consegnate 75.075 dosi di vaccino."
             />
           </div>
