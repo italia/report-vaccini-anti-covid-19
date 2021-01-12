@@ -4,12 +4,11 @@
 [![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
 ![GH Action](https://github.com/italia/covid19-dashboard-vaccini/workflows/CD/badge.svg)
 
-# COVID-19 Dashboard Vaccini
-> [Work in Progress] This is a WIP repository, please find further instructions below.
+# Report vaccini anti COVID 19
 
 ## Introduction
 
-This repository contains an example web app built using FOSS solutions. This is
+This repository contains an the official web app . This is
 a standalone app currently deployed via GH pages and it does not represent the
 official dashboard. 
 
