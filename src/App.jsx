@@ -207,7 +207,7 @@ function App() {
           <div className="col-12 col-md-6 font-25 mb-2">
             <StaticBlock
               classes="bg-primary text-white h-100" 
-              text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 – 12  gennaio sono state consegnate  488.475  dosi di vaccino."
+              text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 – 12  gennaio sono state consegnate  490.425  dosi di vaccino."
             />
           </div>
           <div className="col-12">
@@ -216,7 +216,7 @@ function App() {
             >
               <StaticBlock
                 classes="text-black text-uppercase font-weight-bold"
-                text="Le somministrazioni delle 1.397.175 dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre."
+                text="Le somministrazioni delle 1.399.125 dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre."
               />
             </div>
           </div>
