@@ -39,7 +39,7 @@ export const Table = (props) => {
             targets: 0,
             width: '150px'
           },
-          { type: 'any-number', targets: [1, 2, 3] },
+          { type: 'any-number', targets: [3] },
           {
             "targets": [1, 2, 3],
             render: (data, type, row) => {
