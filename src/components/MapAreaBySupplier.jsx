@@ -41,7 +41,7 @@ export const MapAreaBySupplier = (
 
   const getCategoryQuantity = (region) => {
     if (!selectedCodeCategory) {
-      return region.dosi_somministrate && region.dosi_somministrate.toLocaleString('it')
+      return region.dosi_consegnate && region.dosi_consegnate.toLocaleString('it')
     } else {
       return region.byCategory[selectedCodeCategory].length
         && region.byCategory[selectedCodeCategory][0].total
@@ -86,7 +86,7 @@ export const MapAreaBySupplier = (
               >
                 <title>
                   <span className="bg-info">
-                    {region.area} {getCategoryQuantity(region)}
+                    {region.area} 
                   </span>
                 </title>
               </path>
