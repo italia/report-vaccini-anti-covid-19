@@ -57,7 +57,7 @@ export const MapAreaBySupplier = (
     } else if (!selected) {
       return (1 / 5) * (dosi / maxByCategory * 100)
     } else {
-      return (0.5 / 5) * (dosi / maxByCategory * 100)
+      return (0.2 / 5) * (dosi / maxByCategory * 100)
     }
     // return 1;
   }
