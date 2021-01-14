@@ -77,9 +77,13 @@ export const Supplier = (data) => {
     return (
         <div className="row">
     <div className="col-12 col-md-12 h-100">
-        <div className="col-12 d-flex justify-content-center align-items-center p-5" style={{ backgroundColor: '#F4F9FD' }}>
-            <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
+        <div className="col-12 d-flex justify-content-center align-items-end p-5 bg-title-plot">            
             <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
+            <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" 
+                style={{ 
+                    position:"relative",
+                    left:290,
+                    zIndex: 10 }} />
         </div>
         {/* BOX BLU */}
         <div className="col-12 col-md-12 h-100">
@@ -105,12 +109,13 @@ export const Supplier = (data) => {
 
             {/* LAYOUT DESKTOP */}
             
-            <div className="col-md-3 h-100 d-none d-lg-block ">
+            <div className="offset-md-9 col-md-3 h-100 d-none d-lg-block ">
+                
               <div style={{
                 position: 'relative',
                 background: '#17324D',
                 top: -90,
-                left: 105
+                left: -50
               }}>
                 <div className="text-white w-100">
                   <div className="w-100 h-100 d-flex justify-content-start pt-3 pl-4">

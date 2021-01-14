@@ -112,7 +112,7 @@ export const BarChartSupplier = (props) => {
       .append("g")
       .attr("class", "axis-dark")
       .attr("transform", `translate(0,${height})`)
-      .style('font-size', 20)
+      .style('font-size', 25)
       .call(d3.axisBottom(xScale));
 
     // chart
@@ -136,7 +136,7 @@ export const BarChartSupplier = (props) => {
       .attr("x", (d) => xScale(d[props.property.xprop]))
       .attr("y", (d) => yScale(d[props.property.yprop]))
       .attr("height", (d) => height - yScale(d[props.property.yprop]))
-      .attr("width", xScale.bandwidth())
+      .attr("width", xScale.bandwidth()>150?150:xScale.bandwidth())
       .append("title")
       .attr("x", (d) => xScale(d[props.property.xprop]))
       .attr("y", (d) => yScale(d[props.property.yprop]))
