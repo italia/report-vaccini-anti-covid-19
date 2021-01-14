@@ -818,13 +818,6 @@
             "fornitore":"MOD\/TEST",
             "numero_dosi":39000,
             "data_consegna":"2021-01-12T00:00:00.000Z"
-        },
-        {
-            "index":109,
-            "area":"VEN",
-            "fornitore":"CIROTEST",
-            "numero_dosi":39000,
-            "data_consegna":"2021-01-12T00:00:00.000Z"
         }
     ]
 }

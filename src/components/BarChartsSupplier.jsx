@@ -65,7 +65,7 @@ export const BarChartSupplier = (props) => {
       .append("svg")
       .attr("width", width)
       .attr("height", height);
-    const margin = { y: 50, x: 50 };
+    const margin = { y: 50, x: 20 };
 
     // axis
     const xScale = d3.scaleBand().padding(0.2);
@@ -81,8 +81,8 @@ export const BarChartSupplier = (props) => {
 
     svg
       .append("text")
-      .attr("x", width / 2 + margin.x)
-      .attr("y", margin.y / 2)
+      .attr("x", width / 8 + margin.x)
+      .attr("y", margin.y / 6)
       .attr("class", "title-bar-dark")
       .attr("text-anchor", "middle")
       .attr(props.title);
@@ -160,8 +160,8 @@ export const BarChartSupplier = (props) => {
   };
 
   return (
-    <div ref={divRef} className="chart svg-container">
-      <svg ref={myRef} className="svg-content-responsive"></svg>
+    <div ref={divRef}>
+      <svg ref={myRef}></svg>
     </div>
   );
 };

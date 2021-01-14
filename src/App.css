@@ -291,7 +291,7 @@ ul.footer_links li {
 }
 .title-bar-dark{
   font-size: 20px;
-  text-anchor: middle;
+  text-anchor: center;
   fill: #000000;
 }
 .title-bar {
@@ -372,6 +372,7 @@ ul.footer_links li {
 }
 .bartext-dark{
   fill:#000000;
+  font-size: 1.8rem;
 }
 .max-width-total{
   max-width: 450px;
