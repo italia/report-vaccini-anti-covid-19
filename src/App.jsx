@@ -346,9 +346,7 @@ function App() {
 
         <div className="row ">
           <div
-            className="col-12  d-flex justify-content-center align-items-center p-5"
-            style={{ backgroundColor: '#F4F9FD' }}
-          >
+            className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
             <h3 className="text-center">Vaccinazioni per categoria</h3>
           </div>
@@ -444,9 +442,7 @@ function App() {
 
         <div className="row ">
           <div
-            className="col-12 d-flex justify-content-center align-items-center p-5"
-            style={{ backgroundColor: '#F4F9FD' }}
-          >
+            className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
             <h3 className="text-center">Punti di somministrazione per regione</h3>
           </div>
