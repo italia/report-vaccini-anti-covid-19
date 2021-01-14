@@ -102,8 +102,7 @@ export const Supplier = (data) => {
                                 <h5>Totale vaccini</h5>
                             </div>
                             <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                                <p className="numeri_box">000
-              </p>
+                                <p className="numeri_box">000             </p>
                             </div>
                             <div className="col-12 d-flex justify-content-end  pb-2">
                                 <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height={35} />
@@ -111,9 +110,7 @@ export const Supplier = (data) => {
                         </div>
                     </div>
                     {/* LAYOUT DESKTOP */}
-
                     <div className="offset-md-9 col-md-3 h-100 d-none d-lg-block ">
-
                         <div style={{
                             position: 'relative',
                             background: '#17324D',
@@ -132,30 +129,24 @@ export const Supplier = (data) => {
                                     <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />
                                 </div>
                             </div>
-
-
-
                         </div>
-
                     </div>
                 </div>
-
-
             </div>
             <div className="col-12 col-md-6 h-100">
-                <div className="p-4 position-relative d-lg-none">
+
+                <div className="p-4  d-lg-none">
                     <div className="w-100 h-100 d-flex justify-content-start pr-5">
                         <img src="logo.png" width="35" height="35" alt="Logo" />
                         <h5 className="pl-3 pl-sm-1">Distribuzione vaccini<br /> per regione</h5>
                     </div>
                 </div>
-                <div className="p-4 position-relative d-none d-lg-block" style={{ top: '190px' }}>
+                <div className="p-4  d-none d-lg-block position-text-lg">
                     <div className="w-100 h-100 d-flex justify-content-start pr-5">
                         <img src="logo.png" width="35" height="35" alt="Logo" />
                         <h5 className="pl-3 pl-sm-1">Distribuzione<br />vaccini<br /> per regione</h5>
                     </div>
                 </div>
-
                 <MapAreaBySupplier
                     summary={barState ? { deliverySummary: barState } : summary.data}
                     selected={selectedLocationCategoryMap}

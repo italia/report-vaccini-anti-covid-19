@@ -445,3 +445,12 @@ loader*/
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
+
+
+/*position*/
+
+.position-text-lg{
+  position: absolute;
+  bottom:0;
+  left:0;
+}

@@ -63,13 +63,7 @@ export const MapAreaBySupplier = (
   }
 
   return (
-    <div className="map-area mt-2"
-    style={{
-      position: 'relative',
-      left: 150, 
-      top: -150
-    }}
-    >
+    <div className="map-area mt-2">
       <svg className="h-100 w-100" height={height} >
         <g className="countries">
           {geographies.map((d, i) => {
