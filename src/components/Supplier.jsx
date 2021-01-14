@@ -53,7 +53,7 @@ export const Supplier = (data) => {
     const handleDeliveryBarChartClick = (bar) => {
         if (selectedSupplier === bar) {
             resetFilter();
-        }else if(selectedLocationCategoryMap){
+        } else if (selectedLocationCategoryMap) {
             resetFilter();
             handleRectClick(bar);
             setelectedSupplier(bar);
@@ -77,12 +77,18 @@ export const Supplier = (data) => {
 
     }
 
+
     return (
         <div className="row">
             <div className="col-12 col-md-12 h-100">
-                <div className="col-12 d-flex justify-content-center align-items-center p-5" style={{ backgroundColor: '#F4F9FD' }}>
-                    <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
+                <div className="col-12 d-flex justify-content-center align-items-end p-5 bg-title-plot">
                     <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
+                    <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block"
+                        style={{
+                            position: "relative",
+                            left: 290,
+                            zIndex: 10
+                        }} />
                 </div>
                 {/* BOX BLU */}
                 <div className="col-12 col-md-12 h-100">
@@ -90,7 +96,6 @@ export const Supplier = (data) => {
                     <div className="mb-5 d-lg-none" style={{
                         position: 'relative',
                         background: '#013366',
-
                     }}>
                         <div className="text-white w-100">
                             <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
@@ -98,22 +103,22 @@ export const Supplier = (data) => {
                             </div>
                             <div className="w-100  h-100 d-flex justify-content-start pl-4">
                                 <p className="numeri_box">000
-                  </p>
+              </p>
                             </div>
                             <div className="col-12 d-flex justify-content-end  pb-2">
                                 <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height={35} />
                             </div>
                         </div>
                     </div>
-
                     {/* LAYOUT DESKTOP */}
 
-                    <div className="col-md-3 h-100 d-none d-lg-block ">
+                    <div className="offset-md-9 col-md-3 h-100 d-none d-lg-block ">
+
                         <div style={{
                             position: 'relative',
                             background: '#17324D',
                             top: -90,
-                            left: 105
+                            left: -50
                         }}>
                             <div className="text-white w-100">
                                 <div className="w-100 h-100 d-flex justify-content-start pt-3 pl-4">
@@ -121,15 +126,21 @@ export const Supplier = (data) => {
                                 </div>
                                 <div className="w-100  h-100 d-flex justify-content-start pl-4">
                                     <p className="numeri_box">000000
-                    </p>
+                </p>
                                 </div>
                                 <div className="col-12 d-flex justify-content-end  pb-2">
                                     <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />
                                 </div>
                             </div>
+
+
+
                         </div>
+
                     </div>
                 </div>
+
+
             </div>
             <div className="col-12 col-md-6 h-100">
                 <div className="p-4 position-relative d-lg-none">
@@ -168,7 +179,6 @@ export const Supplier = (data) => {
                     data={deliveryBarChartData}
                 />
             </div>
-
         </div>
     );
 };
