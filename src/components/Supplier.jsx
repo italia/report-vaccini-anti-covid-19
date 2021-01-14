@@ -79,7 +79,7 @@ export const Supplier = (data) => {
     <div className="col-12 col-md-12 h-100">
         <div className="col-12 d-flex justify-content-center align-items-end p-5 bg-title-plot">            
             <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
-            <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" 
+            <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block" 
                 style={{ 
                     position:"relative",
                     left:290,
