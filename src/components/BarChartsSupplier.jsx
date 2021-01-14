@@ -20,8 +20,8 @@ export const BarChartSupplier = (props) => {
   //   }
   // };
   useEffect(() => {
-      doExit();
-      draw();
+    doExit();
+    draw();
     // eslint-disable-next-line 
   }, [props]);
 
@@ -68,7 +68,7 @@ export const BarChartSupplier = (props) => {
     const margin = { y: 50, x: 20 };
 
     // axis
-    const xScale = d3.scaleBand().padding(0.2);
+    const xScale = d3.scaleBand().padding(0.5);
     const yScale = d3.scaleLinear().domain([0, maxScale]); //max scale should be dynamic
     yScale.range([height, 0]);
     xScale.range([0, width]).domain(data.map((d) => d[props.property.xprop]));
@@ -112,7 +112,7 @@ export const BarChartSupplier = (props) => {
       .append("g")
       .attr("class", "axis-dark")
       .attr("transform", `translate(0,${height})`)
-      .style('font-size', 25)
+      .style('font-size', 20)
       .call(d3.axisBottom(xScale));
 
     // chart
@@ -133,10 +133,10 @@ export const BarChartSupplier = (props) => {
         return opac;
       })
       .attr("class", "bg-bar")
-      .attr("x", (d) => xScale(d[props.property.xprop]))
+      .attr("x", (d) => +xScale(d[props.property.xprop]))
       .attr("y", (d) => yScale(d[props.property.yprop]))
       .attr("height", (d) => height - yScale(d[props.property.yprop]))
-      .attr("width", xScale.bandwidth()>150?150:xScale.bandwidth())
+      .attr("width", xScale.bandwidth())
       .append("title")
       .attr("x", (d) => xScale(d[props.property.xprop]))
       .attr("y", (d) => yScale(d[props.property.yprop]))
@@ -146,9 +146,10 @@ export const BarChartSupplier = (props) => {
       .enter()
       .append("text")
       .attr("class", "bartext-dark")
-      .attr("text-anchor", "middle")
+      .attr("text-anchor", "center")
+
       .attr("fill", "black")
-      .attr("x", (d) => xScale(d[props.property.xprop]) + 35)
+      .attr("x", (d) => xScale(d[props.property.xprop]))
       .attr("y", (d) =>
         height - yScale(d[props.property.yprop]) >= 0
           ? yScale(d[props.property.yprop]) - 10
@@ -161,10 +162,10 @@ export const BarChartSupplier = (props) => {
 
   return (
     <div ref={divRef}>
-                    <div className="w-100 h-100 d-flex justify-content-start pr-5">
-                        <img src="logo.png" width="35" height="35" alt="Logo" />
-                        <h5 className="pl-3 pl-sm-1">Distribuzione vaccini per fornitore</h5>
-                    </div>
+      <div className="w-100 h-100 d-flex justify-content-start pr-5">
+        <img src="logo.png" width="35" height="35" alt="Logo" />
+        <h5 className="pl-3 pl-sm-1">Distribuzione vaccini per fornitore</h5>
+      </div>
       <svg ref={myRef}></svg>
     </div>
   );
