@@ -11,6 +11,7 @@ import { Total } from "./components/Total";
 import { loadData } from "./loadData";
 import { BarChart } from "./components/BarChart";
 import { HBarChart } from "./components/HBarChart";
+import {Supplier} from './components/Supplier';
 import { areaMappingReverse, groupByAge, allTotalGender, hideLoader } from "./utils";
 import * as _ from 'lodash';
 import "./App.css";
@@ -179,7 +180,6 @@ function App() {
           }
         })
       });
-
       setMaxByCategory(maxSumm)
       setTotalByCategory(totalSumm)
     }
@@ -206,7 +206,7 @@ function App() {
           </div>
           <div className="col-12 col-md-6 font-25 mb-2">
             <StaticBlock
-              classes="bg-primary text-white h-100" 
+              classes="bg-primary text-white h-100"
               text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 – 12  gennaio sono state consegnate  488.475  dosi di vaccino."
             />
           </div>
@@ -222,13 +222,13 @@ function App() {
           </div>
         </div>
 
-
         <div className="row">
           <div className="col-12 d-flex justify-content-end">
             <img alt="reset" src="reset.png" onClick={resetFilter} />
           </div>
 
         </div>
+       
         <div className="row" style={{ backgroundColor: '#F8FBFE' }}>
           <div className="col-12 col-lg-5 h-100 order-md-2 order-lg-1 ">
             <div className="container-info d-none d-sm-none d-md-flex d-lg-flex" >
@@ -241,6 +241,7 @@ function App() {
               className="mr-5 h-100"
             />
           </div>
+         
           <div className="col-12 col-lg-7 order-md-1 order-lg-2">
             <div className="p-4 position-relative d-lg-none">
 
@@ -287,9 +288,10 @@ function App() {
             </div>
           </div>
         </div>
+      
         <div className="row position-powerbi" style={{ backgroundColor: '#F8FBFE' }}>
           <div className="col-12 col-md-6 d-flex align-items-end testo-info-campania">
-          Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
+            Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
           </div>
           <div className="col-12 col-md-6  position-relative" >
             <div className="bg-gradient-bar"></div>
@@ -341,6 +343,7 @@ function App() {
             />
           </div>
         </div>
+
         <div className="row ">
           <div
             className="col-12  d-flex justify-content-center align-items-center p-5"
@@ -436,6 +439,9 @@ function App() {
             />
           </div>
         </div>
+
+        <Supplier data={summary}></Supplier>
+
         <div className="row ">
           <div
             className="col-12 d-flex justify-content-center align-items-center p-5"

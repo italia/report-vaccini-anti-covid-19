@@ -1,4 +1,4 @@
-import { sumDoseX, filterByAreaITA, replaceArea, aggrBy } from "./utils";
+import { sumDoseX, filterByAreaITA, replaceArea, aggrBy, groupByAge, areaMapping } from "./utils";
 import _ from 'lodash';
 const baseURL =
   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
@@ -12,13 +12,16 @@ const vaxLocationsURL = `${baseURL}/punti-somministrazione-latest.json`;
 const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
 const puntiSommSummaryURL = `${baseURL}/punti-somministrazione-latest.json`;
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
+const supplierDoses = `data/consegne-vaccini-latest-test.json`;
 
 const elaborate = (data) => {
-  
+
   const tot = data.dataSommVaxSummary.data
     .filter(filterByAreaITA)
     .reduce(sumDoseX("totale"), 0);
   // datatable and map
+  const dataSupplier = data.dataSupplierDoses.data;
+  // console.log(dataSupplier);
   const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
 
   const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
@@ -52,7 +55,24 @@ const elaborate = (data) => {
     aggrBy("area"),
     {}
   );
+  const groups = _.groupBy(dataSupplier, 'fornitore');
 
+  // .value();
+  let allDosesSupplier = Object.keys(groups).map(k => {
+    let groupByKey = groups[k].map(group => group.numero_dosi);
+    let sumTotalDoses = _.sum(groupByKey);
+    return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] }
+  })
+  
+  let totalSuplier =_.sum(allDosesSupplier.map(e=>e?.totale));
+
+  let allDosesMapByArea = _.groupBy(dataSupplier, 'area');
+  let doesesByArea = Object.keys(allDosesMapByArea).map(area => {
+
+    let groupByArea = allDosesMapByArea[area].map((dose) => dose.numero_dosi);
+    let totalDosesByArea = _.sum(groupByArea);
+    return { area: areaMapping[area], dosi_somministrate: totalDosesByArea }
+  })
   let categoriesByRegions = {};
   Object.keys(categoriesByRegionRAW).map((x) => {
     categoriesByRegions[x] = [
@@ -96,12 +116,12 @@ const elaborate = (data) => {
   let maxNumberOfLocations = 0
 
   const locationsByRegion = _(data.dataVaxLocations.data.map(replaceArea))
-  .groupBy('area')
-  .map((items, area)=>{
-    maxNumberOfLocations = maxNumberOfLocations > items.length ? maxNumberOfLocations : items.length;
-    return {area: area, locations: items.length}
-  }).value()
-  ;
+    .groupBy('area')
+    .map((items, area) => {
+      maxNumberOfLocations = maxNumberOfLocations > items.length ? maxNumberOfLocations : items.length;
+      return { area: area, locations: items.length }
+    }).value()
+    ;
 
   const gender = {
     gen_m: categoriesAndAges.reduce(sumDoseX("sesso_maschile"), 0),
@@ -120,10 +140,13 @@ const elaborate = (data) => {
     gender,
     dataSomeVaxDetail,
     locationsByRegion,
-    maxNumberOfLocations
+    maxNumberOfLocations,
+    allDosesSupplier,
+    doesesByArea,
+    totalSuplier
   };
   // console.log(aggr);
-
+  console.log(allDosesSupplier);
   return aggr;
 };
 
@@ -136,6 +159,7 @@ export const loadData = async () => {
   const resPointsSommSummaryURL = await fetch(puntiSommSummaryURL);
   const resVaxLocations = await fetch(vaxLocationsURL);
   const resLastUpdate = await fetch(lastUpdateURL);
+  const resSupplierDoses = await fetch(supplierDoses);
 
   const dataSommVaxSummary = await resSommVaxSummary.json();
   const dataSommVaxDetail = await resSommVaxDetail.json();
@@ -146,6 +170,7 @@ export const loadData = async () => {
   const dataVaxLocations = await resVaxLocations.json();
   const dataLastUpdate = await resLastUpdate.json();
 
+  const dataSupplierDoses = await resSupplierDoses.json(resSupplierDoses)
   return {
     ...elaborate({
       dataSommVaxSummary,
@@ -156,6 +181,7 @@ export const loadData = async () => {
       dataPointsSommSummary,
       dataLastUpdate,
       dataVaxLocations,
+      dataSupplierDoses
     }),
   };
 };

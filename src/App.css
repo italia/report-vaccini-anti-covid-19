@@ -78,6 +78,11 @@ body {
   text-align: right !important;
 }
 
+.bg-bar{
+  fill: rgb(23, 50, 77);
+  stroke: rgb(23, 50, 77);
+}
+
 .it-header-slim-wrapper {
   height: 55px !important;
   padding: 0;
@@ -284,6 +289,11 @@ ul.footer_links li {
   text-anchor: middle;
   fill: #fff;
 }
+.title-bar-dark{
+  font-size: 20px;
+  text-anchor: middle;
+  fill: #000000;
+}
 .title-bar {
   font-size: 20px;
   text-anchor: middle;
@@ -337,8 +347,18 @@ ul.footer_links li {
 .axis .tick text {
   fill: #fff;
 }
-.axis .domain {
+.axis-dark .tick line {
   stroke: #fff;
+}
+.axis-dark .tick text {
+  fill: #000000;
+}
+
+.axis-dark .domain {
+  stroke: #000000;
+}
+.axis-dark .domain {
+  stroke: #000000;;
 }
 
 .line {
@@ -350,7 +370,9 @@ ul.footer_links li {
   color: #fff;
   fill: #fff
 }
-
+.bartext-dark{
+  fill:#000000;
+}
 .max-width-total{
   max-width: 450px;
 }
