@@ -77,10 +77,7 @@ export const Supplier = (data) => {
     return (
         <div className="row">
     <div className="col-12 col-md-12 h-100">
-        <div
-            className="col-12  d-flex justify-content-center align-items-center p-5"
-            style={{ backgroundColor: '#F4F9FD' }}
-          >
+        <div className="col-12 d-flex justify-content-center align-items-center p-5" style={{ backgroundColor: '#F4F9FD' }}>
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
             <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
         </div>
@@ -127,7 +124,12 @@ export const Supplier = (data) => {
                     <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />
                   </div>
                 </div>
+              
+              
+              
               </div>
+
+              
             </div>
           </div>
 
@@ -148,6 +150,7 @@ export const Supplier = (data) => {
                         <h5 className="pl-3 pl-sm-1">Distribuzione<br />vaccini<br/> per regione</h5>
                     </div>
                 </div>
+                
                 <MapAreaBySupplier
                     summary={barState ? { deliverySummary: barState } : summary.data}
                     selected={selectedLocationCategoryMap}
