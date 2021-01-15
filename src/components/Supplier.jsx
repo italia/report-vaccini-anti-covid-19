@@ -106,7 +106,7 @@ export const Supplier = (data) => {
                                 <h5>Totale vaccini</h5>
                             </div>
                             <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                                <p className="numeri_box">000             </p>
+                                <p className="numeri_box">{totalSuplier?.toLocaleString('it')}             </p>
                             </div>
                             <div className="col-12 d-flex justify-content-end  pb-2">
                                 <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height={35} />
