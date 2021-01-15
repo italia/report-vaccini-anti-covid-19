@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import "../App.css";
 import { isEmpty, groupBy, sum } from "lodash";
-import { areaMapping } from './../utils';
+import { areaMapping, simulateClick } from './../utils';
 
 import { BarChartSupplier } from "./BarChartsSupplier";
 import { MapAreaBySupplier } from "./MapAreaBySupplier";
@@ -13,11 +13,13 @@ export const Supplier = (data) => {
     const [maxByCategory, setMaxByCategory] = useState(0);
     const [summary, setSummary] = useState({});
     const [deliveryBarChartData, setdeliveryBarChartData] = useState([]);
+    const [totalSuplier, setTotalSuplier] = useState(0);
 
     const resetFilter = () => {
         setSummary(data);
         setMaxByCategory(data?.data?.totalSuplier)
         setdeliveryBarChartData(data?.data?.allDosesSupplier);
+        setTotalSuplier(data?.data?.totalSuplier);
         setelectedSupplier(null);
         setSelectedLocationCategoryMap(null);
         setBarState(null);
@@ -27,6 +29,7 @@ export const Supplier = (data) => {
             setSummary(data);
             setMaxByCategory(data?.data?.totalSuplier)
             setdeliveryBarChartData(data?.data?.allDosesSupplier);
+            setTotalSuplier(data?.data?.totalSuplier);
         }
     }, [data]);
 
@@ -37,6 +40,8 @@ export const Supplier = (data) => {
             let totalNumberDosesByRegion = sum(group.map(eGroup => eGroup.numero_dosi));
             return { fornitore: e.fornitore, totale: totalNumberDosesByRegion }
         })
+        let total = sum(ar.map(e => e?.totale))
+        setTotalSuplier(total);
         setdeliveryBarChartData(ar);
         setSelectedLocationCategoryMap(countryIndex);
     };
@@ -55,11 +60,11 @@ export const Supplier = (data) => {
             resetFilter();
         } else if (selectedLocationCategoryMap) {
             resetFilter();
-            handleRectClick(bar);
-            setelectedSupplier(bar);
+            simulateClick(bar.fornitore);
         } else {
             handleRectClick(bar);
             setelectedSupplier(bar);
+            setTotalSuplier(bar?.totale);
         }
     }
 
@@ -76,7 +81,6 @@ export const Supplier = (data) => {
         setelectedSupplier(currentRect)
 
     }
-
 
     return (
         <div className="row">
@@ -122,8 +126,8 @@ export const Supplier = (data) => {
                                     <h5>Totale<br></br>vaccini</h5>
                                 </div>
                                 <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                                    <p className="numeri_box">000000
-                </p>
+                                    <p className="numeri_box" >{totalSuplier?.toLocaleString('it')}
+                                    </p>
                                 </div>
                                 <div className="col-12 d-flex justify-content-end  pb-2">
                                     <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />

@@ -127,7 +127,7 @@ export const BarChartSupplier = (props) => {
       .append("rect").on('click', (e, d) => {
         props.handleDeliveryBarChartClick(d);
       })
-      .attr('id', (d) => d?.fascia_anagrafica)
+      .attr('id', (d) => d?.fornitore)
       .attr('opacity', (d) => {
         let opac = props.selected?.fornitore === d?.fornitore ? 1 : !props.selected ? 1 : 0.3;
         return opac;

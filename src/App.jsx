@@ -12,7 +12,7 @@ import { loadData } from "./loadData";
 import { BarChart } from "./components/BarChart";
 import { HBarChart } from "./components/HBarChart";
 import {Supplier} from './components/Supplier';
-import { areaMappingReverse, groupByAge, allTotalGender, hideLoader } from "./utils";
+import { areaMappingReverse, groupByAge, allTotalGender, hideLoader,simulateClick } from "./utils";
 import * as _ from 'lodash';
 import "./App.css";
 import { omit } from "lodash";
@@ -36,15 +36,7 @@ function App() {
   const [locationTableRef, setLocationTableRef] = useState(0);
   const [locationRegionSelect, setLocationRegionSelect] = useState(null);
 
-  const simulateClick = (id) => {
-    if (document.getElementById(id) && id) {
-      let clickEvt = new MouseEvent('click', {
-        'bubbles': true,
-        'cancelable': true
-      });
-      document.getElementById(id).dispatchEvent(clickEvt);
-    }
-  }
+ 
 
   const resetFilter = () => {
     simulateClick(selected?.area);
