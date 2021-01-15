@@ -250,20 +250,40 @@ function App() {
 
               <div className="w-100 h-100 d-flex justify-content-start pr-5">
                 <img src="logo.png" width="35" height="35" alt="Logo" />
-
+                
                 <h5 className="pl-3 pl-sm-1">Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
 
               </div>
 
 
             </div>
-            <div className="p-4 position-relative d-none d-lg-block" style={{ left: '300px', top: '190px' }}>
-
-              <div className="w-100 h-100 d-flex justify-content-start pr-5">
-                <img src="logo.png" width="35" height="35" alt="Logo" />
-
-                <h5 className="pl-3 pl-sm-1">Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
-
+            
+            <div className="p-5 d-none d-lg-block">
+                  
+              <div className="w-100 h-100 d-flex justify-content-end"
+              style={{
+                position:'absolute ',
+                top:150,
+                right:50
+              }}
+              >
+              <img src="logo.png" width="35" height="35" alt="Logo"
+                style={{
+                  position:'absolute',
+                  top:-10
+                }}
+              />
+                  
+                <h5 className="pl-3 pl-sm-1 text-right">
+                <span data-toggle="tooltip" title="Nel grafico è rappresentato il tasso di somministrazione, 
+                ovvero il rapporto tra le somministrazioni e le dosi consegnate (%)" className="circle-info"
+                style={{
+                  position:'relative',
+                  right:23,
+                  top:25
+                }}
+                >i</span>
+                  Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
               </div>
 
 
@@ -378,8 +398,6 @@ function App() {
             <div className="col-3 col-md-3 h-100 d-none d-lg-block">
               <div style={{
                 position: 'relative',
-                // width: 300,
-                // height: 180,
                 background: '#17324D',
                 top: -90,
                 left: 105
