@@ -40,18 +40,11 @@ export const MapAreaBySupplier = (
   }, []);
 
   const getCategoryQuantity = (region) => {
-    if (!selectedCodeCategory) {
-      return region.dosi_consegnate && region.dosi_consegnate.toLocaleString('it')
-    } else {
-      return region.byCategory[selectedCodeCategory].length
-        && region.byCategory[selectedCodeCategory][0].total
-        && region.byCategory[selectedCodeCategory][0].total.toLocaleString('it')
-    }
+    return region?.dosi_consegnate?.toLocaleString('it');
   }
 
   const fillRegion = (region) => {
-    let dosi = selectedCodeCategory ? (region.byCategory[selectedCodeCategory].length
-      && region.byCategory[selectedCodeCategory][0].total) : region.dosi_consegnate
+    let dosi = region.dosi_consegnate
     if (selected === region) {
       return 1
     } else if (!selected) {
@@ -86,7 +79,7 @@ export const MapAreaBySupplier = (
               >
                 <title>
                   <span className="bg-info">
-                    {region.area} 
+                    {region.area} {getCategoryQuantity(region)}
                   </span>
                 </title>
               </path>
