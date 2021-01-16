@@ -1,20 +1,27 @@
-[![License](https://img.shields.io/github/license/italia/covid19-dashboard-vaccini.svg)](https://github.com/italia/covid19-dashboard-vaccini/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/italia/covid19-dashboard-vaccini.svg)](https://github.com/italia/covid19-dashboard-vaccini/issues)
-[![Join the #website channel](https://img.shields.io/badge/Slack%20channel-%23design-blue.svg)](https://developersitalia.slack.com/messages/C7VPAUVB3/)
-[![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
-![GH Action](https://github.com/italia/covid19-dashboard-vaccini/workflows/CD/badge.svg)
+[![License](https://img.shields.io/github/license/italia/report-vaccini-anti-covid-19.svg)](https://github.com/italia/report-vaccini-anti-covid-19/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/italia/report-vaccini-anti-covid-19.svg)](https://github.com/italia/report-vaccini-anti-covid-19/issues)
+![GH Action](https://github.com/italia/report-vaccini-anti-covid-19/workflows/CD/badge.svg)
 
 # Report vaccini anti COVID 19
+> Official web app repository - [Visit the
+> dashboard](https://www.governo.it/it/cscovid19/report-vaccini/)
 
 ## Introduction
 
-This repository contains an the official web app . This is
-a standalone app currently deployed via GH pages and it does not represent the
-official dashboard. 
+This repository contains the official web app deployed on the [government's
+page](https://www.governo.it/it/cscovid19/report-vaccini/). 
 
-The app uses the [opendata](https://github.com/italia/covid19-opendata-vaccini)
-made available by the Italian Commissario straordinario per l'emergenza
+The app shows the [opendata dataset](https://github.com/italia/covid19-opendata-vaccini)
+made available by the Italian Commissario Straordinario per l'emergenza
 Covid-19. 
+
+## Maintainer
+
+This repository is actively maintained by the team of the Italian Commissario
+Straordinario per l'emergenza Covid-19.
+
+This repository is a fork of the [example
+dashboard](https://github.com/italia/covid19-dashboard-vaccini).
 
 Every contribution is welcome, feel free to open issues and submit
 a pull request at any time.
