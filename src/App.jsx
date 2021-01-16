@@ -252,7 +252,7 @@ function App() {
             
             <div className="p-5 d-none d-lg-block">
                   
-              <div className="w-100 h-100 d-flex justify-content-end"
+              <div className="d-flex justify-content-end"
               style={{
                 position:'absolute ',
                 top:150,

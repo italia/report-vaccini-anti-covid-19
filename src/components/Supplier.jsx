@@ -23,6 +23,8 @@ export const Supplier = (data) => {
         setelectedSupplier(null);
         setSelectedLocationCategoryMap(null);
         setBarState(null);
+        setTotalSuplier(data?.data?.totalSuplier);
+
     }
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -42,6 +44,7 @@ export const Supplier = (data) => {
         })
         let total = sum(ar.map(e => e?.totale))
         setTotalSuplier(total);
+        setMaxByCategory(total);
         setdeliveryBarChartData(ar);
         setSelectedLocationCategoryMap(countryIndex);
     };
@@ -65,6 +68,7 @@ export const Supplier = (data) => {
             handleRectClick(bar);
             setelectedSupplier(bar);
             setTotalSuplier(bar?.totale);
+            setMaxByCategory(bar?.totale)
         }
     }
 
@@ -85,7 +89,7 @@ export const Supplier = (data) => {
     return (
         <div className="row">
             <div className="col-12 col-md-12 h-100">
-                <div className="col-12 d-flex justify-content-center align-items-end p-5 bg-title-plot">
+                <div className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
                     <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
                     <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block"
                         style={{

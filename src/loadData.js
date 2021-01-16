@@ -12,7 +12,7 @@ const vaxLocationsURL = `${baseURL}/punti-somministrazione-latest.json`;
 const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
 const puntiSommSummaryURL = `${baseURL}/punti-somministrazione-latest.json`;
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
-const supplierDoses = `data/consegne-vaccini-latest-test.json`;
+const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
 
 const elaborate = (data) => {
 
@@ -25,7 +25,7 @@ const elaborate = (data) => {
   const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
 
   const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
-
+  // console.log(deliverySummary);
   // categories and ages summary
   const categoriesAndAges = data.dataProfileSummary.data;
   const categories = [
@@ -60,7 +60,7 @@ const elaborate = (data) => {
   // .value();
   let allDosesSupplier = Object.keys(groups).map(k => {
     let groupByKey = groups[k].map(group => group.numero_dosi);
-    let sumTotalDoses = _.sum(groupByKey);
+    let sumTotalDoses = _.sum(groupByKey);  
     return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] }
   })
   
@@ -145,8 +145,6 @@ const elaborate = (data) => {
     doesesByArea,
     totalSuplier
   };
-  // console.log(aggr);
-  console.log(allDosesSupplier);
   return aggr;
 };
 
