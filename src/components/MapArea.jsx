@@ -58,7 +58,7 @@ export const MapArea = (props) => {
                 className="country"
                 id={`${region?.area?.trim()}`}
                 fill={`rgba(0,102,204,${scaleOp}) `}
-                stroke="#FFFFFF"
+                stroke="#E0E0E0"
                 strokeWidth={0.7}
                 onClick={() => handleClick(region.index)}
               >

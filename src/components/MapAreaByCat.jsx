@@ -87,7 +87,7 @@ export const MapAreaByCat = (
                 className="country"
 
                 fill={`rgba(0,102,204, ${fillRegion(region)}) `}
-                stroke="#FFFFFF"
+                stroke="#E0E0E0"
                 strokeWidth={0.7}
                 onClick={() => handleClick(region.index)}
               >
