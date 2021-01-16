@@ -1,4 +1,4 @@
-import { React, useEffect, useRef, useState } from "react";
+import { React, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "../App.css";
 import { maxX } from "../utils";
@@ -10,15 +10,6 @@ export const BarChartSupplier = (props) => {
   const myRef = useRef();
   const divRef = useRef();
 
-  // const handleRectClick = (x) => {
-  //   if (select === x) {
-  //     props.handleRectClick(null);
-  //     setSelected(null);
-  //   } else {
-  //     props.handleRectClick(x);
-  //     setSelected(x);
-  //   }
-  // };
   useEffect(() => {
     doExit();
     draw();

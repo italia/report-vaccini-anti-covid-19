@@ -9,7 +9,6 @@ export const Supplier = (data) => {
     const [barState, setBarState] = useState(null);
     const [selectedLocationCategoryMap, setSelectedLocationCategoryMap] = useState(null);
     const [selectedSupplier, setelectedSupplier] = useState(null);
-    const [categoryRegionSelect, setCategoryRegionSelect] = useState(null);
     const [maxByCategory, setMaxByCategory] = useState(0);
     const [summary, setSummary] = useState({});
     const [deliveryBarChartData, setdeliveryBarChartData] = useState([]);
@@ -160,8 +159,6 @@ export const Supplier = (data) => {
                     selected={selectedLocationCategoryMap}
                     handleCountryClick={handleCountryClickCategories}
                     maxByCategory={maxByCategory}
-                    setCategoryRegionSelect={setCategoryRegionSelect}
-                    categoryRegionSelect={categoryRegionSelect}
                     className="w-100 h-100"
                 />
             </div>

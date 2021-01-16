@@ -1,4 +1,4 @@
-import { sumDoseX, filterByAreaITA, replaceArea, aggrBy, groupByAge, areaMapping } from "./utils";
+import { sumDoseX, filterByAreaITA, replaceArea, aggrBy, areaMapping } from "./utils";
 import _ from 'lodash';
 const baseURL =
   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
@@ -21,11 +21,9 @@ const elaborate = (data) => {
     .reduce(sumDoseX("totale"), 0);
   // datatable and map
   const dataSupplier = data.dataSupplierDoses.data;
-  // console.log(dataSupplier);
   const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
 
   const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
-  // console.log(deliverySummary);
   // categories and ages summary
   const categoriesAndAges = data.dataProfileSummary.data;
   const categories = [
@@ -57,7 +55,6 @@ const elaborate = (data) => {
   );
   const groups = _.groupBy(dataSupplier, 'fornitore');
 
-  // .value();
   let allDosesSupplier = Object.keys(groups).map(k => {
     let groupByKey = groups[k].map(group => group.numero_dosi);
     let sumTotalDoses = _.sum(groupByKey);  

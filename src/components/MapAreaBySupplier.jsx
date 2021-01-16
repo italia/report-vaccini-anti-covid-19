@@ -2,18 +2,14 @@ import { React, useEffect, useState } from "react";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import { filterByArea } from "../utils";
-import { sum } from 'lodash';
 import "./MapArea.css"
 
 export const MapAreaBySupplier = (
   {
     handleCountryClick,
-    selectedCodeCategory,
     maxByCategory,
     summary,
     selected,
-    categoryRegionSelect,
-    setCategoryRegionSelect
   }
 ) => {
   const [geographies, setGeographies] = useState([]);
@@ -52,7 +48,6 @@ export const MapAreaBySupplier = (
     } else {
       return (0.2 / 5) * (dosi / maxByCategory * 100)
     }
-    // return 1;
   }
 
   return (
