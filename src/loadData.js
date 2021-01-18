@@ -31,7 +31,8 @@ const elaborate = (data) => {
 
   let totalDoses = {
     prima_dose: _.sum(dataVaxSomLatest?.map(e => e?.prima_dose)),
-    seconda_dose: _.sum(dataVaxSomLatest?.map(e => e?.seconda_dose))
+    seconda_dose: _.sum(dataVaxSomLatest?.map(e => e?.seconda_dose)),
+    vax_somministrati: _.sum(dataSupplier.filter((e) => e?.data_consegna?.substr(0, 10) != '2020-12-27').map(_e => _e?.numero_dosi))?.toLocaleString('it')
   }
   const categories = [
     {
@@ -62,7 +63,6 @@ const elaborate = (data) => {
 
   const dataVaxSomLatestByArea = dataVaxSomLatest.reduce(aggrBy("area"), {});
   const groups = _.groupBy(dataSupplier, 'fornitore');
-
   let allDosesSupplier = Object.keys(groups).map(k => {
     let groupByKey = groups[k].map(group => group.numero_dosi);
     let sumTotalDoses = _.sum(groupByKey);
@@ -78,6 +78,7 @@ const elaborate = (data) => {
     let totalDosesByArea = _.sum(groupByArea);
     return { area: areaMapping[area], dosi_somministrate: totalDosesByArea }
   })
+
   let categoriesByRegions = {};
   Object.keys(dataVaxSomLatestByArea).map((x) => {
 

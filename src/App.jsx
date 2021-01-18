@@ -246,7 +246,7 @@ function App() {
             >
               <StaticBlock
                 classes="text-black text-uppercase font-weight-bold"
-                text="Le somministrazioni delle 1.397.175 dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre."
+                text={`Le somministrazioni delle ${summary?.totalDoses?.vax_somministrati} dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre`}
               />
             </div>
           </div>
