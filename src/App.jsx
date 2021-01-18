@@ -196,7 +196,7 @@ function App() {
               text="Il 27 dicembre sono state consegnate 9.750 dosi di vaccino, interamente somministrate."
             /> */}
             <div style={{marginRight:10}}>
-              <img src="dose.png" height="98" alt="Prima somministrazione" />
+              <img src="dose.png" height="70" alt="Prima somministrazione" />
             </div>
             <div className="border-blu d-flex align-items-center">
               <h1 className="font-weight-light inline">1.139.445</h1>
@@ -205,7 +205,7 @@ function App() {
           </div>
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
           <div style={{marginRight:10}}>
-          <img src="dosi.png" height="98" alt="Seconda somministrazione" /> 
+          <img src="dosi.png" height="70" alt="Seconda somministrazione" /> 
           </div>
           <div className="border-blu d-flex align-items-center">
              <h1 className="font-weight-light inline">2.189</h1>
@@ -379,7 +379,7 @@ function App() {
           <div
             className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
-            <h3 className="text-center">somministrazioni per categoria</h3>
+            <h3 className="text-center">Somministrazioni per categoria</h3>
           </div>
           <div className="col-12 col-md-12 h-100  ">
             <div className="mb-5  d-lg-none " style={{
