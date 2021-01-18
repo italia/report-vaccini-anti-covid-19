@@ -13,7 +13,7 @@ const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`
 const puntiSommSummaryURL = `${baseURL}/punti-somministrazione-latest.json`;
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
 const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
-
+const urlTest = `/data/somministrazioni-vaccini-latest_test.json`;
 const elaborate = (data) => {
 
   const tot = data.dataSommVaxSummary.data
@@ -24,13 +24,15 @@ const elaborate = (data) => {
   const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
 
   const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
+
   // categories and ages summary
   const categoriesAndAges = data.dataProfileSummary.data;
+  const dataVaxSomLatest = data?.dataVaxL?.data;
   const categories = [
     {
       name: "Operatori Sanitari e Sociosanitari",
       code: "cat_oss",
-      total: categoriesAndAges.reduce(
+      total: dataVaxSomLatest.reduce(
         sumDoseX("categoria_operatori_sanitari_sociosanitari"),
         0
       ),
@@ -38,7 +40,7 @@ const elaborate = (data) => {
     {
       name: "Personale non sanitario",
       code: "cat_pns",
-      total: categoriesAndAges.reduce(
+      total: dataVaxSomLatest.reduce(
         sumDoseX("categoria_personale_non_sanitario"),
         0
       ),
@@ -46,22 +48,23 @@ const elaborate = (data) => {
     {
       name: "Ospiti Strutture Residenziali",
       code: "cat_rsa",
-      total: categoriesAndAges.reduce(sumDoseX("categoria_ospiti_rsa"), 0),
-    }
-  ];
-  const categoriesByRegionRAW = data.dataSommVaxSummary.data.reduce(
-    aggrBy("area"),
-    {}
-  );
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_over60"), 0),
+    },
+    {
+      name: 'Over 60', code: 'over60',
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_over60"), 0),
+    }];
+  
+  const dataVaxSomLatestByArea = dataVaxSomLatest.reduce(aggrBy("area"), {});
   const groups = _.groupBy(dataSupplier, 'fornitore');
 
   let allDosesSupplier = Object.keys(groups).map(k => {
     let groupByKey = groups[k].map(group => group.numero_dosi);
-    let sumTotalDoses = _.sum(groupByKey);  
+    let sumTotalDoses = _.sum(groupByKey);
     return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] }
   })
-  
-  let totalSuplier =_.sum(allDosesSupplier.map(e=>e?.totale));
+
+  let totalSuplier = _.sum(allDosesSupplier.map(e => e?.totale));
 
   let allDosesMapByArea = _.groupBy(dataSupplier, 'area');
   let doesesByArea = Object.keys(allDosesMapByArea).map(area => {
@@ -71,12 +74,13 @@ const elaborate = (data) => {
     return { area: areaMapping[area], dosi_somministrate: totalDosesByArea }
   })
   let categoriesByRegions = {};
-  Object.keys(categoriesByRegionRAW).map((x) => {
+  Object.keys(dataVaxSomLatestByArea).map((x) => {
+
     categoriesByRegions[x] = [
       {
         name: "Operatori Sanitari e Sociosanitari",
         code: "cat_oss",
-        total: categoriesByRegionRAW[x].reduce(
+        total: dataVaxSomLatestByArea[x].reduce(
           sumDoseX("categoria_operatori_sanitari_sociosanitari"),
           0
         ),
@@ -84,7 +88,7 @@ const elaborate = (data) => {
       {
         name: "Personale non sanitario",
         code: "cat_pns",
-        total: categoriesByRegionRAW[x].reduce(
+        total: dataVaxSomLatestByArea[x].reduce(
           sumDoseX("categoria_personale_non_sanitario"),
           0
         ),
@@ -92,20 +96,35 @@ const elaborate = (data) => {
       {
         name: "Ospiti Strutture Residenziali",
         code: "cat_rsa",
-        total: categoriesByRegionRAW[x].reduce(
+        total: dataVaxSomLatestByArea[x]?.reduce(
           sumDoseX("categoria_ospiti_rsa"),
           0
         ),
+
+      },
+      {
+        name: 'Over 60',
+        code: 'over60',
+        total: dataVaxSomLatestByArea[x]?.reduce(sumDoseX("categoria_over60"), 0),
       }
     ];
     return categoriesByRegions;
   });
 
   deliverySummary.forEach(ds => {
-    ds['byCategory'] = categoriesByRegions[ds.code].reduce(
-      aggrBy("code"),
-      {}
-    )
+    if (categoriesByRegions[ds.code]) {
+      ds['byCategory'] = categoriesByRegions[ds.code].reduce(
+        aggrBy("code"),
+        {}
+      )
+    } else {
+      ds['byCategory'] = {
+        cat_oss: [{ name: "Operatori Sanitari e Sociosanitari", code: "cat_oss", total: 0 }],
+        cat_pns: [{ name: "Personale non sanitario", code: "cat_pns", total: 0 }],
+        cat_rsa: [{ name: "Ospiti Strutture Residenziali", code: "cat_rsa", total: 0 }],
+        over60: [{ name: "Over 60", code: "over60", total: 0 }]
+      }
+    }
   })
 
   const locations = data.dataVaxLocations.data.map(replaceArea);
@@ -155,6 +174,7 @@ export const loadData = async () => {
   const resVaxLocations = await fetch(vaxLocationsURL);
   const resLastUpdate = await fetch(lastUpdateURL);
   const resSupplierDoses = await fetch(supplierDoses);
+  const resVaxSumT = await fetch(urlTest);
 
   const dataSommVaxSummary = await resSommVaxSummary.json();
   const dataSommVaxDetail = await resSommVaxDetail.json();
@@ -165,7 +185,8 @@ export const loadData = async () => {
   const dataVaxLocations = await resVaxLocations.json();
   const dataLastUpdate = await resLastUpdate.json();
 
-  const dataSupplierDoses = await resSupplierDoses.json(resSupplierDoses)
+  const dataSupplierDoses = await resSupplierDoses.json();
+  const dataVaxL = await resVaxSumT.json();
   return {
     ...elaborate({
       dataSommVaxSummary,
@@ -176,7 +197,8 @@ export const loadData = async () => {
       dataPointsSommSummary,
       dataLastUpdate,
       dataVaxLocations,
-      dataSupplierDoses
+      dataSupplierDoses,
+      dataVaxL
     }),
   };
 };
