@@ -216,7 +216,7 @@ function App() {
           </div>
         </div>
 
-        <div className="row position-powerbi">
+        <div className="row position-powerbi" style={{ backgroundColor: '#17324D' }} >
           <div className="col-12">
             <div className="p-4 position-relative d-flex justify-content-center " style={{ backgroundColor: '#17324D', minHeight: 240 }}>
               <div className="d-none  d-lg-block" style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
