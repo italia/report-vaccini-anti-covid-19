@@ -92,8 +92,8 @@ export const Supplier = (data) => {
                     <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
                     <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block"
                         style={{
-                            position: "relative",
-                            left: 290,
+                            position: "absolute",
+                            right: 28,
                             zIndex: 10
                         }} />
                 </div>
