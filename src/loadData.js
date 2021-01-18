@@ -8,12 +8,10 @@ const sommVaxDetailURL = `${baseURL}/somministrazioni-vaccini-latest.json`;
 const deliveryVaxDetailURL = `${baseURL}/consegne-vaccini-latest.json`;
 const vaxSummaryURL = `${baseURL}/vaccini-summary-latest.json`;
 const vaxLocationsURL = `${baseURL}/punti-somministrazione-latest.json`;
-
 const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
 const puntiSommSummaryURL = `${baseURL}/punti-somministrazione-latest.json`;
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
 const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
-const urlTest = `/data/somministrazioni-vaccini-latest_test.json`;
 const elaborate = (data) => {
 
   const tot = data.dataSommVaxSummary.data
@@ -27,7 +25,7 @@ const elaborate = (data) => {
 
   // categories and ages summary
   const categoriesAndAges = data.dataProfileSummary.data;
-  const dataVaxSomLatest = data?.dataVaxL?.data;
+  const dataVaxSomLatest = data?.dataSommVaxDetail?.data;
 
   let totalDoses = {
     prima_dose: _.sum(dataVaxSomLatest?.map(e => e?.prima_dose)),
@@ -54,11 +52,11 @@ const elaborate = (data) => {
     {
       name: "Ospiti Strutture Residenziali",
       code: "cat_rsa",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_over60"), 0),
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_ospiti_rsa"), 0),
     },
     {
-      name: 'Over 60', code: 'over60',
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_over60"), 0),
+      name: 'Over 80', code: 'over60',
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_over80"), 0),
     }];
 
   const dataVaxSomLatestByArea = dataVaxSomLatest.reduce(aggrBy("area"), {});
@@ -109,9 +107,9 @@ const elaborate = (data) => {
 
       },
       {
-        name: 'Over 60',
+        name: 'Over 80',
         code: 'over60',
-        total: dataVaxSomLatestByArea[x]?.reduce(sumDoseX("categoria_over60"), 0),
+        total: dataVaxSomLatestByArea[x]?.reduce(sumDoseX("categoria_over80"), 0),
       }
     ];
     return categoriesByRegions;
@@ -128,7 +126,7 @@ const elaborate = (data) => {
         cat_oss: [{ name: "Operatori Sanitari e Sociosanitari", code: "cat_oss", total: 0 }],
         cat_pns: [{ name: "Personale non sanitario", code: "cat_pns", total: 0 }],
         cat_rsa: [{ name: "Ospiti Strutture Residenziali", code: "cat_rsa", total: 0 }],
-        over60: [{ name: "Over 60", code: "over60", total: 0 }]
+        over60: [{ name: "Over 80", code: "over60", total: 0 }]
       }
     }
   })
@@ -181,7 +179,6 @@ export const loadData = async () => {
   const resVaxLocations = await fetch(vaxLocationsURL);
   const resLastUpdate = await fetch(lastUpdateURL);
   const resSupplierDoses = await fetch(supplierDoses);
-  const resVaxSumT = await fetch(urlTest);
 
   const dataSommVaxSummary = await resSommVaxSummary.json();
   const dataSommVaxDetail = await resSommVaxDetail.json();
@@ -193,7 +190,6 @@ export const loadData = async () => {
   const dataLastUpdate = await resLastUpdate.json();
 
   const dataSupplierDoses = await resSupplierDoses.json();
-  const dataVaxL = await resVaxSumT.json();
   return {
     ...elaborate({
       dataSommVaxSummary,
@@ -205,7 +201,6 @@ export const loadData = async () => {
       dataLastUpdate,
       dataVaxLocations,
       dataSupplierDoses,
-      dataVaxL
     }),
   };
 };

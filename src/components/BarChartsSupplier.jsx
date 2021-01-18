@@ -153,10 +153,10 @@ export const BarChartSupplier = (props) => {
 
   return (
     <div ref={divRef}>
-      <div className="w-100 h-100 d-flex justify-content-start pr-5">
+      {/* <div className="w-100 h-100 d-flex justify-content-start pr-5">
         <img src="logo.png" width="35" height="35" alt="Logo" />
         <h5 className="pl-3 pl-sm-1">Distribuzione vaccini per fornitore</h5>
-      </div>
+      </div> */}
       <svg ref={myRef}></svg>
     </div>
   );

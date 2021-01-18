@@ -89,7 +89,7 @@ export const Supplier = (data) => {
         <div className="row">
             <div className="col-12 col-md-12 h-100">
                 <div className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
-                    <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
+                    <h3 className="text-center">Distribuzione vaccini per fornitore</h3> 
                     <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block"
                         style={{
                             position: "absolute",
@@ -117,12 +117,12 @@ export const Supplier = (data) => {
                         </div>
                     </div>
                     {/* LAYOUT DESKTOP */}
-                    <div className="offset-md-9 col-md-3 h-100 d-none d-lg-block ">
+                    <div className="offset-md-9 col-md-3  d-none d-lg-block" style={{ height: 100 }}>
                         <div style={{
                             position: 'relative',
                             background: '#17324D',
                             top: -90,
-                            left: -50
+                            left: -50,
                         }}>
                             <div className="text-white w-100">
                                 <div className="w-100 h-100 d-flex justify-content-start pt-3 pl-4">
@@ -140,7 +140,7 @@ export const Supplier = (data) => {
                     </div>
                 </div>
             </div>
-            <div className="col-12 col-md-6 h-100">
+            {/* <div className="col-12 col-md-6 h-100">
 
                 <div className="p-4  d-lg-none">
                     <div className="w-100 h-100 d-flex justify-content-start pr-5">
@@ -161,8 +161,8 @@ export const Supplier = (data) => {
                     maxByCategory={maxByCategory}
                     className="w-100 h-100"
                 />
-            </div>
-            <div className="col-12 col-md-6 h-100">
+            </div> */}
+            <div className="col-12 col-md-6 h-100 pb-5">
                 <BarChartSupplier
                     title=""
                     xtitle="Fascia d'età"
@@ -174,6 +174,9 @@ export const Supplier = (data) => {
                     property={{ xprop: "fornitore", yprop: "totale" }}
                     data={deliveryBarChartData}
                 />
+            </div>
+            <div className=" d-none d-sm-none d-md-block d-lg-none  col-md-6">
+
             </div>
         </div>
     );

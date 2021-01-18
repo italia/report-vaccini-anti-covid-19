@@ -187,54 +187,24 @@ function App() {
 
           </div>
         </div>
-        <div className="row bg-title-plot">
-          <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
-            {/* <StaticBlock
-              classes="bg-primary text-white h-100"
-              text="Il 27 dicembre sono state consegnate 9.750 dosi di vaccino, interamente somministrate."
-            /> */}
-            <div style={{ marginRight: 10 }}>
-              <img src="dose.png" height="70" alt="Prima somministrazione" />
-            </div>
-            <div className="border-blu d-flex align-items-center">
-              <h1 className="font-weight-light inline">{summary?.totalDoses?.prima_dose?.toLocaleString('it')}</h1>
-             
-            </div>
- <span className="pl-2">Prima dose</span>
-          </div>
-          <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
-            <div style={{ marginRight: 10 }}>
-              <img src="dosi.png" height="70" alt="Seconda somministrazione" />
-            </div>
-            <div className="border-blu d-flex align-items-center">
-              <h1 className="font-weight-light inline">{summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</h1>
-              <span className="pl-2">Seconda dose</span>
-            </div>
-
-            {/* <StaticBlock
-              classes="bg-primary text-white h-100"
-              text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 – 12  gennaio sono state consegnate  488.475  dosi di vaccino."
-            /> */}
-          </div>
-        </div>
+        <div style={{ padding: 20 }}></div>
 
         <div className="row position-powerbi" style={{ backgroundColor: '#17324D' }} >
           <div className="col-12">
-            <div className="p-4 position-relative d-flex justify-content-center " style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+            <div className="p-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
               <div className="d-none  d-lg-block" style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
                 <img src="group_person.svg" alt="Logo" className="img-fluid" />
               </div>
               <div className="  d-none  d-lg-block position-absolute center-logo">
                 <img src="logo.png" width="80" height="80" alt="Logo" />
               </div>
-              <div className="text-white w-100">
+              <div className="text-white w-100" style={{ padding: 20 }}>
 
                 <div className="w-100  h-100 align-items-center d-flex justify-content-center text-right">
-                  <h3 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h3>
+                  <h4 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h4>
                   <div className="d-flex justify-content-center text-right align-items-center border-pink"> {summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</div>
-
                 </div>
-
+                <div className="text-center position-relative" style={{ top: -10 }}>(a cui sono state somministrate la prima e la seconda dose di vaccino)</div>
               </div>
 
             </div>
@@ -272,9 +242,6 @@ function App() {
               selected={selected}
               className="mr-5 h-100"
             />
-            <div className="col-12 col-md-6 align-items-start testo-info-campania d-lg-none d-md-none d-sm-flex">
-              Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
-          </div>
           </div>
 
           <div className="col-12 col-lg-7 order-md-1 order-lg-2">
@@ -346,7 +313,6 @@ function App() {
 
         <div className="row position-powerbi" style={{ backgroundColor: '#F8FBFE' }}>
           <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex">
-            Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
           </div>
           <div className="col-12 col-md-6  position-relative" >
             <div className="bg-gradient-bar"></div>
@@ -401,6 +367,7 @@ function App() {
 
         <div className="row ">
           <div
+            style={{ marginTop: 40 }}
             className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
             <h3 className="text-center">Somministrazioni per categoria</h3>
@@ -427,7 +394,7 @@ function App() {
               </div>
             </div>
 
-            <div className="col-3 col-md-3 h-100 d-none d-lg-block">
+            <div className="col-3 col-md-3  d-none d-lg-block" style={{height:100}}> 
               <div style={{
                 position: 'relative',
                 background: '#17324D',
