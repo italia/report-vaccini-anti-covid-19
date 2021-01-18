@@ -218,7 +218,7 @@ function App() {
             >
               <StaticBlock
                 classes="text-black text-uppercase font-weight-bold"
-                text={`Le somministrazioni delle ${summary?.totalDoses?.vax_somministrati} dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre`}
+                text={`LA SOMMINISTRAZIONE DI ${summary?.totalDoses?.vax_somministrati}  DOSI DI VACCINO SU TUTTO IL TERRITORIO E' INIZIATA IL 31 DICEMBRE`}
               />
             </div>
           </div>
@@ -394,7 +394,7 @@ function App() {
               </div>
             </div>
 
-            <div className="col-3 col-md-3  d-none d-lg-block" style={{height:100}}> 
+            <div className="col-3 col-md-3  d-none d-lg-block" style={{ height: 100 }}>
               <div style={{
                 position: 'relative',
                 background: '#17324D',
