@@ -468,3 +468,8 @@ loader*/
     top: -40px;
     right: 0;
 }
+.border-blu {
+  border-left: 3px solid #17324D;
+  padding-left: 10px;
+  height: 45%;
+}
