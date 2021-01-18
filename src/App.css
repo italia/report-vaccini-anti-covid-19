@@ -454,3 +454,9 @@ loader*/
   bottom:0;
   left:0;
 }
+
+.border-blu {
+  border-left: 3px solid #17324D;
+  padding-left: 10px;
+  height: 45%;
+}
