@@ -32,7 +32,7 @@ const elaborate = (data) => {
   let totalDoses = {
     prima_dose: _.sum(dataVaxSomLatest?.map(e => e?.prima_dose)),
     seconda_dose: _.sum(dataVaxSomLatest?.map(e => e?.seconda_dose)),
-    vax_somministrati: _.sum(dataSupplier.filter((e) => e?.data_consegna?.substr(0, 10) != '2020-12-27').map(_e => _e?.numero_dosi))?.toLocaleString('it')
+    vax_somministrati: _.sum(dataSupplier?.filter((e) => e?.data_consegna?.substr(0, 10) !== '2020-12-27')?.map(_e => _e?.numero_dosi))?.toLocaleString('it')
   }
   const categories = [
     {
