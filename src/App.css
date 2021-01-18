@@ -454,7 +454,20 @@ loader*/
   bottom:0;
   left:0;
 }
-
+.border-pink{
+  border-left: 3px solid #E31F83;
+    padding-left: 10px;
+    font-size: 50px;
+    height: 39%;
+}
+.center-logo{
+    width: calc(50% + 40px);
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: -40px;
+    right: 0;
+}
 .border-blu {
   border-left: 3px solid #17324D;
   padding-left: 10px;

@@ -11,8 +11,8 @@ import { Total } from "./components/Total";
 import { loadData } from "./loadData";
 import { BarChart } from "./components/BarChart";
 import { HBarChart } from "./components/HBarChart";
-import {Supplier} from './components/Supplier';
-import { areaMappingReverse, groupByAge, allTotalGender, hideLoader,simulateClick } from "./utils";
+import { Supplier } from './components/Supplier';
+import { areaMappingReverse, groupByAge, allTotalGender, hideLoader, simulateClick } from "./utils";
 import * as _ from 'lodash';
 import "./App.css";
 import { omit } from "lodash";
@@ -36,7 +36,7 @@ function App() {
   const [locationTableRef, setLocationTableRef] = useState(0);
   const [locationRegionSelect, setLocationRegionSelect] = useState(null);
 
- 
+
 
   const resetFilter = () => {
     simulateClick(selected?.area);
@@ -90,7 +90,6 @@ function App() {
     }
   }
   const handleHRectClick = (currentRect) => {
-
     if (currentRect) {
       setSelectedCodeCategory(currentRect?.code)
     } else {
@@ -128,7 +127,6 @@ function App() {
     const data = summary.categoriesByRegions[areaCode];
 
     let _selected = summary.deliverySummary[countryIndex];
-
     setSelectedLocationCategoryMap(_selected);
 
     setTotalByCategory(
@@ -195,29 +193,53 @@ function App() {
               classes="bg-primary text-white h-100"
               text="Il 27 dicembre sono state consegnate 9.750 dosi di vaccino, interamente somministrate."
             /> */}
-            <div style={{marginRight:10}}>
+            <div style={{ marginRight: 10 }}>
               <img src="dose.png" height="70" alt="Prima somministrazione" />
             </div>
             <div className="border-blu d-flex align-items-center">
               <h1 className="font-weight-light inline">1.139.445</h1>
             </div>
-             
+
           </div>
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
-          <div style={{marginRight:10}}>
-          <img src="dosi.png" height="70" alt="Seconda somministrazione" /> 
-          </div>
-          <div className="border-blu d-flex align-items-center">
-             <h1 className="font-weight-light inline">2.189</h1>
-          </div>
-         
+            <div style={{ marginRight: 10 }}>
+              <img src="dosi.png" height="70" alt="Seconda somministrazione" />
+            </div>
+            <div className="border-blu d-flex align-items-center">
+              <h1 className="font-weight-light inline">2.189</h1>
+            </div>
+
             {/* <StaticBlock
               classes="bg-primary text-white h-100"
               text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 – 12  gennaio sono state consegnate  488.475  dosi di vaccino."
             /> */}
           </div>
+        </div>
+
+        <div className="row position-powerbi">
+          <div className="col-12">
+            <div className="p-4 position-relative d-flex justify-content-center " style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+              <div style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
+                <img src="group_person.svg" alt="Logo" className="img-fluid" />
+              </div>
+              <div className="  position-absolute center-logo">
+                <img src="logo.png" width="80" height="80" alt="Logo" />
+              </div>
+              <div className="text-white w-100">
+
+                <div className="w-100  h-100 align-items-center d-flex justify-content-center text-right">
+                  <h3 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h3>
+                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> 3000</div>
+
+                </div>
+
+              </div>
+
+            </div>
           </div>
-          <div className="row">
+        </div>
+
+        <div className="row">
           <div className="col-12">
             <div
               className="text-center font-22"
@@ -236,7 +258,7 @@ function App() {
           </div>
 
         </div>
-       
+
         <div className="row" style={{ backgroundColor: '#F8FBFE' }}>
           <div className="col-12 col-lg-5 h-100 order-md-2 order-lg-1 ">
             <div className="container-info d-none d-sm-none d-md-flex d-lg-flex" >
@@ -249,48 +271,48 @@ function App() {
               className="mr-5 h-100"
             />
             <div className="col-12 col-md-6 align-items-start testo-info-campania d-lg-none d-md-none d-sm-flex">
-            Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
+              Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
           </div>
           </div>
-         
+
           <div className="col-12 col-lg-7 order-md-1 order-lg-2">
             <div className="p-4 position-relative d-lg-none">
 
               <div className="w-100 h-100 d-flex justify-content-start pr-5">
                 <img src="logo.png" width="35" height="35" alt="Logo" />
-                
+
                 <h5 className="pl-3 pl-sm-1">Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
 
               </div>
 
 
             </div>
-            
+
             <div className="p-5 d-none d-lg-block">
-                  
+
               <div className="d-flex justify-content-end"
-              style={{
-                position:'absolute ',
-                top:150,
-                right:50
-              }}
+                style={{
+                  position: 'absolute ',
+                  top: 150,
+                  right: 50
+                }}
               >
-              <img src="logo.png" width="35" height="35" alt="Logo"
-                style={{
-                  position:'absolute',
-                  top:-10
-                }}
-              />
-                  
+                <img src="logo.png" width="35" height="35" alt="Logo"
+                  style={{
+                    position: 'absolute',
+                    top: -10
+                  }}
+                />
+
                 <h5 className="pl-3 pl-sm-1 text-right">
-                <span data-toggle="tooltip" title="Nel grafico è rappresentato il tasso di somministrazione, 
+                  <span data-toggle="tooltip" title="Nel grafico è rappresentato il tasso di somministrazione, 
                 ovvero il rapporto tra le somministrazioni e le dosi consegnate (%)" className="circle-info"
-                style={{
-                  position:'relative',
-                  right:23,
-                  top:25
-                }}
-                >i</span>
+                    style={{
+                      position: 'relative',
+                      right: 23,
+                      top: 25
+                    }}
+                  >i</span>
                   Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
               </div>
 
@@ -319,7 +341,7 @@ function App() {
             </div>
           </div>
         </div>
-      
+
         <div className="row position-powerbi" style={{ backgroundColor: '#F8FBFE' }}>
           <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex">
             Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
