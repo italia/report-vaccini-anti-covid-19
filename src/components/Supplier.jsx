@@ -106,7 +106,7 @@ export const Supplier = (data) => {
                     }}>
                         <div className="text-white w-100">
                             <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-                                <h5>Totale vaccini</h5>
+                                <h5>Totale vaccini distribuiti</h5>
                             </div>
                             <div className="w-100  h-100 d-flex justify-content-start pl-4">
                                 <p className="numeri_box">{totalSuplier?.toLocaleString('it')}             </p>
@@ -126,7 +126,7 @@ export const Supplier = (data) => {
                         }}>
                             <div className="text-white w-100">
                                 <div className="w-100 h-100 d-flex justify-content-start pt-3 pl-4">
-                                    <h5>Totale<br></br>vaccini</h5>
+                                    <h5>Totale<br></br>vaccini distribuiti</h5>
                                 </div>
                                 <div className="w-100  h-100 d-flex justify-content-start pl-4">
                                     <p className="numeri_box" >{totalSuplier?.toLocaleString('it')}

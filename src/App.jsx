@@ -401,7 +401,7 @@ function App() {
           <div
             className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
-            <h3 className="text-center">somministrazioni per categoria</h3>
+            <h3 className="text-center">Somministrazioni per categoria</h3>
           </div>
           <div className="col-12 col-md-12 h-100  ">
             <div className="mb-5  d-lg-none " style={{
