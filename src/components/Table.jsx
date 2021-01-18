@@ -7,7 +7,7 @@ import "./Table.css";
 $.DataTable = DataTable;
 const columns = [
   { title: "Regioni", data: "area" },
-  { title: "Vaccinazione", data: "dosi_somministrate" },
+  { title: "Somministrazioni", data: "dosi_somministrate" },
   { title: "Consegne", data: "dosi_consegnate" },
   { title: "%", data: "percentuale_somministrazione" },
 ];

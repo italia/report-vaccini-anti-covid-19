@@ -243,7 +243,7 @@ function App() {
               <div className="w-100 h-100 d-flex justify-content-start pr-5">
                 <img src="logo.png" width="35" height="35" alt="Logo" />
                 
-                <h5 className="pl-3 pl-sm-1">Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
+                <h5 className="pl-3 pl-sm-1">Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
 
               </div>
 
@@ -275,7 +275,7 @@ function App() {
                   top:25
                 }}
                 >i</span>
-                  Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
+                  Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
               </div>
 
 
@@ -296,7 +296,7 @@ function App() {
                 </div>
 
                 <div className="w-100  h-100 d-flex justify-content-start">
-                  <h5>Totale vaccinazioni</h5>
+                  <h5>Totale somministrazioni</h5>
                 </div>
               </div>
 
@@ -335,7 +335,7 @@ function App() {
                   <img src="logo.png" width="40" height="40" alt="Logo" />
                 </div>
                 <div className="w-100  h-100 d-flex justify-content-end text-right">
-                  <h3>Vaccinazioni<br></br> per fasce di età</h3>
+                  <h3>Somministrazioni<br></br> per fasce di età</h3>
 
                 </div>
               </div>
@@ -363,7 +363,7 @@ function App() {
           <div
             className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
-            <h3 className="text-center">Vaccinazioni per categoria</h3>
+            <h3 className="text-center">somministrazioni per categoria</h3>
           </div>
           <div className="col-12 col-md-12 h-100  ">
             <div className="mb-5  d-lg-none " style={{
@@ -373,7 +373,7 @@ function App() {
             }}>
               <div className="text-white w-100">
                 <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-                  <h5>Totale<br></br>vaccinazioni</h5>
+                  <h5>Totale<br></br>somministrazioni</h5>
                 </div>
                 <div className="w-100  h-100 d-flex justify-content-start pl-4">
                   <p className="numeri_box">{(!selectedCodeCategory && !selectedLocationCategoryMap)
@@ -396,7 +396,7 @@ function App() {
               }}>
                 <div className="text-white w-100">
                   <div className="w-100  h-100 d-flex justify-content-start pt-3 pl-4">
-                    <h5>Totale<br></br>vaccinazioni</h5>
+                    <h5>Totale<br></br>somministrazioni</h5>
                   </div>
                   <div className="w-100  h-100 d-flex justify-content-start pl-4">
                     <p className="numeri_box">{(!selectedCodeCategory && !selectedLocationCategoryMap)
@@ -415,7 +415,7 @@ function App() {
           <div className="col-12 col-md-6 h-100">
             <HBarChart
               title=""
-              xtitle="Vaccinazioni per categoria"
+              xtitle="Somministrazioni per categoria"
               handleRectClick={handleHRectClick}
               ytitle=""
               width="220"
@@ -435,7 +435,7 @@ function App() {
             <div className="p-4 position-relative d-none d-lg-block" style={{ left: '300px', top: '190px' }}>
               <div className="w-100 h-100 d-flex justify-content-start pr-5">
                 <img src="logo.png" width="35" height="35" alt="Logo" />
-                <h5 className="pl-3 pl-sm-1">Vaccinazioni<br /> per regione</h5>
+                <h5 className="pl-3 pl-sm-1">Somministrazioni<br /> per regione</h5>
               </div>
             </div>
             <MapAreaByCat
