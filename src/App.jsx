@@ -305,7 +305,7 @@ function App() {
         </div>
       
         <div className="row position-powerbi" style={{ backgroundColor: '#F8FBFE' }}>
-          <div className="col-12 col-md-6 align-items-end testo-info-campania d-sm-none d-md-flex d-lg-flex">
+          <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex">
             Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
           </div>
           <div className="col-12 col-md-6  position-relative" >
