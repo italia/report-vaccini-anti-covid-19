@@ -198,8 +198,9 @@ function App() {
             </div>
             <div className="border-blu d-flex align-items-center">
               <h1 className="font-weight-light inline">{summary?.totalDoses?.prima_dose?.toLocaleString('it')}</h1>
+             
             </div>
-
+ <span className="pl-2">Prima dose</span>
           </div>
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
             <div style={{ marginRight: 10 }}>
@@ -207,6 +208,7 @@ function App() {
             </div>
             <div className="border-blu d-flex align-items-center">
               <h1 className="font-weight-light inline">{summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</h1>
+              <span className="pl-2">Seconda dose</span>
             </div>
 
             {/* <StaticBlock
