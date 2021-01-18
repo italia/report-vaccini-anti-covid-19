@@ -197,7 +197,7 @@ function App() {
               <img src="dose.png" height="70" alt="Prima somministrazione" />
             </div>
             <div className="border-blu d-flex align-items-center">
-              <h1 className="font-weight-light inline">1.139.445</h1>
+              <h1 className="font-weight-light inline">{summary?.totalDoses?.prima_dose?.toLocaleString('it')}</h1>
             </div>
 
           </div>
@@ -206,7 +206,7 @@ function App() {
               <img src="dosi.png" height="70" alt="Seconda somministrazione" />
             </div>
             <div className="border-blu d-flex align-items-center">
-              <h1 className="font-weight-light inline">2.189</h1>
+              <h1 className="font-weight-light inline">{summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</h1>
             </div>
 
             {/* <StaticBlock
@@ -229,7 +229,7 @@ function App() {
 
                 <div className="w-100  h-100 align-items-center d-flex justify-content-center text-right">
                   <h3 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h3>
-                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> 3000</div>
+                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> {summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</div>
 
                 </div>
 

@@ -28,6 +28,11 @@ const elaborate = (data) => {
   // categories and ages summary
   const categoriesAndAges = data.dataProfileSummary.data;
   const dataVaxSomLatest = data?.dataVaxL?.data;
+
+  let totalDoses = {
+    prima_dose: _.sum(dataVaxSomLatest?.map(e => e?.prima_dose)),
+    seconda_dose: _.sum(dataVaxSomLatest?.map(e => e?.seconda_dose))
+  }
   const categories = [
     {
       name: "Operatori Sanitari e Sociosanitari",
@@ -54,7 +59,7 @@ const elaborate = (data) => {
       name: 'Over 60', code: 'over60',
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_over60"), 0),
     }];
-  
+
   const dataVaxSomLatestByArea = dataVaxSomLatest.reduce(aggrBy("area"), {});
   const groups = _.groupBy(dataSupplier, 'fornitore');
 
@@ -159,7 +164,8 @@ const elaborate = (data) => {
     maxNumberOfLocations,
     allDosesSupplier,
     doesesByArea,
-    totalSuplier
+    totalSuplier,
+    totalDoses
   };
   return aggr;
 };
