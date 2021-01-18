@@ -219,10 +219,10 @@ function App() {
         <div className="row position-powerbi">
           <div className="col-12">
             <div className="p-4 position-relative d-flex justify-content-center " style={{ backgroundColor: '#17324D', minHeight: 240 }}>
-              <div style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
+              <div className="d-none  d-lg-block" style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
                 <img src="group_person.svg" alt="Logo" className="img-fluid" />
               </div>
-              <div className="  position-absolute center-logo">
+              <div className="  d-none  d-lg-block position-absolute center-logo">
                 <img src="logo.png" width="80" height="80" alt="Logo" />
               </div>
               <div className="text-white w-100">
