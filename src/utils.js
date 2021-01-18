@@ -61,6 +61,15 @@ const inverse = (obj) => {
   }
   return retobj;
 };
+export const simulateClick = (id) => {
+  if (document.getElementById(id) && id) {
+    let clickEvt = new MouseEvent('click', {
+      'bubbles': true,
+      'cancelable': true
+    });
+    document.getElementById(id).dispatchEvent(clickEvt);
+  }
+}
 export const replaceArea = (x) => ({ ...x, area: areaMapping[x.area], code: x.area });
 export const areaMapping = {
   ABR: "Abruzzo",

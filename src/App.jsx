@@ -11,7 +11,8 @@ import { Total } from "./components/Total";
 import { loadData } from "./loadData";
 import { BarChart } from "./components/BarChart";
 import { HBarChart } from "./components/HBarChart";
-import { areaMappingReverse, groupByAge, allTotalGender, hideLoader } from "./utils";
+import { Supplier } from './components/Supplier';
+import { areaMappingReverse, groupByAge, allTotalGender, hideLoader, simulateClick } from "./utils";
 import * as _ from 'lodash';
 import "./App.css";
 import { omit } from "lodash";
@@ -35,15 +36,7 @@ function App() {
   const [locationTableRef, setLocationTableRef] = useState(0);
   const [locationRegionSelect, setLocationRegionSelect] = useState(null);
 
-  const simulateClick = (id) => {
-    if (document.getElementById(id) && id) {
-      let clickEvt = new MouseEvent('click', {
-        'bubbles': true,
-        'cancelable': true
-      });
-      document.getElementById(id).dispatchEvent(clickEvt);
-    }
-  }
+
 
   const resetFilter = () => {
     simulateClick(selected?.area);
@@ -97,7 +90,6 @@ function App() {
     }
   }
   const handleHRectClick = (currentRect) => {
-
     if (currentRect) {
       setSelectedCodeCategory(currentRect?.code)
     } else {
@@ -135,7 +127,6 @@ function App() {
     const data = summary.categoriesByRegions[areaCode];
 
     let _selected = summary.deliverySummary[countryIndex];
-
     setSelectedLocationCategoryMap(_selected);
 
     setTotalByCategory(
@@ -179,7 +170,6 @@ function App() {
           }
         })
       });
-
       setMaxByCategory(maxSumm)
       setTotalByCategory(totalSumm)
     }
@@ -197,31 +187,42 @@ function App() {
 
           </div>
         </div>
+        <div style={{ padding: 20 }}></div>
+
+        <div className="row position-powerbi" style={{ backgroundColor: '#17324D' }} >
+          <div className="col-12">
+            <div className="p-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+              <div className="d-none  d-lg-block" style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
+                <img src="group_person.svg" alt="Logo" className="img-fluid" />
+              </div>
+              <div className="  d-none  d-lg-block position-absolute center-logo">
+                <img src="logo.png" width="80" height="80" alt="Logo" />
+              </div>
+              <div className="text-white w-100" style={{ padding: 20 }}>
+
+                <div className="w-100  h-100 align-items-center d-flex justify-content-center text-right">
+                  <h4 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h4>
+                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> {summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</div>
+                </div>
+                <div className="text-center position-relative" style={{ top: -10 }}>(a cui sono state somministrate la prima e la seconda dose di vaccino)</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
         <div className="row">
-          <div className="col-12 col-md-6 font-25 mb-2">
-            <StaticBlock
-              classes="bg-primary text-white h-100"
-              text="Il 27 dicembre sono state consegnate 9.750 dosi di vaccino, interamente somministrate."
-            />
-          </div>
-          <div className="col-12 col-md-6 font-25 mb-2">
-            <StaticBlock
-              classes="bg-primary text-white h-100" 
-              text="Dal 30 dicembre al 07 gennaio sono state consegnate 908.700 dosi di vaccino. L'11 – 13  gennaio sono state consegnate 537.225 dosi di vaccino."
-            />
-          </div>
           <div className="col-12">
             <div
               className="text-center font-22"
             >
               <StaticBlock
                 classes="text-black text-uppercase font-weight-bold"
-                text="Le somministrazioni delle 1.445.925 dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre."
+                text={`Le somministrazioni delle ${summary?.totalDoses?.vax_somministrati} dosi di vaccino su tutto il territorio sono iniziate il 31 dicembre`}
               />
             </div>
           </div>
         </div>
-
 
         <div className="row">
           <div className="col-12 d-flex justify-content-end">
@@ -229,6 +230,7 @@ function App() {
           </div>
 
         </div>
+
         <div className="row" style={{ backgroundColor: '#F8FBFE' }}>
           <div className="col-12 col-lg-5 h-100 order-md-2 order-lg-1 ">
             <div className="container-info d-none d-sm-none d-md-flex d-lg-flex" >
@@ -241,25 +243,46 @@ function App() {
               className="mr-5 h-100"
             />
           </div>
+
           <div className="col-12 col-lg-7 order-md-1 order-lg-2">
             <div className="p-4 position-relative d-lg-none">
 
               <div className="w-100 h-100 d-flex justify-content-start pr-5">
                 <img src="logo.png" width="35" height="35" alt="Logo" />
 
-                <h5 className="pl-3 pl-sm-1">Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
+                <h5 className="pl-3 pl-sm-1">Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
 
               </div>
 
 
             </div>
-            <div className="p-4 position-relative d-none d-lg-block" style={{ left: '300px', top: '190px' }}>
 
-              <div className="w-100 h-100 d-flex justify-content-start pr-5">
-                <img src="logo.png" width="35" height="35" alt="Logo" />
+            <div className="p-5 d-none d-lg-block">
 
-                <h5 className="pl-3 pl-sm-1">Distribuzione vaccinazioni<br /> rispetto alle consegne</h5>
+              <div className="d-flex justify-content-end"
+                style={{
+                  position: 'absolute ',
+                  top: 150,
+                  right: 50
+                }}
+              >
+                <img src="logo.png" width="35" height="35" alt="Logo"
+                  style={{
+                    position: 'absolute',
+                    top: -10
+                  }}
+                />
 
+                <h5 className="pl-3 pl-sm-1 text-right">
+                  <span data-toggle="tooltip" title="Nel grafico è rappresentato il tasso di somministrazione, 
+                ovvero il rapporto tra le somministrazioni e le dosi consegnate (%)" className="circle-info"
+                    style={{
+                      position: 'relative',
+                      right: 23,
+                      top: 25
+                    }}
+                  >i</span>
+                  Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
               </div>
 
 
@@ -280,16 +303,16 @@ function App() {
                 </div>
 
                 <div className="w-100  h-100 d-flex justify-content-start">
-                  <h5>Totale vaccinazioni</h5>
+                  <h5>Totale somministrazioni</h5>
                 </div>
               </div>
 
             </div>
           </div>
         </div>
+
         <div className="row position-powerbi" style={{ backgroundColor: '#F8FBFE' }}>
-          <div className="col-12 col-md-6 d-flex align-items-end testo-info-campania">
-          Le quantità consegnate sono calcolate considerando, al momento, cinque dosi per fiala. Pertanto, eventuali valori percentuali superiori a 100 evidenziano l'utilizzo della sesta dose.
+          <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex">
           </div>
           <div className="col-12 col-md-6  position-relative" >
             <div className="bg-gradient-bar"></div>
@@ -318,7 +341,7 @@ function App() {
                   <img src="logo.png" width="40" height="40" alt="Logo" />
                 </div>
                 <div className="w-100  h-100 d-flex justify-content-end text-right">
-                  <h3>Vaccinazioni<br></br> per fasce di età</h3>
+                  <h3>Somministrazioni<br></br> per fasce di età</h3>
 
                 </div>
               </div>
@@ -341,13 +364,13 @@ function App() {
             />
           </div>
         </div>
+
         <div className="row ">
           <div
-            className="col-12  d-flex justify-content-center align-items-center p-5"
-            style={{ backgroundColor: '#F4F9FD' }}
-          >
+            style={{ marginTop: 40 }}
+            className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
-            <h3 className="text-center">Vaccinazioni per categoria</h3>
+            <h3 className="text-center">Somministrazioni per categoria</h3>
           </div>
           <div className="col-12 col-md-12 h-100  ">
             <div className="mb-5  d-lg-none " style={{
@@ -357,7 +380,7 @@ function App() {
             }}>
               <div className="text-white w-100">
                 <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-                  <h5>Totale<br></br>vaccinazioni</h5>
+                  <h5>Totale<br></br>somministrazioni</h5>
                 </div>
                 <div className="w-100  h-100 d-flex justify-content-start pl-4">
                   <p className="numeri_box">{(!selectedCodeCategory && !selectedLocationCategoryMap)
@@ -371,18 +394,16 @@ function App() {
               </div>
             </div>
 
-            <div className="col-3 col-md-3 h-100 d-none d-lg-block">
+            <div className="col-3 col-md-3  d-none d-lg-block" style={{height:100}}> 
               <div style={{
                 position: 'relative',
-                // width: 300,
-                // height: 180,
                 background: '#17324D',
                 top: -90,
                 left: 105
               }}>
                 <div className="text-white w-100">
                   <div className="w-100  h-100 d-flex justify-content-start pt-3 pl-4">
-                    <h5>Totale<br></br>vaccinazioni</h5>
+                    <h5>Totale<br></br>somministrazioni</h5>
                   </div>
                   <div className="w-100  h-100 d-flex justify-content-start pl-4">
                     <p className="numeri_box">{(!selectedCodeCategory && !selectedLocationCategoryMap)
@@ -401,7 +422,7 @@ function App() {
           <div className="col-12 col-md-6 h-100">
             <HBarChart
               title=""
-              xtitle="Vaccinazioni per categoria"
+              xtitle="Somministrazioni per categoria"
               handleRectClick={handleHRectClick}
               ytitle=""
               width="220"
@@ -421,7 +442,7 @@ function App() {
             <div className="p-4 position-relative d-none d-lg-block" style={{ left: '300px', top: '190px' }}>
               <div className="w-100 h-100 d-flex justify-content-start pr-5">
                 <img src="logo.png" width="35" height="35" alt="Logo" />
-                <h5 className="pl-3 pl-sm-1">Vaccinazioni<br /> per regione</h5>
+                <h5 className="pl-3 pl-sm-1">Somministrazioni<br /> per regione</h5>
               </div>
             </div>
             <MapAreaByCat
@@ -436,11 +457,12 @@ function App() {
             />
           </div>
         </div>
+
+        <Supplier data={summary}></Supplier>
+
         <div className="row ">
           <div
-            className="col-12 d-flex justify-content-center align-items-center p-5"
-            style={{ backgroundColor: '#F4F9FD' }}
-          >
+            className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
             <img src="logo.png" width="86" height="86" alt="Logo" className="img-fluid" style={{ zIndex: 10 }} />
             <h3 className="text-center">Punti di somministrazione per regione</h3>
           </div>

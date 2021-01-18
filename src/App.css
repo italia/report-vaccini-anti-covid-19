@@ -78,9 +78,19 @@ body {
   text-align: right !important;
 }
 
+.bg-bar{
+  fill: rgb(23, 50, 77);
+  stroke: rgb(23, 50, 77);
+}
+
 .it-header-slim-wrapper {
   height: 55px !important;
   padding: 0;
+}
+
+.bg-title-plot {
+  background-color: #F4F9FD;
+  height: 200px;
 }
 
 
@@ -284,6 +294,11 @@ ul.footer_links li {
   text-anchor: middle;
   fill: #fff;
 }
+.title-bar-dark{
+  font-size: 20px;
+  text-anchor: center;
+  fill: #000000;
+}
 .title-bar {
   font-size: 20px;
   text-anchor: middle;
@@ -337,8 +352,18 @@ ul.footer_links li {
 .axis .tick text {
   fill: #fff;
 }
-.axis .domain {
+.axis-dark .tick line {
   stroke: #fff;
+}
+.axis-dark .tick text {
+  fill: #000000;
+}
+
+.axis-dark .domain {
+  stroke: #000000;
+}
+.axis-dark .domain {
+  stroke: #000000;;
 }
 
 .line {
@@ -350,7 +375,10 @@ ul.footer_links li {
   color: #fff;
   fill: #fff
 }
-
+.bartext-dark{
+  fill:#000000;
+  font-size: 1.8rem;
+}
 .max-width-total{
   max-width: 450px;
 }
@@ -416,4 +444,32 @@ loader*/
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+
+/*position*/
+
+.position-text-lg{
+  position: absolute;
+  bottom:0;
+  left:0;
+}
+.border-pink{
+  border-left: 3px solid #E31F83;
+    padding-left: 10px;
+    font-size: 40px;
+    height: 39%;
+}
+.center-logo{
+    width: calc(50% + 40px);
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: -40px;
+    right: 0;
+}
+.border-blu {
+  border-left: 3px solid #17324D;
+  padding-left: 10px;
+  height: 35%;
 }

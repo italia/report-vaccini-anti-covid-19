@@ -4,28 +4,17 @@ import * as topojson from "topojson-client";
 import { filterByArea } from "../utils";
 import "./MapArea.css"
 
-export const MapAreaByCat = (
-    {
-        handleCountryClick, 
-        selectedCodeCategory,
-        maxByCategory,
-        summary,
-        selected,
-        categoryRegionSelect,
-        setCategoryRegionSelect
-    }
-    ) => {
+export const MapAreaBySupplier = (
+  {
+    handleCountryClick,
+    maxByCategory,
+    summary,
+    selected,
+  }
+) => {
   const [geographies, setGeographies] = useState([]);
 
-  const handleClick = (x) => {
-    if (categoryRegionSelect === x) {
-      handleCountryClick(null);
-      setCategoryRegionSelect(null);
-    } else {
-      handleCountryClick(x);
-      setCategoryRegionSelect(x);
-    }
-  };
+
 
   const width = 498,
     height = 478;
@@ -47,26 +36,18 @@ export const MapAreaByCat = (
   }, []);
 
   const getCategoryQuantity = (region) => {
-      if(!selectedCodeCategory){
-        return region.dosi_somministrate && region.dosi_somministrate.toLocaleString('it')
-      }else{
-        return region.byCategory[selectedCodeCategory].length 
-            &&   region.byCategory[selectedCodeCategory][0].total
-            && region.byCategory[selectedCodeCategory][0].total.toLocaleString('it')
-      }
+    return region?.dosi_consegnate?.toLocaleString('it');
   }
 
   const fillRegion = (region) => {
-      let dosi = selectedCodeCategory ? (region.byCategory[selectedCodeCategory].length 
-      && region.byCategory[selectedCodeCategory][0].total) : region.dosi_somministrate
-
-      if(selected === region){
-            return 1
-      }else if(!selected){
-            return (1 / 50) * (dosi/maxByCategory*100)
-      }else{
-            return (0.5 / 50) * (dosi/maxByCategory*100/2)
-      }
+    let dosi = region.dosi_consegnate
+    if (selected === region) {
+      return 1
+    } else if (!selected) {
+      return (1 / 5) * (dosi / maxByCategory * 100)
+    } else {
+      return (0.2 / 5) * (dosi / maxByCategory * 100)
+    }
   }
 
   return (
@@ -74,12 +55,12 @@ export const MapAreaByCat = (
       <svg className="h-100 w-100" height={height} >
         <g className="countries">
           {geographies.map((d, i) => {
-            const regions = summary?.deliverySummary?.filter(filterByArea(d.properties.reg_name));
+            let sum = summary.deliverySummary
+            const regions = sum?.filter(filterByArea(d.properties.reg_name));
             let region = {};
             if (regions && regions.length > 0) {
               region = regions[0];
             }
-
             return (
               <path
                 key={`path-${i}`}
@@ -89,7 +70,7 @@ export const MapAreaByCat = (
                 fill={`rgba(0,102,204, ${fillRegion(region)}) `}
                 stroke="#E0E0E0"
                 strokeWidth={0.7}
-                onClick={() => handleClick(region.index)}
+                onClick={() => handleCountryClick(region)}
               >
                 <title>
                   <span className="bg-info">
