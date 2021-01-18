@@ -10,7 +10,7 @@
                 "type":"datetime"
             },
             {
-                "name":"TML_VAX_FORNITORE",
+                "name":"fornitore",
                 "type":"string"
             },
             {
@@ -71,7 +71,7 @@
         {
             "index":0,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":0,
@@ -88,7 +88,7 @@
         {
             "index":1,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":1,
@@ -105,7 +105,7 @@
         {
             "index":2,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":5,
@@ -122,7 +122,7 @@
         {
             "index":3,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":11,
@@ -139,7 +139,7 @@
         {
             "index":4,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":19,
@@ -156,7 +156,7 @@
         {
             "index":5,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":33,
@@ -173,7 +173,7 @@
         {
             "index":6,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":1,
@@ -190,7 +190,7 @@
         {
             "index":7,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":1,
@@ -207,7 +207,7 @@
         {
             "index":8,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"ABR",
             "fascia_anagrafica":"90+",
             "sesso_maschile":0,
@@ -224,7 +224,7 @@
         {
             "index":9,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":0,
@@ -241,7 +241,7 @@
         {
             "index":10,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":8,
@@ -258,7 +258,7 @@
         {
             "index":11,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":14,
@@ -275,7 +275,7 @@
         {
             "index":12,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":17,
@@ -292,7 +292,7 @@
         {
             "index":13,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":25,
@@ -309,7 +309,7 @@
         {
             "index":14,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":19,
@@ -326,7 +326,7 @@
         {
             "index":15,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":0,
@@ -343,7 +343,7 @@
         {
             "index":16,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":0,
@@ -360,7 +360,7 @@
         {
             "index":17,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"BAS",
             "fascia_anagrafica":"90+",
             "sesso_maschile":0,
@@ -377,7 +377,7 @@
         {
             "index":18,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":0,
@@ -394,7 +394,7 @@
         {
             "index":19,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":13,
@@ -411,7 +411,7 @@
         {
             "index":20,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":22,
@@ -428,7 +428,7 @@
         {
             "index":21,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":22,
@@ -445,7 +445,7 @@
         {
             "index":22,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":46,
@@ -462,7 +462,7 @@
         {
             "index":23,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":44,
@@ -479,7 +479,7 @@
         {
             "index":24,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":0,
@@ -496,7 +496,7 @@
         {
             "index":25,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":0,
@@ -513,7 +513,7 @@
         {
             "index":26,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAL",
             "fascia_anagrafica":"90+",
             "sesso_maschile":0,
@@ -530,7 +530,7 @@
         {
             "index":27,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAM",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":20,
@@ -547,7 +547,7 @@
         {
             "index":28,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAM",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":60,
@@ -564,7 +564,7 @@
         {
             "index":29,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAM",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":80,
@@ -581,7 +581,7 @@
         {
             "index":30,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAM",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":113,
@@ -598,7 +598,7 @@
         {
             "index":31,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAM",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":142,
@@ -615,7 +615,7 @@
         {
             "index":32,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"CAM",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":7,
@@ -632,7 +632,7 @@
         {
             "index":33,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":52,
@@ -649,7 +649,7 @@
         {
             "index":34,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":57,
@@ -666,7 +666,7 @@
         {
             "index":35,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":80,
@@ -683,7 +683,7 @@
         {
             "index":36,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":70,
@@ -700,7 +700,7 @@
         {
             "index":37,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":101,
@@ -717,7 +717,7 @@
         {
             "index":38,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":10,
@@ -734,7 +734,7 @@
         {
             "index":39,
             "data_somministrazione":"2020-12-27T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"EMR",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":2,
@@ -743,11 +743,6 @@
             "categoria_operatori_sanitari_sociosanitari":0,
             "categoria_personale_non_sanitario":0,
             "categoria_ospiti_rsa":8,
-
-*** WARNING: skipped 2121311 bytes of output ***
-
-            "categoria_personale_non_sanitario":55,
-            "categoria_ospiti_rsa":2,
             "check2":137,
             "prima_dose":131,
             "seconda_dose":6,
@@ -756,7 +751,7 @@
         {
             "index":3633,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"SIC",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":94,
@@ -773,7 +768,7 @@
         {
             "index":3634,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"SIC",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":93,
@@ -790,7 +785,7 @@
         {
             "index":3635,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"SIC",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":83,
@@ -807,7 +802,7 @@
         {
             "index":3636,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"SIC",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":43,
@@ -824,7 +819,7 @@
         {
             "index":3637,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"SIC",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":21,
@@ -841,7 +836,7 @@
         {
             "index":3638,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"SIC",
             "fascia_anagrafica":"90+",
             "sesso_maschile":7,
@@ -858,7 +853,7 @@
         {
             "index":3639,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":3,
@@ -875,7 +870,7 @@
         {
             "index":3640,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":98,
@@ -892,7 +887,7 @@
         {
             "index":3641,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":140,
@@ -909,7 +904,7 @@
         {
             "index":3642,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":143,
@@ -926,7 +921,7 @@
         {
             "index":3643,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":211,
@@ -943,7 +938,7 @@
         {
             "index":3644,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":178,
@@ -960,7 +955,7 @@
         {
             "index":3645,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":33,
@@ -977,7 +972,7 @@
         {
             "index":3646,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":9,
@@ -994,7 +989,7 @@
         {
             "index":3647,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"TOS",
             "fascia_anagrafica":"90+",
             "sesso_maschile":1,
@@ -1011,7 +1006,7 @@
         {
             "index":3648,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":0,
@@ -1028,7 +1023,7 @@
         {
             "index":3649,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":2,
@@ -1045,7 +1040,7 @@
         {
             "index":3650,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":3,
@@ -1062,7 +1057,7 @@
         {
             "index":3651,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":2,
@@ -1079,7 +1074,7 @@
         {
             "index":3652,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":4,
@@ -1096,7 +1091,7 @@
         {
             "index":3653,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":5,
@@ -1113,7 +1108,7 @@
         {
             "index":3654,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":1,
@@ -1130,7 +1125,7 @@
         {
             "index":3655,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":0,
@@ -1147,7 +1142,7 @@
         {
             "index":3656,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"UMB",
             "fascia_anagrafica":"90+",
             "sesso_maschile":0,
@@ -1164,7 +1159,7 @@
         {
             "index":3657,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":2,
@@ -1181,7 +1176,7 @@
         {
             "index":3658,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":2,
@@ -1198,7 +1193,7 @@
         {
             "index":3659,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":4,
@@ -1215,7 +1210,7 @@
         {
             "index":3660,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":10,
@@ -1232,7 +1227,7 @@
         {
             "index":3661,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":7,
@@ -1249,7 +1244,7 @@
         {
             "index":3662,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":0,
@@ -1266,7 +1261,7 @@
         {
             "index":3663,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":0,
@@ -1283,7 +1278,7 @@
         {
             "index":3664,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":2,
@@ -1300,7 +1295,7 @@
         {
             "index":3665,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VDA",
             "fascia_anagrafica":"90+",
             "sesso_maschile":24,
@@ -1317,7 +1312,7 @@
         {
             "index":3666,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"16-19",
             "sesso_maschile":4,
@@ -1334,7 +1329,7 @@
         {
             "index":3667,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"20-29",
             "sesso_maschile":54,
@@ -1351,7 +1346,7 @@
         {
             "index":3668,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"30-39",
             "sesso_maschile":73,
@@ -1368,7 +1363,7 @@
         {
             "index":3669,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"40-49",
             "sesso_maschile":95,
@@ -1385,7 +1380,7 @@
         {
             "index":3670,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"50-59",
             "sesso_maschile":107,
@@ -1402,7 +1397,7 @@
         {
             "index":3671,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"60-69",
             "sesso_maschile":115,
@@ -1419,7 +1414,7 @@
         {
             "index":3672,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"70-79",
             "sesso_maschile":52,
@@ -1436,7 +1431,7 @@
         {
             "index":3673,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"80-89",
             "sesso_maschile":24,
@@ -1453,7 +1448,7 @@
         {
             "index":3674,
             "data_somministrazione":"2021-01-17T00:00:00.000Z",
-            "TML_VAX_FORNITORE":"Pfizer\/BioNTech",
+            "fornitore":"Pfizer\/BioNTech",
             "area":"VEN",
             "fascia_anagrafica":"90+",
             "sesso_maschile":4,
