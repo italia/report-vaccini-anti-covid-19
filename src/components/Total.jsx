@@ -23,7 +23,7 @@ export const Total = (props) => {
           <img src="logo.png" alt="fiore" height="30" />
           <img src="logo.png" alt="fiore" height="30" className="pr-5" />
           {" "}
-          <h6 className="pl-5">Totale vaccinazioni</h6>
+          <h6 className="pl-5">Totale somministrazioni</h6>
         </div>
       </div>
     </div>
