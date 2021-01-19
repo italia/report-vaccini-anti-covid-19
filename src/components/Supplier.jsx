@@ -1,62 +1,62 @@
 import { React, useEffect, useState } from "react";
 import "../App.css";
-import { isEmpty, groupBy, sum } from "lodash";
-import { areaMapping, simulateClick } from './../utils';
+import { isEmpty } from "lodash";
+import { simulateClick } from './../utils';
 
 import { BarChartSupplier } from "./BarChartsSupplier";
-import { MapAreaBySupplier } from "./MapAreaBySupplier";
+// import { MapAreaBySupplier } from "./MapAreaBySupplier";
 export const Supplier = (data) => {
-    const [barState, setBarState] = useState(null);
+    // const [barState, setBarState] = useState(null);
     const [selectedLocationCategoryMap, setSelectedLocationCategoryMap] = useState(null);
     const [selectedSupplier, setelectedSupplier] = useState(null);
-    const [maxByCategory, setMaxByCategory] = useState(0);
-    const [summary, setSummary] = useState({});
+    // const [maxByCategory, setMaxByCategory] = useState(0);
+    // const [summary, setSummary] = useState({});
     const [deliveryBarChartData, setdeliveryBarChartData] = useState([]);
     const [totalSuplier, setTotalSuplier] = useState(0);
 
     const resetFilter = () => {
-        setSummary(data);
-        setMaxByCategory(data?.data?.totalSuplier)
+        // setSummary(data);
+        // setMaxByCategory(data?.data?.totalSuplier)
         setdeliveryBarChartData(data?.data?.allDosesSupplier);
         setTotalSuplier(data?.data?.totalSuplier);
         setelectedSupplier(null);
         setSelectedLocationCategoryMap(null);
-        setBarState(null);
+        // setBarState(null);
         setTotalSuplier(data?.data?.totalSuplier);
 
     }
     useEffect(() => {
         if (!isEmpty(data)) {
-            setSummary(data);
-            setMaxByCategory(data?.data?.totalSuplier)
+            // setSummary(data);
+            // setMaxByCategory(data?.data?.totalSuplier)
             setdeliveryBarChartData(data?.data?.allDosesSupplier);
             setTotalSuplier(data?.data?.totalSuplier);
         }
     }, [data]);
 
-    const loadBar = (countryIndex) => {
-        let barData = data?.data?.allDosesSupplier;
-        let ar = barData.map((e) => {
-            let group = e.allDoses.filter((el) => areaMapping[el.area] === countryIndex.area || el.area === countryIndex?.code);
-            let totalNumberDosesByRegion = sum(group.map(eGroup => eGroup.numero_dosi));
-            return { fornitore: e.fornitore, totale: totalNumberDosesByRegion }
-        })
-        let total = sum(ar.map(e => e?.totale))
-        setTotalSuplier(total);
-        setMaxByCategory(total);
-        setdeliveryBarChartData(ar);
-        setSelectedLocationCategoryMap(countryIndex);
-    };
-    const handleCountryClickCategories = (countryIndex) => {
-        if (countryIndex === selectedLocationCategoryMap) {
-            resetFilter();
-        } else if (selectedSupplier) {
-            setelectedSupplier(null);
-            loadBar(countryIndex);
-        } else {
-            loadBar(countryIndex);
-        }
-    };
+    // const loadBar = (countryIndex) => {
+    //     let barData = data?.data?.allDosesSupplier;
+    //     let ar = barData.map((e) => {
+    //         let group = e.allDoses.filter((el) => areaMapping[el.area] === countryIndex.area || el.area === countryIndex?.code);
+    //         let totalNumberDosesByRegion = sum(group.map(eGroup => eGroup.numero_dosi));
+    //         return { fornitore: e.fornitore, totale: totalNumberDosesByRegion }
+    //     })
+    //     let total = sum(ar.map(e => e?.totale))
+    //     setTotalSuplier(total);
+    //     // setMaxByCategory(total);
+    //     setdeliveryBarChartData(ar);
+    //     setSelectedLocationCategoryMap(countryIndex);
+    // };
+    // const handleCountryClickCategories = (countryIndex) => {
+    //     if (countryIndex === selectedLocationCategoryMap) {
+    //         resetFilter();
+    //     } else if (selectedSupplier) {
+    //         setelectedSupplier(null);
+    //         loadBar(countryIndex);
+    //     } else {
+    //         loadBar(countryIndex);
+    //     }
+    // };
     const handleDeliveryBarChartClick = (bar) => {
         if (selectedSupplier === bar) {
             resetFilter();
@@ -67,29 +67,27 @@ export const Supplier = (data) => {
             handleRectClick(bar);
             setelectedSupplier(bar);
             setTotalSuplier(bar?.totale);
-            setMaxByCategory(bar?.totale)
+            // setMaxByCategory(bar?.totale)
         }
     }
 
     const handleRectClick = (currentRect) => {
-
-        let doseBySuppier = groupBy(summary?.data?.allDosesSupplier?.filter(el => el?.fornitore === currentRect?.fornitore)[0]?.allDoses, 'area');
-        let doses = Object.keys(areaMapping).map(k => {
-            let totalDoses;
-            let area = areaMapping[k];
-            totalDoses = doseBySuppier[k] ? sum(doseBySuppier[k].map((d => d.numero_dosi))) : 0;
-            return { area: area, dosi_consegnate: totalDoses }
-        })
-        setBarState(doses);
+        // let doseBySuppier = groupBy(summary?.data?.allDosesSupplier?.filter(el => el?.fornitore === currentRect?.fornitore)[0]?.allDoses, 'area');
+        // let doses = Object.keys(areaMapping).map(k => {
+        //     let totalDoses;
+        //     let area = areaMapping[k];
+        //     totalDoses = doseBySuppier[k] ? sum(doseBySuppier[k].map((d => d.numero_dosi))) : 0;
+        //     return { area: area, dosi_consegnate: totalDoses }
+        // })
+        // setBarState(doses);
         setelectedSupplier(currentRect)
-
     }
 
     return (
         <div className="row">
             <div className="col-12 col-md-12 h-100">
                 <div className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
-                    <h3 className="text-center">Distribuzione vaccini per fornitore</h3> 
+                    <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
                     <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block"
                         style={{
                             position: "absolute",
