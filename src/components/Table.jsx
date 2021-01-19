@@ -7,13 +7,14 @@ import "./Table.css";
 $.DataTable = DataTable;
 const columns = [
   { title: "Regioni", data: "area" },
-  { title: "Dosi somministrate", data: "dosi_somministrate" },
-  { title: "Dosi consegnate", data: "dosi_consegnate" },
+  { title: "Vaccinazione", data: "dosi_somministrate" },
+  { title: "Consegne", data: "dosi_consegnate" },
   { title: "%", data: "percentuale_somministrazione" },
 ];
 
-export const Table = (props) => {
+export const Table = ({ deliveryTableData }) => {
 
+  // Add footer elements
   useEffect(() => {
     $("#datatable").find("tfoot")
     $("#datatable")
@@ -23,7 +24,7 @@ export const Table = (props) => {
 
   useEffect(() => {
 
-    const table = $("#datatable")
+    $("#datatable")
       .find("table")
       .DataTable({
         dom:
@@ -32,7 +33,7 @@ export const Table = (props) => {
         paging: false,
         searching: true,
         destroy: true,
-        data: ((props.summaryFilter || props.summary?.deliverySummary) || []),
+        data: deliveryTableData,
         columns,
         columnDefs: [
           {
@@ -99,13 +100,10 @@ export const Table = (props) => {
             'Totale'
           );
         }
-      })
-    if (props?.selected?.area) {
-      table.search(props.selected.area).draw();
-    } else {
-      table.search(" ").draw();
-    }
-  });
+      });
+
+  },[deliveryTableData]);
+
   return (
     <div id="datatable">
       <table
