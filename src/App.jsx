@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { HeaderBar } from "./components/HeaderBar";
 import { FooterBar } from "./components/FooterBar";
-import { MapArea } from "./components/MapArea";
-import { MapAreaByCat } from "./components/MapAreaByCat";
-import { MapAreaByDeliveryLocation } from "./components/MapAreaByDeliveryLocation";
 import { StaticBlock } from "./components/StaticBlock";
 
 import { Total } from "./components/Total";
@@ -11,106 +8,21 @@ import { loadData } from "./loadData";
 import { Deliveries } from "./containers/deliveries";
 import { Categories } from "./containers/categories";
 import { Supplier } from './components/Supplier';
-import { hideLoader, simulateClick } from "./utils";
-import * as _ from 'lodash';
+import { hideLoader } from "./utils";
 import "./App.css";
-import { omit } from "lodash";
 import { Locations } from "./containers/locations";
 
 
 function App() {
   const [summary, setSummary] = useState({});
-  const [selected, setSelected] = useState(null);
-  const [totalAgeByGender, setTotalAgeByGender] = useState({});
-  const [barState, setBarState] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedLocationMap, setSelectedLocationMap] = useState(null);
-  const [selectedLocationCategoryMap, setSelectedLocationCategoryMap] = useState(null);
-  const [selectedAge, setSelectedAge] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [selectedFilterByAge, setSelectedFilterByAge] = useState(null);
-  const [selectedCodeCategory, setSelectedCodeCategory] = useState(null);
-  const [categoryRegionSelect, setCategoryRegionSelect] = useState(null);
-  const [totalByCategory, setTotalByCategory] = useState(0);
-  const [maxByCategory, setMaxByCategory] = useState(0);
-  const [locationTableRef, setLocationTableRef] = useState(0);
-  const [locationRegionSelect, setLocationRegionSelect] = useState(null);
-
-
-
-  const resetFilter = () => {
-    simulateClick(selected?.area);
-    simulateClick(selectedAge?.fascia_anagrafica)
-    setSelected(null);
-    setSelectedCategory(summary.categories);
-    setSelectedCodeCategory(null);
-    setSelectedLocationCategoryMap(null);
-    setCategoryRegionSelect(null);
-    setSelectedLocation(null);
-    setLocationRegionSelect(null);
-  }
-
-  const loadRect = (rect) => {
-    setSelectedAge(rect)
-    setTotalAgeByGender({ gen_m: rect?.sesso_maschile, gen_f: rect?.sesso_femminile });
-  }
-
-  const setTableFilteredVaccini = (currentRect) => {
-    let vaccinAdministrationListReportByAge = summary.dataSomeVaxDetail.filter(el => (el.fascia_anagrafica.trim()) === (currentRect.fascia_anagrafica.trim()));
-    var grouped = _.mapValues(_.groupBy(vaccinAdministrationListReportByAge, 'area'),
-      z => _.sum(z.map(x => _.sum([x.sesso_maschile, x.sesso_femminile]))));
-    let _summary = summary.deliverySummary;
-    _summary = _summary.map((e) => {
-      let x = omit(e, ['dosi_somministrate', 'percentuale_somministrazione', 'ultimo_aggiornamento']);
-      let y = { dosi_somministrate: grouped[e.area] };
-      let z = { percentuale_somministrazione: ((y.dosi_somministrate / x.dosi_consegnate) * 100).toFixed(1) }
-      return { ...x, ...y, ...z };
-    });
-    setSelectedFilterByAge(_summary);
-  }
-
-  const handleCountryClickLocations = (countryIndex) => {
-    setSelectedLocation(countryIndex);
-  };
 
   useEffect(() => {
     loadData().then((d) => {
       hideLoader();
       setSummary(d);
-      setSelectedCategory(d.categories);
-      setBarState(d.categoriesAndAges);
-      setTotalAgeByGender(d.gender);
-      setSelectedFilterByAge(null);
     });
   }, []);
 
-  useEffect(() => {
-    let totalSumm = 0;
-    let maxSumm = 0;
-
-    if (selectedCodeCategory) {
-      setSelectedLocationCategoryMap(null)
-    }
-    if (!selectedLocationCategoryMap) {
-      summary?.deliverySummary?.forEach(i => {
-        Object.keys(i.byCategory).forEach(cat => {
-          if (!selectedCodeCategory) {
-            totalSumm = totalSumm + (i.byCategory[cat].length && i.byCategory[cat][0].total) || 0
-            maxSumm = (i.byCategory[cat].length && i.byCategory[cat][0].total) > maxSumm ?
-              (i.byCategory[cat].length && i.byCategory[cat][0].total) : maxSumm
-
-          } else if (selectedCodeCategory && cat === selectedCodeCategory) {
-            totalSumm = totalSumm + (i.byCategory[cat].length && i.byCategory[cat][0].total) || 0
-            maxSumm = (i.byCategory[cat].length && i.byCategory[cat][0].total) > maxSumm ?
-              (i.byCategory[cat].length && i.byCategory[cat][0].total) : maxSumm
-          }
-        })
-      });
-      setMaxByCategory(maxSumm)
-      setTotalByCategory(totalSumm)
-    }
-    // eslint-disable-next-line
-  }, [selectedCodeCategory, summary, totalByCategory])
 
   return (
     <div>
