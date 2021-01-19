@@ -5,11 +5,9 @@ const baseURL =
 
 const sommVaxSummaryURL = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
 const sommVaxDetailURL = `${baseURL}/somministrazioni-vaccini-latest.json`;
-const deliveryVaxDetailURL = `${baseURL}/consegne-vaccini-latest.json`;
 const vaxSummaryURL = `${baseURL}/vaccini-summary-latest.json`;
 const vaxLocationsURL = `${baseURL}/punti-somministrazione-latest.json`;
 const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
-const puntiSommSummaryURL = `${baseURL}/punti-somministrazione-latest.json`;
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
 const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
 const elaborate = (data) => {
@@ -58,8 +56,6 @@ const elaborate = (data) => {
       name: 'Over 80', code: 'categoria_over80',
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_over80"), 0),
     }];
-
-  const dataVaxSomLatestByArea = dataVaxSomLatest.reduce(aggrBy("area"), {});
 
   const groups = _.groupBy(dataSupplier, 'fornitore');
   let allDosesSupplier = Object.keys(groups).map(k => {
@@ -238,37 +234,51 @@ const elaborate = (data) => {
 };
 
 export const loadData = async () => {
-  const resSommVaxSummary = await fetch(sommVaxSummaryURL);
-  const resSommVaxDetail = await fetch(sommVaxDetailURL);
-  const resDeliveryVaxDetail = await fetch(deliveryVaxDetailURL);
-  const resVaxSummary = await fetch(vaxSummaryURL);
-  const resProfileSummaryURL = await fetch(anagraficaSummaryURL);
-  const resPointsSommSummaryURL = await fetch(puntiSommSummaryURL);
-  const resVaxLocations = await fetch(vaxLocationsURL);
-  const resLastUpdate = await fetch(lastUpdateURL);
-  const resSupplierDoses = await fetch(supplierDoses);
+  const [
+    resSommVaxSummary, 
+    resSommVaxDetail, 
+    resVaxSummary,
+    resProfileSummaryURL,
+    resVaxLocations,
+    resLastUpdate,
+	  resSupplierDoses
+  ] = await Promise.all([
+    fetch(sommVaxSummaryURL), 
+    fetch(sommVaxDetailURL), 
+    fetch(vaxSummaryURL),
+    fetch(anagraficaSummaryURL),
+    fetch(vaxLocationsURL),
+    fetch(lastUpdateURL),
+	  fetch(supplierDoses)
+  ])
 
-  const dataSommVaxSummary = await resSommVaxSummary.json();
-  const dataSommVaxDetail = await resSommVaxDetail.json();
-  const dataDeliveryVaxDetail = await resDeliveryVaxDetail.json();
-  const dataVaxSummary = await resVaxSummary.json();
-  const dataProfileSummary = await resProfileSummaryURL.json();
-  const dataPointsSommSummary = await resPointsSommSummaryURL.json();
-  const dataVaxLocations = await resVaxLocations.json();
-  const dataLastUpdate = await resLastUpdate.json();
-
-  const dataSupplierDoses = await resSupplierDoses.json();
+  const [
+    dataSommVaxSummary,
+    dataSommVaxDetail,
+    dataVaxSummary,
+    dataProfileSummary,
+    dataVaxLocations,
+    dataLastUpdate,
+	  dataSupplierDoses
+  ] = await Promise.all([
+    resSommVaxSummary.json(),
+    resSommVaxDetail.json(),
+    resVaxSummary.json(),
+    resProfileSummaryURL.json(),
+    resVaxLocations.json(),
+    resLastUpdate.json(),
+	  resSupplierDoses.json()
+  ])
+  
   return {
     ...elaborate({
       dataSommVaxSummary,
       dataSommVaxDetail,
-      dataDeliveryVaxDetail,
       dataVaxSummary,
       dataProfileSummary,
-      dataPointsSommSummary,
       dataLastUpdate,
       dataVaxLocations,
-      dataSupplierDoses,
+	  dataSupplierDoses
     }),
   };
 };
