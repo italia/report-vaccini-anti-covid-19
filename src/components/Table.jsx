@@ -2,6 +2,7 @@ import { React, useEffect } from "react";
 import * as $ from "jquery";
 import DataTable from "datatables.net";
 import "./Table.css";
+import "../naturalSortAlgorithm";
 
 
 $.DataTable = DataTable;
@@ -40,7 +41,7 @@ export const Table = ({ deliveryTableData }) => {
             targets: 0,
             width: '150px'
           },
-          { type: 'any-number', targets: [3] },
+          { type: 'natural', targets: 3 },
           {
             "targets": [1, 2, 3],
             render: (data, type, row) => {
