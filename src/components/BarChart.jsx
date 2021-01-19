@@ -3,38 +3,25 @@ import * as d3 from "d3";
 import "../App.css";
 import { maxX } from "../utils";
 
-export const BarChart = (props) => {
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
-  const width = +props.width, //hack to get int
-    height = +props.height;
+export const BarChart = ({
+  handleDeliveryBarChartClick, 
+  height,
+  width,
+  data,
+  selected,
+  property,
+  title,
+  ytitle
+  }) => {
+
   const myRef = useRef();
   const divRef = useRef();
-  const [select, setSelected] = useState(null);
-  const { data, selected } = props;
-  const prevData = usePrevious({ data, selected });
 
-  const handleRectClick = (x) => {
-    if (select === x) {
-      props.handleRectClick(null);
-      setSelected(null);
-    } else {
-      props.handleRectClick(x);
-      setSelected(x);
-    }
-  };
   useEffect(() => {
-    if (prevData?.data !== data || prevData?.selected !== selected) {
       doExit();
       draw();
-    }
   // eslint-disable-next-line 
-  }, [data, selected]);
+  },[data, selected]);
 
 
   const responsivefy = (svg) => {
@@ -68,8 +55,8 @@ export const BarChart = (props) => {
   }
 
   const draw = () => {
-    const data = props?.data || [];
-    const maxScale = data?.reduce(maxX(props.property.yprop), 0) || 0;
+
+    const maxScale = data?.reduce(maxX(property.yprop), 0) || 0;
     // append element
     const svg = d3
       .select(divRef.current)
@@ -82,7 +69,7 @@ export const BarChart = (props) => {
     const xScale = d3.scaleBand().padding(0.2);
     const yScale = d3.scaleLinear().domain([0, maxScale]); //max scale should be dynamic
     yScale.range([height, 0]);
-    xScale.range([0, width]).domain(data.map((d) => d[props.property.xprop]));
+    xScale.range([0, width]).domain(data.map((d) => d[property.xprop]));
 
     svg
       .attr("width", width + 2 * margin.x)
@@ -96,15 +83,7 @@ export const BarChart = (props) => {
       .attr("y", margin.y / 2)
       .attr("class", "title")
       .attr("text-anchor", "middle")
-      .attr(props.title);
-
-    // svg
-    //   .append("text")
-    //   .attr("x", width / 2 + margin.x)
-    //   .attr("y", margin.y * 2)
-    //   .attr("transform", `translate(0,${height - margin.y / 4})`)
-    //   .attr("class", "title-bar")
-    //   .text(props.xtitle);
+      .attr(title);
 
     svg
       .append("text")
@@ -112,13 +91,12 @@ export const BarChart = (props) => {
       .attr("y", margin.x / 2.4)
       .attr("transform", "rotate(-90)")
       .attr("class", "title")
-      .text(props.ytitle);
+      .text(ytitle);
 
     const chart = svg
       .append("g")
       .attr("transform", `translate(${margin.x},${margin.y})`);
 
-    // chart.append("g").attr("class", "axis").call(d3.axisLeft(yScale));
     chart
       .append("g")
       .attr("class", "axis")
@@ -126,32 +104,30 @@ export const BarChart = (props) => {
       .style('font-size', 20)
       .call(d3.axisBottom(xScale));
 
-    // chart
-    //   .append("g")
-    //   .attr("class", "grid-hline")
-    //   .call(d3.axisLeft().scale(yScale).tickSize(-width, 0, 0).tickFormat(""));
-
     const path = chart.selectAll().data(data);
 
     path
       .enter()
       .append("rect").on('click', (e, d) => {
-        handleRectClick(d);
+        handleDeliveryBarChartClick(d);
       })
       .attr('id', (d) => d?.fascia_anagrafica)
       .attr('opacity', (d) => {
-        let opac = props.selected?.fascia_anagrafica === d?.fascia_anagrafica ? 1 : !props.selected ? 1 : 0.3;
-        return opac;
+        if(selected){
+          return selected === d?.fascia_anagrafica ? 1 : 0.3
+        }else{
+          return 1
+        }
       })
       .attr("class", "bar")
-      .attr("x", (d) => xScale(d[props.property.xprop]))
-      .attr("y", (d) => yScale(d[props.property.yprop]))
-      .attr("height", (d) => height - yScale(d[props.property.yprop]))
+      .attr("x", (d) => xScale(d[property.xprop]))
+      .attr("y", (d) => yScale(d[property.yprop]))
+      .attr("height", (d) => height - yScale(d[property.yprop]))
       .attr("width", xScale.bandwidth())
       .append("title")
-      .attr("x", (d) => xScale(d[props.property.xprop]))
-      .attr("y", (d) => yScale(d[props.property.yprop]))
-      .text((d) => `Fascia ${d[props.property.xprop]} totale: ${d[props.property.yprop]}`)
+      .attr("x", (d) => xScale(d[property.xprop]))
+      .attr("y", (d) => yScale(d[property.yprop]))
+      .text((d) => `Fascia ${d[property.xprop]} totale: ${d[property.yprop]}`)
 
     path
       .enter()
@@ -159,13 +135,13 @@ export const BarChart = (props) => {
       .attr("class", "bartext")
       .attr("text-anchor", "middle")
       .attr("fill", "white")
-      .attr("x", (d) => xScale(d[props.property.xprop]) + 35)
+      .attr("x", (d) => xScale(d[property.xprop]) + 35)
       .attr("y", (d) =>
-        height - yScale(d[props.property.yprop]) >= 0
-          ? yScale(d[props.property.yprop]) - 10
-          : yScale(d[props.property.yprop])
+        height - yScale(d[property.yprop]) >= 0
+          ? yScale(d[property.yprop]) - 10
+          : yScale(d[property.yprop])
       )
-      .text((d) => d[props.property.yprop].toLocaleString('it'));
+      .text((d) => d[property.yprop].toLocaleString('it'));
 
     path.exit().remove();
   };
