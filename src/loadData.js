@@ -158,6 +158,7 @@ const elaborate = (data) => {
         code: code,
         area: _.head(items)?.area, 
         categoria_operatori_sanitari_sociosanitari: _.sumBy(items, 'categoria_operatori_sanitari_sociosanitari'),
+        categoria_over80: _.sumBy(items, 'categoria_over80'),
         categoria_ospiti_rsa: _.sumBy(items, 'categoria_ospiti_rsa'),
         categoria_personale_non_sanitario: _.sumBy(items, 'categoria_personale_non_sanitario'),
         byAge: _(items)
