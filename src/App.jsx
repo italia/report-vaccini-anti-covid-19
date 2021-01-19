@@ -9,7 +9,7 @@ import { LocationsTable } from "./components/LocationsTable";
 import { Table } from "./components/Table";
 import { Total } from "./components/Total";
 import { loadData } from "./loadData";
-import { BarChart } from "./components/BarChart";
+import { Deliveries } from "./containers/deliveries";
 import { HBarChart } from "./components/HBarChart";
 import { Supplier } from './components/Supplier';
 import { areaMappingReverse, groupByAge, allTotalGender, hideLoader, simulateClick } from "./utils";
@@ -224,147 +224,9 @@ function App() {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-12 d-flex justify-content-end">
-            <img alt="reset" src="reset.png" onClick={resetFilter} />
-          </div>
-
-        </div>
-
-        <div className="row" style={{ backgroundColor: '#F8FBFE' }}>
-          <div className="col-12 col-lg-5 h-100 order-md-2 order-lg-1 ">
-            <div className="container-info d-none d-sm-none d-md-flex d-lg-flex" >
-              <span data-toggle="tooltip" title="% somministrazioni su dosi consegnate" className="circle-info">i</span>
-            </div>
-            <Table
-              summaryFilter={selectedFilterByAge}
-              summary={{ ...summary }}
-              selected={selected}
-              className="mr-5 h-100"
-            />
-          </div>
-
-          <div className="col-12 col-lg-7 order-md-1 order-lg-2">
-            <div className="p-4 position-relative d-lg-none">
-
-              <div className="w-100 h-100 d-flex justify-content-start pr-5">
-                <img src="logo.png" width="35" height="35" alt="Logo" />
-
-                <h5 className="pl-3 pl-sm-1">Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
-
-              </div>
-
-
-            </div>
-
-            <div className="p-5 d-none d-lg-block">
-
-              <div className="d-flex justify-content-end"
-                style={{
-                  position: 'absolute ',
-                  top: 150,
-                  right: 50
-                }}
-              >
-                <img src="logo.png" width="35" height="35" alt="Logo"
-                  style={{
-                    position: 'absolute',
-                    top: -10
-                  }}
-                />
-
-                <h5 className="pl-3 pl-sm-1 text-right">
-                  <span data-toggle="tooltip" title="Nel grafico è rappresentato il tasso di somministrazione, 
-                ovvero il rapporto tra le somministrazioni e le dosi consegnate (%)" className="circle-info"
-                    style={{
-                      position: 'relative',
-                      right: 23,
-                      top: 25
-                    }}
-                  >i</span>
-                  Distribuzione somministrazioni<br /> rispetto alle consegne</h5>
-              </div>
-
-
-            </div>
-            <MapArea
-              summaryFilter={selectedFilterByAge}
-              summary={{ ...summary }}
-              selected={selectedLocationMap}
-              handleCountryClick={handleCountryClick}
-              className="ml-5 w-100 h-100"
-            />
-            <div className="p-4 position-relative">
-              <div className="text-black w-100">
-                <div className="w-100 h-100 d-flex justify-content-start ">
-                  <img src="logo.png" width="45" height="45" alt="Logo" className="mt-3" />
-                  <span className="font-50 pl-3" >{_.sum([totalAgeByGender?.gen_m, totalAgeByGender?.gen_f]) ? _.sum([totalAgeByGender?.gen_m, totalAgeByGender?.gen_f]).toLocaleString('it') : 0}</span>
-
-                </div>
-
-                <div className="w-100  h-100 d-flex justify-content-start">
-                  <h5>Totale somministrazioni</h5>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div className="row position-powerbi" style={{ backgroundColor: '#F8FBFE' }}>
-          <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex">
-          </div>
-          <div className="col-12 col-md-6  position-relative" >
-            <div className="bg-gradient-bar"></div>
-            <div className="row">
-              <div className="col-6 d-flex align-items-baseline">
-                <img src="user_f.png" alt="users" width="75px" />
-                <span className="text-center font-weight-light text-white">
-                  <h3 className="total_gender">{totalAgeByGender?.gen_f?.toLocaleString('it')}</h3>
-                </span>
-              </div>
-              <div className="col-6  d-flex align-items-baseline">
-                <img src="user_m.png" alt="users" width="75px" />
-                <span className="text-center font-weight-light text-white">
-                  <h3 className="total_gender">{totalAgeByGender?.gen_m?.toLocaleString('it')}</h3>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-md-5" style={{ backgroundColor: '#17324D' }}>
-            <div className="p-4 position-relative">
-              <div style={{ height: 100 }}>
-                <img src="group_person.svg" alt="Logo" className="img-fluid" />
-              </div>
-              <div className="text-white w-100">
-                <div className="w-100 h-100 d-flex justify-content-end">
-                  <img src="logo.png" width="40" height="40" alt="Logo" />
-                </div>
-                <div className="w-100  h-100 d-flex justify-content-end text-right">
-                  <h3>Somministrazioni<br></br> per fasce di età</h3>
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div className="col-12  col-md-7" style={{
-            backgroundColor: '#17324D'
-          }}>
-            <BarChart
-              title=""
-              xtitle="Fascia d'età"
-              ytitle=""
-              width="800"
-              handleRectClick={handleRectClick}
-              height="300"
-              selected={selectedAge}
-              property={{ xprop: "fascia_anagrafica", yprop: "totale" }}
-              data={[...barState]}
-            />
-          </div>
-        </div>
-
+        <Deliveries
+          data={summary}
+        />
         <div className="row ">
           <div
             style={{ marginTop: 40 }}
