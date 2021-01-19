@@ -165,7 +165,7 @@ export const Categories = ({ data }) => {
           selectedCodeCategory={selectedCodeCategory}
         />
       </div>
-      <div className="col-12 col-md-6 h-100">
+      <div className="col-12 col-md-6 h-100" style={{ overflow: "hidden" }}>
         <div className="p-4 position-relative d-lg-none">
           <div className="w-100 h-100 d-flex justify-content-start pr-5">
             <img src="logo.png" width="35" height="35" alt="Logo" />
