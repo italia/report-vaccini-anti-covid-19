@@ -8,7 +8,7 @@ Before proceeding further, please review our [Code of Conduct](CODE_OF_CONDUCT.m
 ## Issues
 
 If you find an issue please check if it's already known by searching
-the [issue section](https://github.com/italia/covid19-dashboard-vaccini/issues), otherwise
+the [issue section](https://github.com/italia/report-vaccini-anti-covid-19/issues), otherwise
 file a new one: we really appreciate it! :rocket:.
 
 You're welcome to contribute to open issues with more information or by adding
@@ -67,10 +67,10 @@ This repository adopts a simplified branch management system as follows:
 
 ### Releases
 
-Please check the [Releases](https://github.com/italia/covid19-dashboard-vaccini/releases)
+Please check the [Releases](https://github.com/italia/report-vaccini-anti-covid-19/releases)
 page to see the current and past releases.
 
-To see which are the next ones, please check our [Milestones](https://github.com/italia/covid19-dashboard-vaccini/milestones).
+To see which are the next ones, please check our [Milestones](https://github.com/italia/report-vaccini-anti-covid-19/milestones).
 
 The maintainers try to keep the milestones updated in order to show what will be
 fixed soon and, when possible, they also try to set a consistent end date for
