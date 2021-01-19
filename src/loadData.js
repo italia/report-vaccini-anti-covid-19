@@ -35,7 +35,7 @@ const elaborate = (data) => {
   const categories = [
     {
       name: "Operatori Sanitari e Sociosanitari",
-      code: "cat_oss",
+      code: "categoria_operatori_sanitari_sociosanitari",
       total: dataVaxSomLatest.reduce(
         sumDoseX("categoria_operatori_sanitari_sociosanitari"),
         0
@@ -43,7 +43,7 @@ const elaborate = (data) => {
     },
     {
       name: "Personale non sanitario",
-      code: "cat_pns",
+      code: "categoria_personale_non_sanitario",
       total: dataVaxSomLatest.reduce(
         sumDoseX("categoria_personale_non_sanitario"),
         0
@@ -51,15 +51,16 @@ const elaborate = (data) => {
     },
     {
       name: "Ospiti Strutture Residenziali",
-      code: "cat_rsa",
+      code: "categoria_ospiti_rsa",
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_ospiti_rsa"), 0),
     },
     {
-      name: 'Over 80', code: 'over60',
+      name: 'Over 80', code: 'categoria_over80',
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_over80"), 0),
     }];
 
   const dataVaxSomLatestByArea = dataVaxSomLatest.reduce(aggrBy("area"), {});
+
   const groups = _.groupBy(dataSupplier, 'fornitore');
   let allDosesSupplier = Object.keys(groups).map(k => {
     let groupByKey = groups[k].map(group => group.numero_dosi);
@@ -77,30 +78,35 @@ const elaborate = (data) => {
     return { area: areaMapping[area], dosi_somministrate: totalDosesByArea }
   })
 
+  const categoriesByRegionRAW = data.dataSommVaxSummary.data.reduce(
+    aggrBy("area"),
+    {}
+  );
+
   let categoriesByRegions = {};
-  Object.keys(dataVaxSomLatestByArea).map((x) => {
+  Object.keys(categoriesByRegionRAW).map((x) => {
 
     categoriesByRegions[x] = [
       {
         name: "Operatori Sanitari e Sociosanitari",
-        code: "cat_oss",
-        total: dataVaxSomLatestByArea[x].reduce(
+        code: "categoria_operatori_sanitari_sociosanitari",
+        total: categoriesByRegionRAW[x].reduce(
           sumDoseX("categoria_operatori_sanitari_sociosanitari"),
           0
         ),
       },
       {
         name: "Personale non sanitario",
-        code: "cat_pns",
-        total: dataVaxSomLatestByArea[x].reduce(
+        code: "categoria_personale_non_sanitario",
+        total: categoriesByRegionRAW[x].reduce(
           sumDoseX("categoria_personale_non_sanitario"),
           0
         ),
       },
       {
         name: "Ospiti Strutture Residenziali",
-        code: "cat_rsa",
-        total: dataVaxSomLatestByArea[x]?.reduce(
+        code: "categoria_ospiti_rsa",
+        total: categoriesByRegionRAW[x]?.reduce(
           sumDoseX("categoria_ospiti_rsa"),
           0
         ),
@@ -108,8 +114,8 @@ const elaborate = (data) => {
       },
       {
         name: 'Over 80',
-        code: 'over60',
-        total: dataVaxSomLatestByArea[x]?.reduce(sumDoseX("categoria_over80"), 0),
+        code: 'categoria_over80',
+        total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_over80"), 0),
       }
     ];
     return categoriesByRegions;
@@ -131,17 +137,76 @@ const elaborate = (data) => {
     }
   })
 
+  const deliveredByArea = _.groupBy(deliverySummary, 'code');
+
   const locations = data.dataVaxLocations.data.map(replaceArea);
 
   let maxNumberOfLocations = 0
 
   const locationsByRegion = _(data.dataVaxLocations.data.map(replaceArea))
     .groupBy('area')
-    .map((items, area) => {
+    .map((items, area)=>{
       maxNumberOfLocations = maxNumberOfLocations > items.length ? maxNumberOfLocations : items.length;
-      return { area: area, locations: items.length }
-    }).value()
-    ;
+      return {area: area, locations: items.length}
+    }).value();
+
+  const totalDeliverySummary = _(data.dataSommVaxDetail.data.map(replaceArea))
+    .groupBy('code')
+    .map((items, code)=>{
+      const details = _.head(deliveredByArea[code])
+      return ({
+        code: code,
+        area: _.head(items)?.area, 
+        categoria_operatori_sanitari_sociosanitari: _.sumBy(items, 'categoria_operatori_sanitari_sociosanitari'),
+        categoria_ospiti_rsa: _.sumBy(items, 'categoria_ospiti_rsa'),
+        categoria_personale_non_sanitario: _.sumBy(items, 'categoria_personale_non_sanitario'),
+        byAge: _(items)
+                  .groupBy('fascia_anagrafica')
+                  .map((rows, age)=>{
+                    const dosi_somministrate = _.sumBy(rows, (r)=>r.sesso_maschile + r.sesso_femminile);
+                    const percentage = dosi_somministrate/(details.dosi_consegnate || 1);
+                    return {
+                      age: age,
+                      fascia_anagrafica: age,
+                      dosi_somministrate,
+                      dosi_consegnate: details.dosi_consegnate || 0,
+                      percentuale_somministrazione: +(percentage*100).toFixed(1),
+                      area: _.head(items)?.area,
+                      totale: dosi_somministrate
+                  }}).value(),
+        sesso_femminile: _.sumBy(items, 'sesso_femminile'),
+        sesso_maschile: _.sumBy(items, 'sesso_maschile'),
+        dosi_consegnate: details.dosi_consegnate || 0,
+        dosi_somministrate: details.dosi_somministrate || 0,
+        percentuale_somministrazione: details.percentuale_somministrazione || 0
+      })}).value();
+
+
+    const totalDeliverySummaryByAge = _(data.dataSommVaxDetail.data.map(replaceArea))
+      .groupBy(i => i['fascia_anagrafica'].toString().trim())
+      .map((rows, age)=>{
+        const details = _(rows).groupBy('code').map((rowsData, code)=>{
+          const dosi_somministrate = _.sumBy(rowsData, (r)=>r.sesso_maschile + r.sesso_femminile);
+          const percentage = dosi_somministrate/(_.head(deliveredByArea[code]).dosi_consegnate || 1);
+          return {
+            age: age,
+            dosi_somministrate,
+            sesso_maschile: _.sumBy(rowsData, 'sesso_maschile'),
+            sesso_femminile: _.sumBy(rowsData, 'sesso_femminile'),
+            code: code,
+            dosi_consegnate: _.head(deliveredByArea[code]).dosi_consegnate || 0,
+            percentuale_somministrazione: +(percentage*100).toFixed(1),
+            area: _.head(rowsData).area,
+            //details: rows
+          }
+        })
+        .value()
+        return {
+          age: age,
+          details: details
+      }})
+      .groupBy('age')
+      .value()
 
   const gender = {
     gen_m: categoriesAndAges.reduce(sumDoseX("sesso_maschile"), 0),
@@ -164,7 +229,9 @@ const elaborate = (data) => {
     allDosesSupplier,
     doesesByArea,
     totalSuplier,
-    totalDoses
+    totalDoses,
+    totalDeliverySummaryByAge,
+    totalDeliverySummary
   };
   return aggr;
 };
