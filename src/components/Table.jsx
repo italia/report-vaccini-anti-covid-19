@@ -77,7 +77,7 @@ export const Table = ({ deliveryTableData }) => {
             }, 0);
 
           // Total over all pages
-          var totalPercentage = (totalVaccines/totalDelivery)*100
+          var totalPercentage = totalDelivery ? (totalVaccines/totalDelivery)*100 : 0
 
           // Update footer
           $(api.column(3).footer()).html(
