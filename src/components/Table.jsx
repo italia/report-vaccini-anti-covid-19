@@ -62,14 +62,6 @@ export const Table = ({ deliveryTableData }) => {
                 i : 0;
           };
 
-          // Total over all pages
-          var totalPercentage = api
-            .column(3, { search: 'applied' })
-            .data()
-            .reduce(function (a, b, _, { length }) {
-              return intVal(a) + intVal(b) / length;
-            }, 0);
-
           let totalDelivery = api
             .column(2, { search: 'applied' })
             .data()
@@ -83,6 +75,9 @@ export const Table = ({ deliveryTableData }) => {
             .reduce(function (a, b) {
               return intVal(a) + intVal(b);
             }, 0);
+
+          // Total over all pages
+          var totalPercentage = (totalVaccines/totalDelivery)*100
 
           // Update footer
           $(api.column(3).footer()).html(
