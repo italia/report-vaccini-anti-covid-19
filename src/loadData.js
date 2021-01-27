@@ -13,7 +13,7 @@ const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
 const elaborate = (data) => {
 
   const tot = data.dataSommVaxSummary.data
-    .filter(filterByAreaITA)
+    .filter(d => d.area !== 'ITA')
     .reduce(sumDoseX("totale"), 0);
   // datatable and map
   const dataSupplier = data.dataSupplierDoses.data;
