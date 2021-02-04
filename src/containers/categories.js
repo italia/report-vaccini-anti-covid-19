@@ -31,17 +31,17 @@ export const Categories = ({ data }) => {
   };
 
   const handleMapCategoryClick = (region) => {
-    // if (selectedCodeCategory) {
-    //   resetFilter();
-    // }
+    if (selectedCodeCategory) {
+      resetFilter();
+    }
 
-    // if (categorySelectedRegion === region.code) {
-    //   resetFilter();
-    // } else {
-    //   setCategorySelectedRegion(region.code);
-    //   setCategoryData(data.categoriesByRegions[region.code]);
-    //   setTotalByCategory(region.dosi_somministrate);
-    // }
+    if (categorySelectedRegion === region.code) {
+      resetFilter();
+    } else {
+      setCategorySelectedRegion(region.code);
+      setCategoryData(data.categoriesByRegions[region.code]);
+      setTotalByCategory(region.dosi_somministrate);
+    }
   };
 
   const fillMapCategoryArea = ({ region, maxValue, field }) => {
