@@ -11,49 +11,25 @@ export const FooterBar = () => {
       <div className="footer-wrapper p-4 clearfix">
         <footer className="footer_container container" id="footer">
           <div className="row title_row">
-
-          <div className="col-md-4 d-flex justify-content-center logo-section pt-1 pb-2">
-          <div>
-            <div>
-              <a href="http://www.governo.it" target="_blank" rel="noreferrer">
-                <img src="logo.svg" height="4px" alt="Logo" className="logo ml-5 mr-2" />
-              </a>
-            </div>
+          <div className="col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
+            <a href="http://www.governo.it" className="text-decoration-none" target="_blank" rel="noreferrer">
+              <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
+            </a>
+            <p className="pt-sm-0">Presidenza del Consiglio dei Ministri</p>
           </div>
-          <div>
-            <p>Presidenza del Consiglio dei Ministri</p>
+          <div className="col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
+            <a href="http://www.governo.it" className="text-decoration-none" target="_blank" rel="noreferrer">
+              <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
+            </a>
+            <p className="pt-sm-0">Commissario Straordinario Covid-19</p>
           </div>
-        </div>
-        <div className="col-md-4 d-flex justify-content-center logo-section pt-1 pb-2">
-          <div>
-            <div>
-              <a href="http://www.governo.it" target="_blank" rel="noreferrer">
-                <img src="logo.svg" height="4px" alt="Logo" className="logo ml-5 mr-2" />
-              </a>
-            </div>
+          <div className="col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
+            <a href="http://www.governo.it" className="text-decoration-none" target="_blank" rel="noreferrer">
+              <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
+            </a>
+            <p className="pt-sm-0">Ministero della Salute</p>
           </div>
-          <div>
-            <p>Commissario Straordinario Covid-19</p>
           </div>
-        </div>
-        <div className="col-md-4 d-flex justify-content-center logo-section pt-1 pb-2">
-          <div>
-            <div>
-              <a href="http://www.governo.it" target="_blank" rel="noreferrer">
-                <img src="logo.svg" height="4px" alt="Logo" className="logo ml-5 mr-2" />
-              </a>
-            </div>
-          </div>
-          <div>
-            <p>Ministero della Salute</p>
-          </div>
-        </div>
-
-           
-          </div>
-
-
-          
         </footer>
       </div>
     </>
