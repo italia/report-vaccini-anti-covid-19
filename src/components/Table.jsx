@@ -39,7 +39,7 @@ export const Table = ({ deliveryTableData }) => {
         columnDefs: [
           {
             targets: 0,
-            width: '150px'
+            width: '160px'
           },
           { type: 'natural', targets: 3 },
           {
