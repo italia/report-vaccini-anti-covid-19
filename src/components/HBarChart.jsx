@@ -133,10 +133,10 @@ export const HBarChart = (
       .attr("class", "hb-bartext")
       .attr("text-anchor", "middle")
       .attr("fill", "white")
-      .attr("x", (d) => xScale(d[property.yprop]) + 135)
+      .attr("x", (d) => xScale(d[property.yprop]) + 140)
       .attr("y", (d) =>
         height - yScale(d[property.xprop]) >= 0
-          ? yScale(d[property.xprop]) + 30
+          ? yScale(d[property.xprop]) + 20
           : yScale(d[property.xprop])
       )
       .text((d) => d[property.yprop].toLocaleString('it'));
@@ -145,7 +145,7 @@ export const HBarChart = (
   };
 
   return (
-    <div ref={divRef} className="chart svg-container">
+    <div ref={divRef} className="chart svg-container" style={{marginTop: 40}}>
       <svg ref={myRef} className="svg-content-responsive"></svg>
     </div>
   );

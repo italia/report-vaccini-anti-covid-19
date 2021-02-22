@@ -11,7 +11,7 @@ const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
 const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
 const elaborate = (data) => {
-
+  console.log(data)
   const tot = data.dataSommVaxSummary.data
     .filter(d => d.area !== 'ITA')
     .reduce(sumDoseX("totale"), 0);
@@ -53,9 +53,21 @@ const elaborate = (data) => {
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_ospiti_rsa"), 0),
     },
     {
-      name: 'Over 80', code: 'categoria_over80',
+      name: 'Over 80', 
+      code: 'categoria_over80',
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_over80"), 0),
-    }];
+    },
+    {
+      name: 'Foze Armate', 
+      code: 'categoria_forze_armate',
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_forze_armate"), 0),
+    },
+    {
+      name: 'Personale Scolastico', 
+      code: 'categoria_personale_scolastico',
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_personale_scolastico"), 0),
+    }
+  ];
 
   const groups = _.groupBy(dataSupplier, 'fornitore');
   let allDosesSupplier = Object.keys(groups).map(k => {
@@ -112,6 +124,16 @@ const elaborate = (data) => {
         name: 'Over 80',
         code: 'categoria_over80',
         total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_over80"), 0),
+      },
+      {
+        name: 'Forze Armate',
+        code: 'categoria_forze_armate',
+        total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_forze_armate"), 0),
+      },
+      {
+        name: 'Personale Scolastico',
+        code: 'categoria_personale_scolastico',
+        total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_personale_scolastico"), 0),
       }
     ];
     return categoriesByRegions;
@@ -157,6 +179,8 @@ const elaborate = (data) => {
         categoria_over80: _.sumBy(items, 'categoria_over80'),
         categoria_ospiti_rsa: _.sumBy(items, 'categoria_ospiti_rsa'),
         categoria_personale_non_sanitario: _.sumBy(items, 'categoria_personale_non_sanitario'),
+        categoria_forze_armate: _.sumBy(items, 'categoria_forze_armate'),
+        categoria_personale_scolastico: _.sumBy(items, 'categoria_personale_scolastico'),
         byAge: _(items)
                   .groupBy('fascia_anagrafica')
                   .map((rows, age)=>{
