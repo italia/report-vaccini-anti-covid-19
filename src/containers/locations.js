@@ -3,6 +3,24 @@ import { isEmpty, max } from "lodash";
 import { MapArea } from "./../components/MapArea";
 import { LocationsTable } from "./../components/LocationsTable";
 
+const TextBoxTotal = () => (
+  <div className="text-white w-100">
+    <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
+      <h5>Totale punti di somministrazione</h5>
+    </div>
+  </div>
+)
+
+const TextBoxMap = () => (
+  <div className="w-100 h-100 d-flex justify-content-start pr-5">
+    <img src="logo.png" width="35" height="35" alt="Logo" />
+    <h5 className="pl-3 pl-sm-1">
+      Principali punti di
+      <br /> somministrazione <br /> per regione
+    </h5>
+  </div>
+)
+
 export const Locations = ({ data }) => {
   const [summary, setSummary] = useState({});
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -51,7 +69,7 @@ export const Locations = ({ data }) => {
           className="img-fluid"
           style={{ zIndex: 10 }}
         />
-        <h3 className="text-center">Principali punti di somministrazione per regione</h3>
+        <h3 className="text-center">Principali punti di somministrazione</h3>
       </div>
       <div className="col-12 col-md-12 h-100 p-0">
         <div
@@ -62,9 +80,7 @@ export const Locations = ({ data }) => {
           }}
         >
           <div className="text-white w-100">
-            <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-              <h5>Principali punti di somministrazione per regione</h5>
-            </div>
+            <TextBoxTotal/>
             <div className="w-100  h-100 d-flex justify-content-start pl-4">
               <p className="numeri_box">{locationCount}</p>
             </div>
@@ -90,11 +106,7 @@ export const Locations = ({ data }) => {
             }}
           >
             <div className="text-white w-100">
-              <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-                <h5>
-                  Totale principali punti di<br></br>somministrazione
-                </h5>
-              </div>
+              <TextBoxTotal/>
               <div className="w-100  h-100 d-flex justify-content-start pl-4">
                 <p className="numeri_box">{locationCount}</p>
               </div>
@@ -112,25 +124,13 @@ export const Locations = ({ data }) => {
       </div>
       <div className="col-12 col-md-6 pt-5">
         <div className="p-4 position-relative d-lg-none">
-          <div className="w-100 h-100 d-flex justify-content-start pr-5">
-            <img src="logo.png" width="35" height="35" alt="Logo" />
-            <h5 className="pl-3 pl-sm-1">
-              Principali punti di
-              <br /> somministrazione <br /> per regione
-            </h5>
-          </div>
+          <TextBoxMap/>
         </div>
         <div
           className="p-4 position-relative d-none d-lg-block"
           style={{ left: "300px", top: "190px" }}
         >
-          <div className="w-100 h-100 d-flex justify-content-start pr-5">
-            <img src="logo.png" width="35" height="35" alt="Logo" />
-            <h5 className="pl-3 pl-sm-1">
-              Principali punti di
-              <br /> somministrazione <br /> per regione
-            </h5>
-          </div>
+          <TextBoxMap/>
         </div>
         <MapArea
           fillMapDeliveryArea={fillMapDeliveryArea}
