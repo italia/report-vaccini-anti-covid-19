@@ -58,7 +58,7 @@ const elaborate = (data) => {
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_over80"), 0),
     },
     {
-      name: 'Foze Armate', 
+      name: 'Forze Armate', 
       code: 'categoria_forze_armate',
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_forze_armate"), 0),
     },
