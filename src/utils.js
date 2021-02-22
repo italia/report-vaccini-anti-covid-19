@@ -77,7 +77,7 @@ export const areaMapping = {
   CAL: "Calabria",
   CAM: "Campania",
   EMR: "Emilia-Romagna",
-  FVG: "Friuli Venezia Giulia",
+  FVG: "Friuli-Venezia Giulia",
   LAZ: "Lazio",
   LIG: "Liguria",
   LOM: "Lombardia",

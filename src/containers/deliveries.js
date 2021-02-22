@@ -60,7 +60,7 @@ export const Deliveries = ({ data }) => {
       );
 
       setDeliveryTableData([deliveryTableFilteredData]);
-      setdeliveryBarChartData(deliveryTableFilteredData.byAge || []);
+      setdeliveryBarChartData(deliveryTableFilteredData?.byAge || []);
       setDeliverySelectedRegion(region.code);
       setTotalDelivery(deliveryTableFilteredData.dosi_somministrate);
       setTotalAgeByGender({
