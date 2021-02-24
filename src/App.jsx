@@ -59,6 +59,7 @@ function App() {
           </div>
         </div>
 
+        /*
         <div className="row">
           <div className="col-12">
             <div
@@ -67,10 +68,11 @@ function App() {
               <StaticBlock
                 classes="text-black text-uppercase font-weight-bold"
                 text={`LA SOMMINISTRAZIONE DI ${summary?.totalDoses?.vax_somministrati}  DOSI DI VACCINO SU TUTTO IL TERRITORIO È INIZIATA IL 31 DICEMBRE`}
-              />
+              />*/
             </div>
           </div>
         </div>
+        */
 
         <Deliveries
           data={summary}
