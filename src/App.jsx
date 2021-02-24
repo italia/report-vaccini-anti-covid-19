@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { HeaderBar } from "./components/HeaderBar";
 import { FooterBar } from "./components/FooterBar";
-import { StaticBlock } from "./components/StaticBlock";
 
 import { Total } from "./components/Total";
 import { loadData } from "./loadData";
