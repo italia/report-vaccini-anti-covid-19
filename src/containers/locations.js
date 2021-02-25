@@ -3,10 +3,10 @@ import { isEmpty, max } from "lodash";
 import { MapArea } from "./../components/MapArea";
 import { LocationsTable } from "./../components/LocationsTable";
 
-const TextBoxTotal = () => (
+const TextBoxTotal = ({locationCount}) => (
   <div className="text-white w-100">
     <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-      <h5>Totale punti di somministrazione</h5>
+      <h3>Totale: {locationCount}</h3>
     </div>
   </div>
 )
@@ -83,10 +83,7 @@ export const Locations = ({ data }) => {
           }}
         >
           <div className="text-white w-100">
-            <TextBoxTotal/>
-            <div className="w-100  h-100 d-flex justify-content-start pl-4">
-              <p className="numeri_box">{locationCount}</p>
-            </div>
+            <TextBoxTotal locationCount={locationCount}/>
             <div className="col-12 d-flex justify-content-end  pb-2">
               <img
                 alt="reset-plot"
@@ -109,10 +106,7 @@ export const Locations = ({ data }) => {
             }}
           >
             <div className="text-white w-100">
-              <TextBoxTotal/>
-              <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                <p className="numeri_box">{locationCount}</p>
-              </div>
+              <TextBoxTotal locationCount={locationCount}/>
               <div className="col-12 d-flex justify-content-end  pb-2">
                 <img
                   alt="reset-white"
@@ -126,27 +120,29 @@ export const Locations = ({ data }) => {
         </div>
       </div>
       <div className="col-12 col-md-6 pt-5">
-        <div className="p-4 position-relative d-lg-none">
+        <div className="p-4 position-relative d-lg-none" style={{left: 150, top: -115}}>
           <TextBoxMap/>
         </div>
         <div
           className="p-4 position-relative d-none d-lg-block"
-          style={{ left: "300px", top: "190px" }}
+          style={{ left: "300px", top: "-60px" }}
         >
           <TextBoxMap/>
         </div>
+        <div style={{marginTop: -200}}>
         <MapArea
           fillMapDeliveryArea={fillMapDeliveryArea}
           summary={data.locationsByRegion}
           handleMapDeliveryClick={handleClick}
           tooltip={(r) =>
-            r.area + " " + (r.locations && r.locations.toLocaleString("it"))
+            r.area + ": " + (r.locations && r.locations.toLocaleString("it"))
           }
           fillBy="locations"
           className="ml-5 w-100 h-100"
         />
+        </div>
       </div>
-      <div className="col-12 col-md-6 pt-3 pl-3">
+      <div className="col-12 col-md-6 pt-3 pl-3" style={{marginTop: -20}}>
         <LocationsTable
           summary={{ ...summary }}
           selected={selectedLocation}
