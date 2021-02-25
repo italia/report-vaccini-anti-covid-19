@@ -69,9 +69,12 @@ export const Locations = ({ data }) => {
           className="img-fluid"
           style={{ zIndex: 10 }}
         />
-        <h3 className="text-center">Principali punti di somministrazione</h3>
+        <div style={{ paddingTop: 50 }}>
+          <h3  className="text-center">Principali punti di somministrazione</h3>
+          <div className="text-center position-relative">(Sono inclusi i punti di somministrazione ospedalieri e territoriali;<br/> non sono inclusi i punti di somministrazione temporanei)</div>
+        </div>
       </div>
-      <div className="col-12 col-md-12 h-100 p-0">
+      <div className="col-12 col-md-12 h-100 p-0" style={{marginTop: 20}}>
         <div
           className="mb-5  d-lg-none "
           style={{
