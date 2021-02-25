@@ -6,9 +6,8 @@ import "datatables.net-bs4/css/dataTables.bootstrap4.min.css";
 $.DataTable = DataTable;
 const columns = [
   { title: "Regione", data: "area" },
-  { title: "Provincia", data: "provincia" },
-  { title: "Comune", data: "comune" },
-  { title: "Punto di somministrazione", data: "presidio_ospedaliero" },
+  { title: "Punto di somministrazione", data: "denominazione_struttura" },
+  { title: "Tipologia", data: "tipologia" }
 ];
 
 export const LocationsTable = (props) => {
