@@ -36,6 +36,10 @@ export const Table = ({ deliveryTableData }) => {
         destroy: true,
         data: deliveryTableData,
         columns,
+        language: {
+          decimal: ",",
+          thousands: "."
+        },
         columnDefs: [
           {
             targets: 0,
