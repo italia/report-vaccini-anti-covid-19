@@ -11,7 +11,6 @@ const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
 const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
 const elaborate = (data) => {
-  console.log(data)
   const tot = data.dataSommVaxSummary.data
     .filter(d => d.area !== 'ITA')
     .reduce(sumDoseX("totale"), 0);
