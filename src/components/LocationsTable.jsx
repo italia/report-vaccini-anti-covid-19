@@ -23,6 +23,9 @@ export const LocationsTable = (props) => {
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",       
         paging: false,
+        columnDefs: [{
+          "targets": [1,2], "searchable": false
+        }],
         searching: true,
         destroy: true,
         bLengthChange: false,
