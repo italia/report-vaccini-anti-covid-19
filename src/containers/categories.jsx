@@ -31,7 +31,7 @@ export const Categories = ({ data }) => {
   };
 
   const handleMapCategoryClick = (region) => {
-    if (selectedCodeCategory) {
+    /* if (selectedCodeCategory) {
       resetFilter();
     }
 
@@ -41,7 +41,7 @@ export const Categories = ({ data }) => {
       setCategorySelectedRegion(region.code);
       setCategoryData(data.categoriesByRegions[region.code]);
       setTotalByCategory(region.dosi_somministrate);
-    }
+    } */
   };
 
   const fillMapCategoryArea = ({ region, maxValue, field }) => {
