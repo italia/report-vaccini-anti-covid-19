@@ -65,6 +65,11 @@ const elaborate = (data) => {
       name: 'Personale Scolastico', 
       code: 'categoria_personale_scolastico',
       total: dataVaxSomLatest.reduce(sumDoseX("categoria_personale_scolastico"), 0),
+    },
+	{
+      name: 'Altro', 
+      code: 'categoria_altro',
+      total: dataVaxSomLatest.reduce(sumDoseX("categoria_altro"), 0),
     }
   ];
 
@@ -133,7 +138,12 @@ const elaborate = (data) => {
         name: 'Personale Scolastico',
         code: 'categoria_personale_scolastico',
         total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_personale_scolastico"), 0),
-      }
+      },
+	  {
+      name: 'Altro', 
+      code: 'categoria_altro',
+      total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_altro"), 0),
+	  }
     ];
     return categoriesByRegions;
   });
@@ -180,6 +190,7 @@ const elaborate = (data) => {
         categoria_personale_non_sanitario: _.sumBy(items, 'categoria_personale_non_sanitario'),
         categoria_forze_armate: _.sumBy(items, 'categoria_forze_armate'),
         categoria_personale_scolastico: _.sumBy(items, 'categoria_personale_scolastico'),
+		    categoria_altro: _.sumBy(items, 'categoria_altro'),
         byAge: _(items)
                   .groupBy('fascia_anagrafica')
                   .map((rows, age)=>{
