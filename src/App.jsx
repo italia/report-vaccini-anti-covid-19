@@ -22,6 +22,8 @@ function App() {
     });
   }, []);
 
+  const tot = (summary?.totalDoses?.seconda_dose + summary?.totalDoses?.prima_dose_janssen)
+  const totalePersoneVaccinate = isNaN(tot) ? '' : tot?.toLocaleString('it')
 
   return (
     <div>
@@ -49,7 +51,7 @@ function App() {
 
                 <div className="w-100  h-100 align-items-center d-flex justify-content-center text-right">
                   <h4 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h4>
-                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> {summary?.totalDoses?.seconda_dose?.toLocaleString('it')}</div>
+                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> {totalePersoneVaccinate}</div>
                 </div>
                 <div className="text-center position-relative" style={{ top: -10 }}>(a cui sono state somministrate la prima e la seconda dose di vaccino)</div>
               </div>
