@@ -53,12 +53,12 @@ export const HBarChart = ({
             .append("tspan")
             .attr("x", 0)
             .attr("y", y)
-            .attr("dy", ++lineNumber * lineHeight + dy + "em")
+            .attr("dy",  "1.0em")
             .text(word);
         }
       }
 
-      if (wrapped) text.attr("y", 1);
+      if (wrapped) text.attr("y", -1);
     });
   }
 
@@ -100,7 +100,7 @@ export const HBarChart = ({
       .append("svg")
       .attr("width", width)
       .attr("height", height);
-    const margin = { y: 50, x: 170 };
+    const margin = { y: 50, x: 220 };
 
     // Add X axis
     const xScale = d3

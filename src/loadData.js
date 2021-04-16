@@ -1,7 +1,7 @@
-import { sumDoseX, replaceArea, aggrBy, areaMapping } from "./utils";
+﻿import { sumDoseX, replaceArea, aggrBy, areaMapping } from "./utils";
 import _ from "lodash";
-const baseURL =
-  "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
+const baseURL = 
+   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
 const sommVaxSummaryURL = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
 const sommVaxDetailURL = `${baseURL}/somministrazioni-vaccini-latest.json`;
@@ -63,7 +63,7 @@ const elaborate = (data) => {
 
     {
       name:
-        "Personale non sanitario e impiegato in attività lavorativa a rischio",
+        "Personale non sanitario impiegato in strutture sanitarie e in attività lavorativa a rischio",
       code: "categoria_personale_non_sanitario",
       total: dataVaxSomLatest.reduce(
         sumDoseX("categoria_personale_non_sanitario"),
@@ -164,7 +164,7 @@ const elaborate = (data) => {
 
       {
         name:
-          "Personale non sanitario e impiegato in attività lavorativa a rischio",
+          "Personale non sanitario impiegato in strutture sanitarie e in attività lavorativa a rischio",
         code: "categoria_personale_non_sanitario",
         total: categoriesByRegionRAW[x].reduce(
           sumDoseX("categoria_personale_non_sanitario"),

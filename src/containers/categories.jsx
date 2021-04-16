@@ -164,7 +164,7 @@ export const Categories = ({ data }) => {
           data={categoryData}
           selectedCodeCategory={selectedCodeCategory}
         />
-        <p>*non considerati in categorie preminenti</p>
+        <p>*non considerato in categorie prioritarie</p>
       </div>
       <div className="col-12 col-md-6 h-100" style={{ overflow: "hidden" }}>
         <div className="p-4 position-relative d-lg-none">
