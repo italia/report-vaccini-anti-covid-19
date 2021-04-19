@@ -1,24 +1,24 @@
 import { React, useEffect, useState } from "react";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
-import _ from 'lodash';
+import _ from "lodash";
 
-import "./MapArea.css"
+import "./MapArea.css";
 
 export const MapArea = ({
   handleMapDeliveryClick,
   fillMapDeliveryArea,
   fillBy,
   summary,
-  tooltip
+  tooltip,
 }) => {
   const [geographies, setGeographies] = useState([]);
   const [maxValue, setMaxValue] = useState(0);
 
-  useEffect(()=>{
-    const maxValue = _.maxBy(summary || {}, fillBy)
-    setMaxValue(maxValue ? maxValue[fillBy] : 0)
-  },[summary, fillBy])
+  useEffect(() => {
+    const maxValue = _.maxBy(summary || {}, fillBy);
+    setMaxValue(maxValue ? maxValue[fillBy] : 0);
+  }, [summary, fillBy]);
 
   const width = 498,
     height = 478;
@@ -38,15 +38,15 @@ export const MapArea = ({
     };
     fetchData();
   }, []);
-  
+
   return (
-    <div className="map-area mt-sx-3">
-      <svg className="h-100 w-100" height={height} >
-        <g className="countries" >
+    <div className="map-area mt-sx-3" style={{ marginTop: "80px" }}>
+      <svg className="h-100 w-100" height={height}>
+        <g className="countries">
           {geographies.map((d, i) => {
             let reg_name = d.properties.reg_name;
-            let regions = _.filter(summary, i => i.area === reg_name)
-            
+            let regions = _.filter(summary, (i) => i.area === reg_name);
+
             let region = {};
             if (regions && regions.length > 0) {
               region = regions[0];
@@ -58,15 +58,13 @@ export const MapArea = ({
                 d={d3.geoPath().projection(projection)(d)}
                 className="country"
                 id={`${region?.area?.trim()}`}
-                fill={fillMapDeliveryArea({region, maxValue, field: fillBy})}
+                fill={fillMapDeliveryArea({ region, maxValue, field: fillBy })}
                 stroke="#FFFFFF"
                 strokeWidth={0.7}
                 onClick={() => handleMapDeliveryClick(region)}
               >
                 <title>
-                  <span className="bg-info">
-                    {tooltip(region)}
-                  </span>
+                  <span className="bg-info">{tooltip(region)}</span>
                 </title>
               </path>
             );

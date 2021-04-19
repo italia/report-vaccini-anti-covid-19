@@ -53,7 +53,7 @@ function App() {
                   <h4 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h4>
                   <div className="d-flex justify-content-center text-right align-items-center border-pink"> {totalePersoneVaccinate}</div>
                 </div>
-                <div className="text-center position-relative" style={{ top: -10 }}>(a cui sono state somministrate la prima e la seconda dose di vaccino)</div>
+                <div className="text-center position-relative" style={{ top: -10 }}>(persone che hanno completato il ciclo vaccinale)</div>
               </div>
 
             </div>

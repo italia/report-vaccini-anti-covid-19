@@ -159,11 +159,12 @@ export const Categories = ({ data }) => {
           handleRectClick={handleCategoryBarChartClick}
           ytitle=""
           width={+220}
-          height={+260}
+          height={+460}
           property={{ xprop: "name", yprop: "total" }}
           data={categoryData}
           selectedCodeCategory={selectedCodeCategory}
         />
+        <p>*non considerato in categorie prioritarie</p>
       </div>
       <div className="col-12 col-md-6 h-100" style={{ overflow: "hidden" }}>
         <div className="p-4 position-relative d-lg-none">
@@ -175,18 +176,7 @@ export const Categories = ({ data }) => {
             </h5>
           </div>
         </div>
-        <div
-          className="p-4 position-relative d-none d-lg-block"
-          style={{ left: "300px", top: "190px" }}
-        >
-          <div className="w-100 h-100 d-flex justify-content-start pr-5">
-            <img src="logo.png" width="35" height="35" alt="Logo" />
-            <h5 className="pl-3 pl-sm-1">
-              Somministrazioni
-              <br /> per regione
-            </h5>
-          </div>
-        </div>
+
         <MapArea
           fillMapDeliveryArea={fillMapCategoryArea}
           summary={categoryMapData}
@@ -199,6 +189,19 @@ export const Categories = ({ data }) => {
           }
           className="ml-5 w-100 h-100"
         />
+
+        <div
+          className="p-4 position-relative d-none d-lg-block"
+          style={{ left: "300px", top: "-390px" }}
+        >
+          <div className="w-100 h-100 d-flex justify-content-start pr-5">
+            <img src="logo.png" width="35" height="35" alt="Logo" />
+            <h5 className="pl-3 pl-sm-1">
+              Somministrazioni
+              <br /> per regione
+            </h5>
+          </div>
+        </div>
       </div>
     </div>
   );
