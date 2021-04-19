@@ -29,8 +29,8 @@ export const HBarChart = ({
         words = text.text().split(/\s+/).reverse(),
         word,
         line = [],
-        lineNumber = 0,
-        lineHeight = 1.1, // ems
+    //    lineNumber = 0,
+    //    lineHeight = 1.1, // ems
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy")),
         tspan = text
