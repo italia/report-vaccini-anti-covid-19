@@ -1,7 +1,7 @@
 ﻿import { sumDoseX, replaceArea, aggrBy, areaMapping } from "./utils";
 import _ from "lodash";
 const baseURL = 
-   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
+  "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
 const sommVaxSummaryURL = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
 const sommVaxDetailURL = `${baseURL}/somministrazioni-vaccini-latest.json`;
