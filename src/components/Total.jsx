@@ -19,9 +19,9 @@ export const Total = (props) => {
         </div>
         <span className="border-top mb-2"></span>
         <div className="d-flex justify-content-center">
-          <img src="logo.png" alt="" width="30" height="30" />
-          <img src="logo.png" alt="" width="30" height="30" />
-          <img src="logo.png" alt="" width="30" height="30" className="pr-5" />
+          <img src="logo.png" alt="" height="30" />
+          <img src="logo.png" alt="" height="30" />
+          <img src="logo.png" alt="" height="30" className="pr-5" />
           {" "}
           <h4 className="pl-2">Totale somministrazioni</h4>
         </div>
