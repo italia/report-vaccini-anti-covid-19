@@ -103,7 +103,7 @@ export const Deliveries = ({ data }) => {
     <div>
       <div className="row">
         <div className="col-12 d-flex justify-content-end">
-          <img alt="reset" src="reset.png" onClick={resetFilter} />
+          <img alt="Ripristinare i filtri" src="reset.png" onClick={resetFilter} />
         </div>
       </div>
 
@@ -124,7 +124,7 @@ export const Deliveries = ({ data }) => {
         <div className="col-12 col-lg-7 order-md-1 order-lg-2">
           <div className="p-4 position-relative d-lg-none">
             <div className="w-100 h-100 d-flex justify-content-start pr-5">
-              <img src="logo.png" width="35" height="35" alt="Logo" />
+              <img src="logo.png" width="35" height="35" alt="" />
 
               <h5 className="pl-3 pl-sm-1">
                 Distribuzione somministrazioni
@@ -146,7 +146,7 @@ export const Deliveries = ({ data }) => {
                 src="logo.png"
                 width="35"
                 height="35"
-                alt="Logo"
+                alt=""
                 style={{
                   position: "absolute",
                   top: -10,
@@ -217,7 +217,7 @@ export const Deliveries = ({ data }) => {
           <div className="bg-gradient-bar"></div>
           <div className="row">
             <div className="col-6 d-flex align-items-baseline">
-              <img src="user_f.png" alt="users" width="75px" />
+              <img src="user_f.png" alt="" width="75px" />
               <span className="text-center font-weight-light text-white">
                 <h3 className="total_gender">
                   {totalAgeByGender?.gen_f?.toLocaleString("it")}
@@ -225,7 +225,7 @@ export const Deliveries = ({ data }) => {
               </span>
             </div>
             <div className="col-6  d-flex align-items-baseline">
-              <img src="user_m.png" alt="users" width="75px" />
+              <img src="user_m.png" alt="" width="75px" />
               <span className="text-center font-weight-light text-white">
                 <h3 className="total_gender">
                   {totalAgeByGender?.gen_m?.toLocaleString("it")}
@@ -237,11 +237,11 @@ export const Deliveries = ({ data }) => {
         <div className="col-12 col-md-5" style={{ backgroundColor: "#17324D" }}>
           <div className="p-4 position-relative">
             <div style={{ height: 100 }}>
-              <img src="group_person.svg" alt="Logo" className="img-fluid" />
+              <img src="group_person.svg" alt="" className="img-fluid" />
             </div>
             <div className="text-white w-100">
               <div className="w-100 h-100 d-flex justify-content-end">
-                <img src="logo.png" width="40" height="40" alt="Logo" />
+                <img src="logo.png" width="40" height="40" alt="" />
               </div>
               <div className="w-100  h-100 d-flex justify-content-end text-right">
                 <h3>

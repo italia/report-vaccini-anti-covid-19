@@ -13,7 +13,7 @@ const TextBoxTotal = ({locationCount}) => (
 
 const TextBoxMap = () => (
   <div className="w-100 h-100 d-flex justify-content-start pr-5">
-    <img src="logo.png" width="35" height="35" alt="Logo" />
+    <img src="logo.png" width="35" height="35" alt="" />
     <h5 className="pl-3 pl-sm-1">
       Principali punti di
       <br /> somministrazione <br /> per regione
@@ -65,7 +65,7 @@ export const Locations = ({ data }) => {
           src="logo.png"
           width="86"
           height="86"
-          alt="Logo"
+          alt=""
           className="img-fluid"
           style={{ zIndex: 10 }}
         />
@@ -86,7 +86,7 @@ export const Locations = ({ data }) => {
             <TextBoxTotal locationCount={locationCount}/>
             <div className="col-12 d-flex justify-content-end  pb-2">
               <img
-                alt="reset-plot"
+                alt="Ripristinare i filtri"
                 src="reset_white.png"
                 onClick={resetFilter}
                 height={35}
@@ -109,7 +109,7 @@ export const Locations = ({ data }) => {
               <TextBoxTotal locationCount={locationCount}/>
               <div className="col-12 d-flex justify-content-end  pb-2">
                 <img
-                  alt="reset-white"
+                  alt="Ripristinare i filtri"
                   src="reset_white.png"
                   onClick={resetFilter}
                   height={35}

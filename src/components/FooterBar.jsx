@@ -13,7 +13,7 @@ export const FooterBar = () => {
           <div className="row title_row">
           <div className="col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
             <a href="https://www.governo.it" className="text-decoration-none" target="_blank" rel="noreferrer">
-              <img src="logo.svg" height="40" width="36" alt="Logo" className="logo pl-5 pr-2" />
+              <img src="logo.svg" height="40" width="36" alt="" className="logo pl-5 pr-2" />
             </a>
             <p className="pt-sm-0">Presidenza del Consiglio dei Ministri</p>
           </div>

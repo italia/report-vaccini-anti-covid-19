@@ -88,7 +88,7 @@ export const Supplier = (data) => {
             <div className="col-12 col-md-12 h-100">
                 <div className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
                     <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
-                    <img src="logo.png" width="86" height="86" alt="Logo" className="d-none d-lg-block"
+                    <img src="logo.png" width="86" height="86" alt="" className="d-none d-lg-block"
                         style={{
                             position: "absolute",
                             right: 28,
@@ -142,13 +142,13 @@ export const Supplier = (data) => {
 
                 <div className="p-4  d-lg-none">
                     <div className="w-100 h-100 d-flex justify-content-start pr-5">
-                        <img src="logo.png" width="35" height="35" alt="Logo" />
+                        <img src="logo.png" width="35" height="35" alt="" />
                         <h5 className="pl-3 pl-sm-1">Distribuzione vaccini<br /> per regione</h5>
                     </div>
                 </div>
                 <div className="p-4  d-none d-lg-block position-text-lg">
                     <div className="w-100 h-100 d-flex justify-content-start pr-5">
-                        <img src="logo.png" width="35" height="35" alt="Logo" />
+                        <img src="logo.png" width="35" height="35" alt="" />
                         <h5 className="pl-3 pl-sm-1">Distribuzione<br />vaccini<br /> per regione</h5>
                     </div>
                 </div>

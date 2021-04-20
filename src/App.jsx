@@ -42,10 +42,10 @@ function App() {
           <div className="col-12">
             <div className="p-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
               <div className="d-none  d-lg-block" style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
-                <img src="group_person.svg" alt="Logo" className="img-fluid" />
+                <img src="group_person.svg" alt="" className="img-fluid" />
               </div>
               <div className="  d-none  d-lg-block position-absolute center-logo">
-                <img src="logo.png" width="80" height="80" alt="Logo" />
+                <img src="logo.png" width="80" height="80" alt="" />
               </div>
               <div className="text-white w-100" style={{ padding: 20 }}>
 

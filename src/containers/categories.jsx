@@ -82,7 +82,7 @@ export const Categories = ({ data }) => {
           src="logo.png"
           width="86"
           height="86"
-          alt="Logo"
+          alt=""
           className="img-fluid"
           style={{ zIndex: 10 }}
         />
@@ -108,8 +108,9 @@ export const Categories = ({ data }) => {
               </p>
             </div>
             <div className="col-12 d-flex justify-content-end  pb-2">
+              {/* TODO Make a button */}
               <img
-                alt="reset-plot2"
+                alt="Ripristinare i filtri"
                 src="reset_white.png"
                 onClick={resetFilter}
                 height={35}
@@ -141,11 +142,12 @@ export const Categories = ({ data }) => {
                 </p>
               </div>
               <div className="col-12 d-flex justify-content-end  pb-2">
+                {/* TODO Make button */}
                 <img
-                  alt="Reset"
+                  alt="Ripristinare i filtri"
                   src="reset_white.png"
                   onClick={resetFilter}
-                  height={35}
+                  height="35"
                 />
               </div>
             </div>
@@ -169,7 +171,7 @@ export const Categories = ({ data }) => {
       <div className="col-12 col-md-6 h-100" style={{ overflow: "hidden" }}>
         <div className="p-4 position-relative d-lg-none">
           <div className="w-100 h-100 d-flex justify-content-start pr-5">
-            <img src="logo.png" width="35" height="35" alt="Logo" />
+            <img src="logo.png" width="35" height="35" alt="" />
             <h5 className="pl-3 pl-sm-1">
               Vaccinazioni
               <br /> per regione
@@ -195,7 +197,7 @@ export const Categories = ({ data }) => {
           style={{ left: "300px", top: "-390px" }}
         >
           <div className="w-100 h-100 d-flex justify-content-start pr-5">
-            <img src="logo.png" width="35" height="35" alt="Logo" />
+            <img src="logo.png" width="35" height="35" alt="" />
             <h5 className="pl-3 pl-sm-1">
               Somministrazioni
               <br /> per regione
