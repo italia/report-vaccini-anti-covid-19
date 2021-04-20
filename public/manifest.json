@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "COVID-19 Vaccinazioni",
+  "name": "La dashboard ufficiale della campagna vaccinale italiana contro la COVID-19",
   "icons": [
     {
       "src": "favicon.ico",
