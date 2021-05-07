@@ -63,6 +63,7 @@ export const StackedBarChart = ({
     const svg = d3
       .select(divRef.current)
       .append("svg")
+      .style('margin-bottom', 15)
       .attr("width", width)
       .attr("height", height);
     const margin = { y: 50, x: 50 };
@@ -85,6 +86,7 @@ export const StackedBarChart = ({
       .attr("y", margin.y / 2)
       .attr("class", "title")
       .attr("text-anchor", "middle")
+      .attr("transform", "rotate(90)")
       .attr(title);
 
     svg
@@ -104,8 +106,13 @@ export const StackedBarChart = ({
       .append("g")
       .attr("class", "axis")
       .attr("transform", `translate(0,${height})`)
-      .style('font-size', 20)
-      .call(d3.axisBottom(xScale));
+      .style('font-size', 16)
+      .call(d3.axisBottom(xScale))
+        .selectAll("text") // x axis label rotation
+            .attr("y", -5)
+            .attr("x", 11)
+            .attr("transform", "rotate(90)")
+            .style("text-anchor", "start");
 
 
     const tooltip = d3
