@@ -1,6 +1,8 @@
 import { sumDoseX, replaceArea, aggrBy, areaMapping } from "./utils";
 import _ from "lodash";
-const baseURL = 
+import Moment from 'moment';
+
+const baseURL =
   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
 const sommVaxSummaryURL = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
@@ -356,6 +358,69 @@ const elaborate = (data) => {
     gen_f: categoriesAndAges.reduce(sumDoseX("sesso_femminile"), 0),
   };
 
+  // suppliers
+  let spectrum = ["#0f69c9", "#4d99eb", "#77b2f2", "#b5d4f5", "#d1e0f0", "#edf2f7", "#ffffff"];
+  let suppliersColor = {};
+  let suppliers = [];
+  data.dataSommVaxDetail.data.map((row) => {
+    if (!suppliers.includes(row.fornitore)) {
+      suppliers.push(row.fornitore);
+      if ((suppliers.length - 1) < spectrum.length) {
+        suppliersColor[row.fornitore] = spectrum[suppliers.length-1];
+      }
+      else {
+        suppliersColor[row.fornitore] = "#ffffff";
+      }
+    }
+  });
+
+  // all weeks
+  let weeksMappingOptimation = {};
+  var index = 0;
+
+  let suppliersWeek = [];
+  var date = new Date('2020-12-21'); // start date
+  while(true) {
+    let entry = {
+      label: Moment(date).format('DD/MM'),
+      from: Moment(date).format('YYYY-MM-DD'),
+      labelfrom: Moment(date).format('DD/MM'),
+      to: Moment(new Date(date.getTime() + 6 * 86400000)).format('YYYY-MM-DD'),
+      labelto: Moment(new Date(date.getTime() + 6 * 86400000)).format('DD/MM'),
+      total: 0
+    };
+
+    suppliers.map((supplier) => {
+      entry[supplier] = 0;
+    });
+
+    weeksMappingOptimation[Moment(date).format('YYYY-MM-DD')] = index;
+    weeksMappingOptimation[Moment(new Date(date.getTime() + 1 * 86400000)).format('YYYY-MM-DD')] = index;
+    weeksMappingOptimation[Moment(new Date(date.getTime() + 2 * 86400000)).format('YYYY-MM-DD')] = index;
+    weeksMappingOptimation[Moment(new Date(date.getTime() + 3 * 86400000)).format('YYYY-MM-DD')] = index;
+    weeksMappingOptimation[Moment(new Date(date.getTime() + 4 * 86400000)).format('YYYY-MM-DD')] = index;
+    weeksMappingOptimation[Moment(new Date(date.getTime() + 5 * 86400000)).format('YYYY-MM-DD')] = index;
+    weeksMappingOptimation[Moment(new Date(date.getTime() + 6 * 86400000)).format('YYYY-MM-DD')] = index;
+    index++;
+
+    suppliersWeek.push(entry);
+
+    date = new Date(date.getTime() + 7 * 86400000);
+
+    if (date > new Date()) {
+      break;
+    }
+  }
+
+  // weeks data
+  data.dataSommVaxDetail.data.map((row) => {
+    let index = weeksMappingOptimation[Moment(new Date(row.data_somministrazione)).format('YYYY-MM-DD')];
+    let week = suppliersWeek[index];
+
+    week.total += (row.prima_dose + row.seconda_dose);
+    week[row.fornitore] += (row.prima_dose + row.seconda_dose);
+  });
+
   const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
   const aggr = {
     timestamp,
@@ -375,6 +440,9 @@ const elaborate = (data) => {
     totalDoses,
     totalDeliverySummaryByAge,
     totalDeliverySummary,
+    suppliersColor,
+    suppliers,
+    suppliersWeek
   };
   return aggr;
 };

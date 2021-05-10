@@ -6,6 +6,7 @@ import { Total } from "./components/Total";
 import { loadData } from "./loadData";
 import { Deliveries } from "./containers/deliveries";
 import { Categories } from "./containers/categories";
+import { Weeks } from "./containers/weeks";
 import { Supplier } from './components/Supplier';
 import { hideLoader } from "./utils";
 import "./App.css";
@@ -24,6 +25,7 @@ function App() {
 
   const tot = (summary?.totalDoses?.seconda_dose + summary?.totalDoses?.prima_dose_janssen)
   const totalePersoneVaccinate = isNaN(tot) ? '' : tot?.toLocaleString('it')
+  const totalePersoneVaccinatePopolazione = isNaN(tot) ? '' : (tot / 59257566 * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
   return (
     <div>
@@ -51,7 +53,10 @@ function App() {
 
                 <div className="w-100  h-100 align-items-center d-flex justify-content-center text-right">
                   <h4 style={{ marginRight: 10 }}>Totale<br></br> persone vaccinate</h4>
-                  <div className="d-flex justify-content-center text-right align-items-center border-pink"> {totalePersoneVaccinate}</div>
+                  <div className="d-flexx justify-content-center text-center align-items-center border-pink">
+                    <span>{totalePersoneVaccinate}</span>
+                    <p style={{fontSize: 16}}>{totalePersoneVaccinatePopolazione} % della popolazione</p>
+                  </div>
                 </div>
                 <div className="text-center position-relative" style={{ top: -10 }}>(persone che hanno completato il ciclo vaccinale)</div>
               </div>
@@ -64,6 +69,9 @@ function App() {
           data={summary}
         />
         <Categories
+          data={summary}
+        />
+        <Weeks
           data={summary}
         />
         <Supplier data={summary}></Supplier>
