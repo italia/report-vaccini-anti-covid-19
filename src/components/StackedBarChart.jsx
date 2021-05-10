@@ -22,7 +22,8 @@ export const StackedBarChart = ({
   useEffect(() => {
       doExit();
       draw();
-  },[data, keys, selectedFrom, selectedTo]);
+      // eslint-disable-next-line
+  }, [data, keys, selectedFrom, selectedTo]);
 
 
   const responsivefy = (svg) => {
@@ -57,7 +58,7 @@ export const StackedBarChart = ({
 
   const draw = () => {
 
-    var dataset = d3.stack().keys(keys)(data.slice(selectedFrom, selectedTo));
+    const dataset = d3.stack().keys(keys)(data.slice(selectedFrom, selectedTo));
 
     // append element
     const svg = d3
