@@ -11,9 +11,6 @@ export const RangeWeek = ({
     changeTo
   }) => {
 
-  const myRef = useRef();
-  const divRef = useRef();
-
   const [values, setValues] = useState([0, 1]);
 
   const STEP = 1;
@@ -40,7 +37,7 @@ export const RangeWeek = ({
         max={max}
         rtl={false}
         onChange={(values) => {
-          if (values[0] != values[1]) {
+          if (values[0] !== values[1]) {
             setValues(values);
             changeFrom(values[0]);
             changeTo(values[1]);

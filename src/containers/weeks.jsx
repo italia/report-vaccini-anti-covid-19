@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { find, max, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import { StackedBarChart } from "./../components/StackedBarChart";
 import { RangeWeek } from "./../components/RangeWeek";
 
