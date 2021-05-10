@@ -362,17 +362,17 @@ const elaborate = (data) => {
   let spectrum = ["#0f69c9", "#4d99eb", "#77b2f2", "#b5d4f5", "#d1e0f0", "#edf2f7", "#ffffff"];
   let suppliersColor = {};
   let suppliers = [];
-  data.dataSommVaxDetail.data.map((row) => {
-    if (!suppliers.includes(row.fornitore)) {
-      suppliers.push(row.fornitore);
-      if ((suppliers.length - 1) < spectrum.length) {
+
+    for (let row of data.dataSommVaxDetail.data) {
+        if (!suppliers.includes(row.fornitore)) {
+        suppliers.push(row.fornitore);
+        if ((suppliers.length - 1) < spectrum.length) {
         suppliersColor[row.fornitore] = spectrum[suppliers.length-1];
-      }
-      else {
+        }
+        else {
         suppliersColor[row.fornitore] = "#ffffff";
-      }
+        }}
     }
-  });
 
   // all weeks
   let weeksMappingOptimation = {};
@@ -390,9 +390,9 @@ const elaborate = (data) => {
       total: 0
     };
 
-    suppliers.map((supplier) => {
+    for (let supplier of suppliers) {
       entry[supplier] = 0;
-    });
+    }
 
     weeksMappingOptimation[Moment(date).format('YYYY-MM-DD')] = index;
     weeksMappingOptimation[Moment(new Date(date.getTime() + 1 * 86400000)).format('YYYY-MM-DD')] = index;
@@ -413,13 +413,13 @@ const elaborate = (data) => {
   }
 
   // weeks data
-  data.dataSommVaxDetail.data.map((row) => {
+  for (let row of data.dataSommVaxDetail.data) {
     let index = weeksMappingOptimation[Moment(new Date(row.data_somministrazione)).format('YYYY-MM-DD')];
     let week = suppliersWeek[index];
 
     week.total += (row.prima_dose + row.seconda_dose);
     week[row.fornitore] += (row.prima_dose + row.seconda_dose);
-  });
+  }
 
   const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
   const aggr = {
