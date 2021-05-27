@@ -1,4 +1,4 @@
-import { sumDoseX, replaceArea, aggrBy, areaMapping } from "./utils";
+import { sumDoseX, replaceArea, areaMapping } from "./utils";
 import _ from "lodash";
 import Moment from 'moment';
 
