@@ -58,11 +58,6 @@ const elaborate = (data) => {
     return { area: areaMapping[area], dosi_somministrate: totalDosesByArea };
   });
 
-  const categoriesByRegionRAW = data.dataSommVaxSummary.data.reduce(
-    aggrBy("area"),
-    {}
-  );
-
   const deliveredByArea = _.groupBy(deliverySummary, "code");
 
   const locations = data.dataVaxLocations.data.map(replaceArea);
@@ -245,7 +240,7 @@ const elaborate = (data) => {
 
   let secondDoses = {}
   for (let row of data.dataSommVaxDetail.data) {
-    var entry = {};
+   entry = {};
     if (secondDoses.hasOwnProperty(row.area)) {
       entry = secondDoses[row.area];
     }
@@ -330,7 +325,7 @@ const elaborate = (data) => {
     let arrayTmp = [];
 
     for (let row of Object.keys(regionsDoses[region]).sort().reverse()) {
-      var entry = {
+      entry = {
         label: "Fascia " + row
       };
       entry["2ª dose/unica dose"] = regionsDoses[region][row]["2ª dose/unica dose"];
