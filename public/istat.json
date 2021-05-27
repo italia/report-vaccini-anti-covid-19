@@ -1,0 +1,1548 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"area",
+                "type":"string"
+            },
+            {
+                "name":"nome_area",
+                "type":"string"
+            },
+            {
+                "name":"fascia_anagrafica",
+                "type":"string"
+            },
+            {
+                "name":"sesso_maschile",
+                "type":"integer"
+            },
+            {
+                "name":"sesso_femminile",
+                "type":"integer"
+            },
+            {
+                "name":"totale_popolazione",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "area", "fascia_anagrafica"
+        ],
+        "pandas_version":"0.20.0"
+    },
+    "data":[
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "78618",
+            "sesso_femminile": "73862",
+            "totale_popolazione": "152480"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "210946",
+            "sesso_femminile": "404501",
+            "totale_popolazione": "404501"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "229441",
+            "sesso_femminile": "223856",
+            "totale_popolazione": "453297"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "304961",
+            "sesso_femminile": "307219",
+            "totale_popolazione": "612180"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "340895",
+            "sesso_femminile": "351240",
+            "totale_popolazione": "692135"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "270190",
+            "sesso_femminile": "289776",
+            "totale_popolazione": "559966"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "217464",
+            "sesso_femminile": "255571",
+            "totale_popolazione": "473035"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "122628",
+            "sesso_femminile": "184403",
+            "totale_popolazione": "307031"
+        },
+        {
+            "area": "PIE",
+            "nome_area": "Piemonte",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "17802",
+            "sesso_femminile": "47958",
+            "totale_popolazione": "65760"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "2405",
+            "sesso_femminile": "2259",
+            "totale_popolazione": "4664"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "6186",
+            "sesso_femminile": "5754",
+            "totale_popolazione": "11940"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "6509",
+            "sesso_femminile": "6501",
+            "totale_popolazione": "13010"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "8892",
+            "sesso_femminile": "8992",
+            "totale_popolazione": "17884"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "10403",
+            "sesso_femminile": "10519",
+            "totale_popolazione": "20922"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "7878",
+            "sesso_femminile": "8245",
+            "totale_popolazione": "16123"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "6118",
+            "sesso_femminile": "6835",
+            "totale_popolazione": "12953"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "3035",
+            "sesso_femminile": "4768",
+            "totale_popolazione": "7803"
+        },
+        {
+            "area": "VDA",
+            "nome_area": "Valle d'Aosta \\\/ Vall\\u00e9e d'Aoste",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "488",
+            "sesso_femminile": "1293",
+            "totale_popolazione": "1781"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "26346",
+            "sesso_femminile": "24726",
+            "totale_popolazione": "51072"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "71635",
+            "sesso_femminile": "65185",
+            "totale_popolazione": "136820"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "74942",
+            "sesso_femminile": "72173",
+            "totale_popolazione": "147115"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "100178",
+            "sesso_femminile": "102829",
+            "totale_popolazione": "203007"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "123454",
+            "sesso_femminile": "129766",
+            "totale_popolazione": "253220"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "97141",
+            "sesso_femminile": "106364",
+            "totale_popolazione": "203505"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "82042",
+            "sesso_femminile": "100454",
+            "totale_popolazione": "182496"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "48971",
+            "sesso_femminile": "76706",
+            "totale_popolazione": "125677"
+        },
+        {
+            "area": "LIG",
+            "nome_area": "Liguria",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "8261",
+            "sesso_femminile": "22338",
+            "totale_popolazione": "30599"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "195676",
+            "sesso_femminile": "183106",
+            "totale_popolazione": "378782"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "510376",
+            "sesso_femminile": "472833",
+            "totale_popolazione": "983209"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "579339",
+            "sesso_femminile": "565847",
+            "totale_popolazione": "1145186"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "760708",
+            "sesso_femminile": "743607",
+            "totale_popolazione": "1504315"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "805186",
+            "sesso_femminile": "804754",
+            "totale_popolazione": "1609940"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "578302",
+            "sesso_femminile": "622755",
+            "totale_popolazione": "1201057"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "451293",
+            "sesso_femminile": "536818",
+            "totale_popolazione": "988111"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "241443",
+            "sesso_femminile": "373624",
+            "totale_popolazione": "615067"
+        },
+        {
+            "area": "LOM",
+            "nome_area": "Lombardia",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "32410",
+            "sesso_femminile": "96023",
+            "totale_popolazione": "128433"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "12036",
+            "sesso_femminile": "11121",
+            "totale_popolazione": "23157"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "31686",
+            "sesso_femminile": "29740",
+            "totale_popolazione": "61426"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "32135",
+            "sesso_femminile": "30787",
+            "totale_popolazione": "62922"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "36891",
+            "sesso_femminile": "37115",
+            "totale_popolazione": "74006"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "42531",
+            "sesso_femminile": "41979",
+            "totale_popolazione": "84510"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "28827",
+            "sesso_femminile": "29987",
+            "totale_popolazione": "58814"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "21334",
+            "sesso_femminile": "25090",
+            "totale_popolazione": "46424"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "11377",
+            "sesso_femminile": "16300",
+            "totale_popolazione": "27677"
+        },
+        {
+            "area": "PAB",
+            "nome_area": "Provincia Autonoma Bolzano \\\/ Bozen",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "1839",
+            "sesso_femminile": "4484",
+            "totale_popolazione": "6323"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "11716",
+            "sesso_femminile": "10795",
+            "totale_popolazione": "22511"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "29978",
+            "sesso_femminile": "28256",
+            "totale_popolazione": "58234"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "30880",
+            "sesso_femminile": "30190",
+            "totale_popolazione": "61070"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "37827",
+            "sesso_femminile": "38495",
+            "totale_popolazione": "76322"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "42764",
+            "sesso_femminile": "43236",
+            "totale_popolazione": "86000"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "33550",
+            "sesso_femminile": "34437",
+            "totale_popolazione": "67987"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "25005",
+            "sesso_femminile": "27867",
+            "totale_popolazione": "52872"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "12138",
+            "sesso_femminile": "18535",
+            "totale_popolazione": "30673"
+        },
+        {
+            "area": "PAT",
+            "nome_area": "Provincia Autonoma Trento",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "2031",
+            "sesso_femminile": "5974",
+            "totale_popolazione": "8005"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "96216",
+            "sesso_femminile": "89850",
+            "totale_popolazione": "186066"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "249180",
+            "sesso_femminile": "232159",
+            "totale_popolazione": "481339"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "263805",
+            "sesso_femminile": "260634",
+            "totale_popolazione": "524439"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "360674",
+            "sesso_femminile": "356657",
+            "totale_popolazione": "717331"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "402631",
+            "sesso_femminile": "403843",
+            "totale_popolazione": "806474"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "297380",
+            "sesso_femminile": "313255",
+            "totale_popolazione": "610635"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "228941",
+            "sesso_femminile": "265780",
+            "totale_popolazione": "494721"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "118941",
+            "sesso_femminile": "179264",
+            "totale_popolazione": "298205"
+        },
+        {
+            "area": "VEN",
+            "nome_area": "Veneto",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "17254",
+            "sesso_femminile": "49867",
+            "totale_popolazione": "67121"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "21885",
+            "sesso_femminile": "20422",
+            "totale_popolazione": "42307"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "57233",
+            "sesso_femminile": "52344",
+            "totale_popolazione": "109577"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "63227",
+            "sesso_femminile": "60641",
+            "totale_popolazione": "123868"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "86916",
+            "sesso_femminile": "85580",
+            "totale_popolazione": "172496"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "98053",
+            "sesso_femminile": "99481",
+            "totale_popolazione": "197534"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "75328",
+            "sesso_femminile": "81119",
+            "totale_popolazione": "156447"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "64483",
+            "sesso_femminile": "75755",
+            "totale_popolazione": "140238"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "33723",
+            "sesso_femminile": "51599",
+            "totale_popolazione": "85322"
+        },
+        {
+            "area": "FVG",
+            "nome_area": "Friuli-Venezia Giulia",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "5076",
+            "sesso_femminile": "15281",
+            "totale_popolazione": "20357"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "83292",
+            "sesso_femminile": "77257",
+            "totale_popolazione": "160549"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "219499",
+            "sesso_femminile": "200976",
+            "totale_popolazione": "420475"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "248708",
+            "sesso_femminile": "246523",
+            "totale_popolazione": "495231"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "336930",
+            "sesso_femminile": "337935",
+            "totale_popolazione": "674865"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "351991",
+            "sesso_femminile": "360484",
+            "totale_popolazione": "712475"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "261565",
+            "sesso_femminile": "287756",
+            "totale_popolazione": "549321"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "209011",
+            "sesso_femminile": "245494",
+            "totale_popolazione": "454505"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "121720",
+            "sesso_femminile": "177308",
+            "totale_popolazione": "299028"
+        },
+        {
+            "area": "EMR",
+            "nome_area": "Emilia-Romagna",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "20517",
+            "sesso_femminile": "51994",
+            "totale_popolazione": "72511"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "67933",
+            "sesso_femminile": "63301",
+            "totale_popolazione": "131234"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "176223",
+            "sesso_femminile": "162470",
+            "totale_popolazione": "338693"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "197626",
+            "sesso_femminile": "197572",
+            "totale_popolazione": "395198"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "266316",
+            "sesso_femminile": "273926",
+            "totale_popolazione": "540242"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "288634",
+            "sesso_femminile": "301743",
+            "totale_popolazione": "590377"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "222638",
+            "sesso_femminile": "244632",
+            "totale_popolazione": "467270"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "186245",
+            "sesso_femminile": "220230",
+            "totale_popolazione": "406475"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "106505",
+            "sesso_femminile": "156645",
+            "totale_popolazione": "263150"
+        },
+        {
+            "area": "TOS",
+            "nome_area": "Toscana",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "17817",
+            "sesso_femminile": "45100",
+            "totale_popolazione": "62917"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "15887",
+            "sesso_femminile": "14886",
+            "totale_popolazione": "30773"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "42353",
+            "sesso_femminile": "38825",
+            "totale_popolazione": "81178"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "47834",
+            "sesso_femminile": "47731",
+            "totale_popolazione": "95565"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "61343",
+            "sesso_femminile": "63516",
+            "totale_popolazione": "124859"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "65605",
+            "sesso_femminile": "69801",
+            "totale_popolazione": "135406"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "53134",
+            "sesso_femminile": "58516",
+            "totale_popolazione": "111650"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "44060",
+            "sesso_femminile": "50737",
+            "totale_popolazione": "94797"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "25634",
+            "sesso_femminile": "37554",
+            "totale_popolazione": "63188"
+        },
+        {
+            "area": "UMB",
+            "nome_area": "Umbria",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "4252",
+            "sesso_femminile": "11339",
+            "totale_popolazione": "15591"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "28356",
+            "sesso_femminile": "26431",
+            "totale_popolazione": "54787"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "76318",
+            "sesso_femminile": "69679",
+            "totale_popolazione": "145997"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "82051",
+            "sesso_femminile": "81273",
+            "totale_popolazione": "163324"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "108886",
+            "sesso_femminile": "109965",
+            "totale_popolazione": "218851"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "116551",
+            "sesso_femminile": "120048",
+            "totale_popolazione": "236599"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "93239",
+            "sesso_femminile": "101460",
+            "totale_popolazione": "194699"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "72334",
+            "sesso_femminile": "83666",
+            "totale_popolazione": "156000"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "43722",
+            "sesso_femminile": "64431",
+            "totale_popolazione": "108153"
+        },
+        {
+            "area": "MAR",
+            "nome_area": "Marche",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "7511",
+            "sesso_femminile": "18362",
+            "totale_popolazione": "25873"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "109550",
+            "sesso_femminile": "102762",
+            "totale_popolazione": "212312"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "290815",
+            "sesso_femminile": "268040",
+            "totale_popolazione": "558855"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "333893",
+            "sesso_femminile": "331748",
+            "totale_popolazione": "665641"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "429585",
+            "sesso_femminile": "450321",
+            "totale_popolazione": "879906"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "453296",
+            "sesso_femminile": "487174",
+            "totale_popolazione": "940470"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "333455",
+            "sesso_femminile": "374251",
+            "totale_popolazione": "707706"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "248065",
+            "sesso_femminile": "303412",
+            "totale_popolazione": "551477"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "134374",
+            "sesso_femminile": "204156",
+            "totale_popolazione": "338530"
+        },
+        {
+            "area": "LAZ",
+            "nome_area": "Lazio",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "21197",
+            "sesso_femminile": "52560",
+            "totale_popolazione": "73757"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "24123",
+            "sesso_femminile": "22330",
+            "totale_popolazione": "46453"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "66767",
+            "sesso_femminile": "61563",
+            "totale_popolazione": "128330"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "75175",
+            "sesso_femminile": "73001",
+            "totale_popolazione": "148176"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "92781",
+            "sesso_femminile": "92853",
+            "totale_popolazione": "185634"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "100216",
+            "sesso_femminile": "104288",
+            "totale_popolazione": "204504"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "81025",
+            "sesso_femminile": "87853",
+            "totale_popolazione": "168878"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "61328",
+            "sesso_femminile": "70208",
+            "totale_popolazione": "131536"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "32556",
+            "sesso_femminile": "46859",
+            "totale_popolazione": "79415"
+        },
+        {
+            "area": "ABR",
+            "nome_area": "Abruzzo",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "7783",
+            "sesso_femminile": "17822",
+            "totale_popolazione": "25605"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "5480",
+            "sesso_femminile": "5079",
+            "totale_popolazione": "10559"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "16487",
+            "sesso_femminile": "14794",
+            "totale_popolazione": "31281"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "17671",
+            "sesso_femminile": "16302",
+            "totale_popolazione": "33973"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "20694",
+            "sesso_femminile": "20342",
+            "totale_popolazione": "41036"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "23216",
+            "sesso_femminile": "23700",
+            "totale_popolazione": "46916"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "19838",
+            "sesso_femminile": "20946",
+            "totale_popolazione": "40784"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "14517",
+            "sesso_femminile": "16100",
+            "totale_popolazione": "30617"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "8273",
+            "sesso_femminile": "12480",
+            "totale_popolazione": "20753"
+        },
+        {
+            "area": "MOL",
+            "nome_area": "Molise",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "1516",
+            "sesso_femminile": "3914",
+            "totale_popolazione": "5430"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "132600",
+            "sesso_femminile": "125239",
+            "totale_popolazione": "257839"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "351358",
+            "sesso_femminile": "333768",
+            "totale_popolazione": "685126"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "354604",
+            "sesso_femminile": "352148",
+            "totale_popolazione": "706752"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "403043",
+            "sesso_femminile": "416348",
+            "totale_popolazione": "819391"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "420005",
+            "sesso_femminile": "451118",
+            "totale_popolazione": "871123"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "324747",
+            "sesso_femminile": "356261",
+            "totale_popolazione": "681008"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "225038",
+            "sesso_femminile": "266153",
+            "totale_popolazione": "491191"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "100851",
+            "sesso_femminile": "157605",
+            "totale_popolazione": "258456"
+        },
+        {
+            "area": "CAM",
+            "nome_area": "Campania",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "14772",
+            "sesso_femminile": "37219",
+            "totale_popolazione": "51991"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "83822",
+            "sesso_femminile": "79771",
+            "totale_popolazione": "163593"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "225206",
+            "sesso_femminile": "210481",
+            "totale_popolazione": "435687"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "227302",
+            "sesso_femminile": "225949",
+            "totale_popolazione": "453251"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "282496",
+            "sesso_femminile": "288400",
+            "totale_popolazione": "570896"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "294064",
+            "sesso_femminile": "313117",
+            "totale_popolazione": "607181"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "234719",
+            "sesso_femminile": "259618",
+            "totale_popolazione": "494337"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "182293",
+            "sesso_femminile": "212983",
+            "totale_popolazione": "395276"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "91098",
+            "sesso_femminile": "133728",
+            "totale_popolazione": "224826"
+        },
+        {
+            "area": "PUG",
+            "nome_area": "Puglia",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "14591",
+            "sesso_femminile": "33540",
+            "totale_popolazione": "48131"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "11156",
+            "sesso_femminile": "10359",
+            "totale_popolazione": "21515"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "31289",
+            "sesso_femminile": "28361",
+            "totale_popolazione": "59650"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "33235",
+            "sesso_femminile": "31284",
+            "totale_popolazione": "64519"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "38261",
+            "sesso_femminile": "37999",
+            "totale_popolazione": "76260"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "42875",
+            "sesso_femminile": "44430",
+            "totale_popolazione": "87305"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "35626",
+            "sesso_femminile": "38048",
+            "totale_popolazione": "73674"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "24484",
+            "sesso_femminile": "28073",
+            "totale_popolazione": "52557"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "14534",
+            "sesso_femminile": "21252",
+            "totale_popolazione": "35786"
+        },
+        {
+            "area": "BAS",
+            "nome_area": "Basilicata",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "2593",
+            "sesso_femminile": "5609",
+            "totale_popolazione": "8202"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "38876",
+            "sesso_femminile": "36287",
+            "totale_popolazione": "75163"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "107956",
+            "sesso_femminile": "100964",
+            "totale_popolazione": "208920"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "118197",
+            "sesso_femminile": "114738",
+            "totale_popolazione": "232935"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "129029",
+            "sesso_femminile": "132340",
+            "totale_popolazione": "261369"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "137054",
+            "sesso_femminile": "147703",
+            "totale_popolazione": "284757"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "118081",
+            "sesso_femminile": "125586",
+            "totale_popolazione": "243667"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "83735",
+            "sesso_femminile": "93931",
+            "totale_popolazione": "177666"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "44484",
+            "sesso_femminile": "63756",
+            "totale_popolazione": "108240"
+        },
+        {
+            "area": "CAL",
+            "nome_area": "Calabria",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "7652",
+            "sesso_femminile": "16583",
+            "totale_popolazione": "24235"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "105317",
+            "sesso_femminile": "98794",
+            "totale_popolazione": "204111"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "284627",
+            "sesso_femminile": "266532",
+            "totale_popolazione": "551159"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "292313",
+            "sesso_femminile": "288729",
+            "totale_popolazione": "581042"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "337255",
+            "sesso_femminile": "347309",
+            "totale_popolazione": "684564"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "353432",
+            "sesso_femminile": "378978",
+            "totale_popolazione": "732410"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "288278",
+            "sesso_femminile": "320068",
+            "totale_popolazione": "608346"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "210470",
+            "sesso_femminile": "249728",
+            "totale_popolazione": "460198"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "106627",
+            "sesso_femminile": "158511",
+            "totale_popolazione": "265138"
+        },
+        {
+            "area": "SIC",
+            "nome_area": "Sicilia",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "16815",
+            "sesso_femminile": "38876",
+            "totale_popolazione": "55691"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "16-19",
+            "sesso_maschile": "28083",
+            "sesso_femminile": "26349",
+            "totale_popolazione": "54432"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "20-29",
+            "sesso_maschile": "78607",
+            "sesso_femminile": "70663",
+            "totale_popolazione": "149270"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "30-39",
+            "sesso_maschile": "92378",
+            "sesso_femminile": "88486",
+            "totale_popolazione": "180864"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "40-49",
+            "sesso_maschile": "123837",
+            "sesso_femminile": "120784",
+            "totale_popolazione": "244621"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "50-59",
+            "sesso_maschile": "131231",
+            "sesso_femminile": "134873",
+            "totale_popolazione": "266104"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "60-69",
+            "sesso_maschile": "109036",
+            "sesso_femminile": "116298",
+            "totale_popolazione": "225334"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "70-79",
+            "sesso_maschile": "79652",
+            "sesso_femminile": "92447",
+            "totale_popolazione": "172099"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "80-89",
+            "sesso_maschile": "37245",
+            "sesso_femminile": "55104",
+            "totale_popolazione": "92349"
+        },
+        {
+            "area": "SAR",
+            "nome_area": "Sardegna",
+            "fascia_anagrafica": "90+",
+            "sesso_maschile": "8479",
+            "sesso_femminile": "19167",
+            "totale_popolazione": "27646"
+        }
+    ]
+}

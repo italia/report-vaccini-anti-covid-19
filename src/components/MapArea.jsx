@@ -11,13 +11,19 @@ export const MapArea = ({
   fillBy,
   summary,
   tooltip,
+  percentage,
 }) => {
   const [geographies, setGeographies] = useState([]);
   const [maxValue, setMaxValue] = useState(0);
 
   useEffect(() => {
-    const maxValue = _.maxBy(summary || {}, fillBy);
-    setMaxValue(maxValue ? maxValue[fillBy] : 0);
+    if (percentage) {
+      setMaxValue(100);
+    }
+    else {
+      const maxValue = _.maxBy(summary || {}, fillBy);
+      setMaxValue(maxValue ? maxValue[fillBy] : 0);
+    }
   }, [summary, fillBy]);
 
   const width = 498,
