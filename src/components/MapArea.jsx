@@ -24,7 +24,7 @@ export const MapArea = ({
       const maxValue = _.maxBy(summary || {}, fillBy);
       setMaxValue(maxValue ? maxValue[fillBy] : 0);
     }
-  }, [summary, fillBy]);
+  }, [summary, fillBy, percentage]);
 
   const width = 498,
     height = 478;

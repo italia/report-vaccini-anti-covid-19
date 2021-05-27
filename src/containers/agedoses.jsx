@@ -66,7 +66,7 @@ export const AgeDoses = ({ data }) => {
           setDosesAgesData(data.dosesAgesRegionData[region.code])
 
           for(let row of data?.totalDeliverySummary) {
-            if (row.code == region.code) {
+            if (row.code === region.code) {
                 setTotalByCategory(row.dosi_somministrate);
             }
           }
