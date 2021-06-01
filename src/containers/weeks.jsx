@@ -25,18 +25,11 @@ export const Weeks = ({ data }) => {
 
     return (
         <div>
-            <div className="row d-flex justify-content-center align-items-center p-5 bg-title-plot">
-                <img
-                    src="logo.png"
-                    width="86"
-                    height="86"
-                    alt="Logo"
-                    className="img-fluid"
-                    style={{ zIndex: 10 }}
-                />
-                <h3 className="text-center">Andamento settimanale delle somministrazioni</h3>
+            <div className="row justify-content-center p-5 bg-title-plot mt-5">
+                <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="img-fluid d-none d-lg-block" style={{ zIndex: 10, position: 'relative', top: -25 }} />
+                <h3 className="text-center mt-2">Andamento settimanale delle somministrazioni</h3>
             </div>
-            <div className="row position-powerbi" style={{ backgroundColor: "#F8FBFE", marginTop: 40 }}>
+            <div className="row position-powerbi" style={{ backgroundColor: "#F8FBFE", marginTop: 20 }}>
                 <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex"></div>
                 <div className="col-12 col-md-6  position-relative">
                     <div className="bg-gradient-bar"></div>
