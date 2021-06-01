@@ -68,7 +68,7 @@ export const AgeHStackedBarChart = ({
     const margin = { y: 30, x: 60 };
 
     // axis
-    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['Totale istat']; })]);
+    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['Totale platea']; })]);
     const yScale = d3.scaleBand().padding(0.2);
     xScale.range([0, width]);
     yScale.range([0, height]).domain(data.map((d) => d.label));
@@ -160,8 +160,8 @@ export const AgeHStackedBarChart = ({
                 `<div style="text-align: center; line-height: 1.15rem;">
                 <div style="font-size: 12px;">${regione}</div>
                 <div><b>${d.data.label}</b></div>
-                <div style="font-size: 14px;">Popolazione Istat</div>
-                <div>${d.data["Totale istat"].toLocaleString('it')}</div>
+                <div style="font-size: 14px;">Platea</div>
+                <div>${d.data["Totale platea"].toLocaleString('it')}</div>
                 </div>`
                 )
             .style('display', null);
@@ -170,10 +170,10 @@ export const AgeHStackedBarChart = ({
           var perc = 0;
           if (d3.select(this.parentNode).attr("dose") === '1ª dose') {
             let sum = d.data["1ª dose"] + d.data["2ª dose/unica dose"];
-            perc = (sum / d.data["Totale istat"]) * 100;
+            perc = (sum / d.data["Totale platea"]) * 100;
           }
           else {
-            perc = (d.data["2ª dose/unica dose"] / d.data["Totale istat"]) * 100;
+            perc = (d.data["2ª dose/unica dose"] / d.data["Totale platea"]) * 100;
           }
 
           tooltip
@@ -185,7 +185,7 @@ export const AgeHStackedBarChart = ({
                 <div style="font-size: 12px;">${regione} ${d.data.label}</div>
                 <div style="text-align: center"><b>${d3.select(this.parentNode).attr("dose")} </b></div>
                 <div style="font-size: 14px;"><b>(${perc.toFixed(2).toLocaleString("it")} %)</b></div>
-                <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale istat"].toLocaleString('it')}</div>`
+                <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
             )
             .style('display', null);
         }
