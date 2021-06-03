@@ -29,9 +29,10 @@ export const Weeks = ({ data }) => {
                 <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="img-fluid d-none d-lg-block" style={{ zIndex: 10, position: 'relative', top: -25 }} />
                 <h3 className="text-center mt-2">Andamento settimanale delle somministrazioni</h3>
             </div>
-            <div className="row position-powerbi" style={{ backgroundColor: "#F8FBFE", marginTop: 20 }}>
+            <div className="row position-powerbi m-2 p-2" style={{ backgroundColor: "#F8FBFE", marginTop: 20 }}>
                 <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex"></div>
                 <div className="col-12 col-md-6  position-relative">
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-lg-none sd-sm-block" style={{ zIndex: 20, position: "absolute", right:-40, top:-25}}/>
                     <div className="bg-gradient-bar"></div>
                 </div>
                 <div className="col-12 col-md-4" style={{ backgroundColor: "#17324D" }}>

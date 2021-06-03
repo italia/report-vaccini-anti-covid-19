@@ -39,7 +39,7 @@ export const StackedBarChart = ({
     // add preserveAspectRatio attribute to specify how to scale
     // and call resize so that svg resizes on page load
     svg
-      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("viewBox", `0 0 ${width} ${height+10}`)
       .attr("preserveAspectRatio", "xMinYMid")
       .call(resize);
 
