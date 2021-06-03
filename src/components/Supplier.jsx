@@ -51,7 +51,8 @@ export const Supplier = (data) => {
                 <div className="col-12 col-md-12 h-100 p-0">
 
                     {/* Total Box - Mobile Layout */}
-                    <div className="mb-5 d-lg-none" style={{ position: 'relative', background: '#013366' }}>
+                    <div className="m-3 d-lg-none" style={{ position: 'relative', background: '#013366' }}>
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center" style={{ position: "absolute", right:-40, top:-25}}/>
                         <div className="text-white w-100">
                             <div className="w-100  h-100 d-flex justify-content-center pt-3">
                                 <h5>Totale vaccini distribuiti</h5>

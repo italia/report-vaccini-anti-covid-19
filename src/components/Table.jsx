@@ -107,7 +107,7 @@ export const Table = ({ deliveryTableData }) => {
   return (
     <div id="datatable">
       <table
-        className="table h-100 table-borderless compact table-hover"
+        className="table h-100 table-borderless compact table-hover deliveries-table"
         cellSpacing="0"
         width="100%"
         style={{ paddingBottom: 6 }}

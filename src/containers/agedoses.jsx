@@ -99,9 +99,10 @@ export const AgeDoses = ({ data }) => {
             </div>
             {/* // Box Title */}
 
-            <div className="col-12 col-md-12 h-100 p-0 ">
+            <div className="col-12 col-md-12 h-100 m-3 ">
                 {/* Total Box - Mobile View */}
-                <div className="mb-5  d-lg-none " style={{ position: "relative", background: "#013366" }}>
+                <div className="m-3  d-lg-none" style={{ position: "relative", background: "#013366" }}>
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center" style={{ position: "absolute", left:-40, top:-25}}/>
                     <div className="text-white w-100 ">
                         <div className="w-100  h-100 d-flex justify-content-center pt-5">
                             <h5>Totale somministrazioni</h5>
@@ -139,7 +140,7 @@ export const AgeDoses = ({ data }) => {
                 </div>
                 {/* // Total Box - Desktop View */}
             </div>
-            <div className="col-12 col-md-6 h-100" style={{marginTop: 80}}>
+            <div className="col-12 col-md-6 h-100" style={{marginTop: 50}}>
 
                 {/* Graph */}
                 <AgeHStackedBarChart

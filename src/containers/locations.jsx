@@ -63,17 +63,17 @@ export const Locations = ({ data }) => {
                         non sono inclusi i punti di somministrazione temporanei)</p>
                 </div>
             </div>
-            <div className="col-12 col-md-12 h-100 p-3" style={{marginTop: -10}}>
+            <div className="col-12 col-md-12 h-100 p-3 mb-3" style={{marginTop: -10}}>
                 {/* Total Box - Mobile View */}
-                <div className="mb-5  d-lg-none " style={{  background: "#013366",}}>
-                    <div className="w-100  h-100 justify-content-center">
+                <div className="d-lg-none m-3 pl-5" style={{background: "#013366",}}>
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="" style={{ position: "absolute", left:-10, top:0}}/>
 
                     <TextBoxTotal locationCount={locationCount}/>
 
-                        <div className="col-12 d-flex justify-content-end  pb-2">
-                            <img alt="reset-plot" src="reset_white.png" onClick={resetFilter} height={35} />
-                        </div>
+                    <div className="col-12 d-flex justify-content-end  pb-2">
+                        <img alt="reset-plot" src="reset_white.png" onClick={resetFilter} height={35} />
                     </div>
+
                 </div>
                 {/* // Total Box - Mobile View */}
 
@@ -95,13 +95,13 @@ export const Locations = ({ data }) => {
             </div>
             <div className="col-12 col-md-6 pt-5">
                 {/* Map Legend - Mobile View */}
-                <div className="p-4 position-relative d-lg-none" style={{left: 150, top: -115}}><TextBoxMap/></div>
+                <div className="p-2 position-relative d-lg-none" style={{top:-100}}>Principali Punti di Somministrazione per Regione</div>
 
                 {/* Map Legend - Desktop View */}
-                <div className="p-4 position-relative d-none d-lg-block" style={{ left: "300px", top: "-60px" }} ><TextBoxMap/></div>
+                <div className="p-4 mb-2 position-relative d-none d-lg-block" style={{ left: "300px", top: "-60px" }} ><TextBoxMap/></div>
 
                 {/* Map Graph */}
-                <div style={{marginTop: -200}}>
+                <div style={{marginTop: -150}}>
                 <MapArea
                     fillMapDeliveryArea={fillMapDeliveryArea}
                     summary={data.locationsByRegion}
