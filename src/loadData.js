@@ -231,6 +231,11 @@ const elaborate = (data) => {
         dosesAgesData.push(entry);
     }
 
+    let totalPlatea = 0;
+    for (let platea of data.dataPlatea.data) {
+        totalPlatea += parseInt(platea.totale_popolazione);
+    }
+
     let secondDoses = {}
     for (let row of data.dataSommVaxDetail.data) {
         entry = {};
@@ -333,8 +338,6 @@ const elaborate = (data) => {
         dosesAgesRegionData[region] = arrayTmp;
     }
 
-    console.log(dosesAgesRegionData);
-
     // suppliers
     let spectrum = ["#0f69c9", "#4d99eb", "#77b2f2", "#b5d4f5", "#d1e0f0", "#edf2f7", "#ffffff"];
     let suppliersColor = {};
@@ -423,7 +426,8 @@ const elaborate = (data) => {
         dosesAgesRegionData,
         ageDosesTotal,
         secondDosesData,
-        secondDosesPlateaData
+        secondDosesPlateaData,
+        totalPlatea
     };
     return aggr;
   };
