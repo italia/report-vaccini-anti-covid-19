@@ -24,7 +24,7 @@ function App() {
 
     const tot = (summary?.totalDoses?.seconda_dose + summary?.totalDoses?.prima_dose_janssen)
     const totalePersoneVaccinate = isNaN(tot) ? '' : tot?.toLocaleString('it')
-    const totalePersoneVaccinatePopolazione = isNaN(tot) ? '' : (tot / 54252607 * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    const totalePersoneVaccinatePopolazione = isNaN(tot) ? '' : (tot / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
     return (
         <div>
