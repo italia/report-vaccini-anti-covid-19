@@ -30,6 +30,7 @@ const elaborate = (data) => {
     let totalDoses = {
         prima_dose: _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
         seconda_dose: _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
+        pregressa_infezione: _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
         prima_dose_janssen: _.sum(
           dataVaxSomLatest
             ?.filter((e) => e.fornitore === "Janssen")
@@ -41,6 +42,10 @@ const elaborate = (data) => {
             ?.map((_e) => _e?.numero_dosi)
         )?.toLocaleString("it"),
     };
+
+    if (!totalDoses.pregressa_infezione) {
+        totalDoses.pregressa_infezione = 0;
+    }
 
     const groups = _.groupBy(dataSupplier, "fornitore");
     let allDosesSupplier = Object.keys(groups).map((k) => {
@@ -180,6 +185,9 @@ const elaborate = (data) => {
             agesTmp[key]["1ª dose"] += row.prima_dose;
             agesTmp[key]["2ª dose/unica dose"] += row.seconda_dose;
         }
+        if (row.hasOwnProperty('pregressa_infezione')) {
+            agesTmp[key]["2ª dose/unica dose"] += row.pregressa_infezione;
+        }
 
         /* regions data */
         if (!regionsDoses.hasOwnProperty(row.area)) {
@@ -205,6 +213,9 @@ const elaborate = (data) => {
         else {
             regionsDoses[row.area][key]["1ª dose"] += row.prima_dose;
             regionsDoses[row.area][key]["2ª dose/unica dose"] += row.seconda_dose;
+        }
+        if (row.hasOwnProperty('pregressa_infezione')) {
+            regionsDoses[row.area][key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
     }
 
@@ -246,6 +257,9 @@ const elaborate = (data) => {
         var secondDoseTmp = row.seconda_dose;
         if (row.fornitore === 'Janssen') {
             secondDoseTmp = row.prima_dose;
+        }
+        if (row.hasOwnProperty('pregressa_infezione')) {
+            secondDoseTmp += row.pregressa_infezione;
         }
 
         if (!secondDoses.hasOwnProperty(row.area)) {
@@ -355,6 +369,58 @@ const elaborate = (data) => {
         }
     }
 
+    // // availability -> supplied - used
+    // let dataAvailabilityTmp = {}; // global
+    // let dataAvailabilityRegionTmp = {}; // region
+
+    // for (let sup of suppliers) {
+    //     dataAvailabilityTmp[sup] = 0; // populate with suppliers
+    // }
+
+    // /* before calculate supplied */
+    // for (let row of data.dataSupplierDoses.data) {
+    //     let descrArea = areaMapping[row.area];
+
+    //     if (!dataAvailabilityRegionTmp.hasOwnProperty(descrArea)) { // region
+    //         dataAvailabilityRegionTmp[descrArea] = {};
+
+    //         for (let sup of suppliers) {
+    //             dataAvailabilityRegionTmp[descrArea][sup] = 0;
+    //         }
+    //     }
+
+    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] += row.numero_dosi; // region
+    //     dataAvailabilityTmp[row.fornitore] += row.numero_dosi; // global
+    // }
+    // /* remove used */
+    // for (let row of data.dataSommVaxDetail.data) {
+    //     let descrArea = areaMapping[row.area];
+
+    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.prima_dose; // region
+    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.seconda_dose; // region
+
+    //     dataAvailabilityTmp[row.fornitore] -= row.prima_dose; // global
+    //     dataAvailabilityTmp[row.fornitore] -= row.seconda_dose; // global
+
+    //     if (row.hasOwnProperty('pregressa_infezione')) {
+    //         dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.pregressa_infezione; // region
+    //         dataAvailabilityTmp[row.fornitore] -= row.pregressa_infezione; // global
+    //     }
+    // }
+
+    // let dataAvailability = []; // chart without filter
+    // for (let sup of Object.keys(dataAvailabilityTmp)) {
+    //     let item = {
+    //         'totale'    : dataAvailabilityTmp[sup],
+    //         'fornitore' : sup
+    //     };
+
+    //     dataAvailability.push(item);
+    // }
+
+    // let totalAvailability = _.sum(dataAvailability.map((e) => e?.totale));
+    // // end
+
     // all weeks
     let weeksMappingOptimation = {};
     var index = 0;
@@ -398,8 +464,8 @@ const elaborate = (data) => {
         let index = weeksMappingOptimation[Moment(new Date(row.data_somministrazione)).format('YYYY-MM-DD')];
         let week = suppliersWeek[index];
 
-        week.total += (row.prima_dose + row.seconda_dose);
-        week[row.fornitore] += (row.prima_dose + row.seconda_dose);
+        week.total += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
+        week[row.fornitore] += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
     }
 
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
@@ -427,7 +493,9 @@ const elaborate = (data) => {
         ageDosesTotal,
         secondDosesData,
         secondDosesPlateaData,
-        totalPlatea
+        totalPlatea,
+        // dataAvailability,
+        // totalAvailability
     };
     return aggr;
   };

@@ -92,10 +92,10 @@ export const Supplier = (data) => {
             <div className="col-12 col-md-6 h-100 pb-5">
                 <BarChartSupplier
                     title=""
-                    xtitle="Fascia d'età"
+                    xtitle=""
                     ytitle=""
                     width="800"
-                    handleDeliveryBarChartClick={handleDeliveryBarChartClick}
+                    handleBarChartClick={handleDeliveryBarChartClick}
                     height="300"
                     selected={selectedSupplier}
                     property={{ xprop: "fornitore", yprop: "totale" }}

@@ -22,7 +22,7 @@ function App() {
         });
     }, []);
 
-    const tot = (summary?.totalDoses?.seconda_dose + summary?.totalDoses?.prima_dose_janssen)
+    const tot = (summary?.totalDoses?.seconda_dose + summary?.totalDoses?.prima_dose_janssen + summary?.totalDoses?.pregressa_infezione)
     const totalePersoneVaccinate = isNaN(tot) ? '' : tot?.toLocaleString('it')
     const totalePersoneVaccinatePopolazione = isNaN(tot) ? '' : (tot / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
@@ -62,7 +62,7 @@ function App() {
                 <Deliveries data={summary} /> {/* Tabella Distribuzione Dosi */}
                 <Weeks data={summary} /> {/* Grafico Andamento Settimanale delle Somministrazioni */}
                 <AgeDoses data={summary} /> {/* Grafico Somministrazioni per fascia d'età */}
-                <Supplier data={summary}></Supplier> {/* Grafico Distribuzione Vaccini per Fornitore */}
+                <Supplier data={summary} /> {/* Grafico Distribuzione Vaccini per Fornitore */}
                 <Locations data={summary} /> {/* Tabella Principali Punti di Somministrazione */}
 
                 <div className="row">
