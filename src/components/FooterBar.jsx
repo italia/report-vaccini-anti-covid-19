@@ -18,13 +18,13 @@ export const FooterBar = () => {
             <p className="pt-sm-0">Presidenza del Consiglio dei Ministri</p>
           </div>
           <div className="col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
-            <a href="http://www.governo.it" className="text-decoration-none" target="_blank" rel="noreferrer">
+            <a href="http://www.governo.it/it/dipartimenti/commissario-straordinario-lemergenza-covid-19/15974" className="text-decoration-none" target="_blank" rel="noreferrer">
               <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
             </a>
             <p className="pt-sm-0">Commissario Straordinario Covid-19</p>
           </div>
           <div className="col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
-            <a href="http://www.governo.it" className="text-decoration-none" target="_blank" rel="noreferrer">
+            <a href="http://www.salute.gov.it/portale/home.html" className="text-decoration-none" target="_blank" rel="noreferrer">
               <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
             </a>
             <p className="pt-sm-0">Ministero della Salute</p>
