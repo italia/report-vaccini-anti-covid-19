@@ -1,7 +1,8 @@
-import { sumDoseX, replaceArea, aggrBy, areaMapping } from "./utils";
+import { sumDoseX, replaceArea, areaMapping } from "./utils";
 import _ from "lodash";
-const baseURL = 
-  "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
+import Moment from 'moment';
+
+const baseURL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
 const sommVaxSummaryURL = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
 const sommVaxDetailURL = `${baseURL}/somministrazioni-vaccini-latest.json`;
@@ -10,421 +11,546 @@ const vaxLocationsURL = `${baseURL}/punti-somministrazione-tipologia.json`;
 const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
 const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
 const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
+const plateaURL = `${baseURL}/platea.json`;
+
 const elaborate = (data) => {
-  const tot = data.dataSommVaxSummary.data
-    .filter((d) => d.area !== "ITA")
-    .reduce(sumDoseX("totale"), 0);
-  // datatable and map
-  const dataSupplier = data.dataSupplierDoses.data;
-  const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
+    const tot = data.dataSommVaxSummary.data
+        .filter((d) => d.area !== "ITA")
+        .reduce(sumDoseX("totale"), 0);
 
-  const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
+    // datatable and map
+    const dataSupplier = data.dataSupplierDoses.data;
+    const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
 
-  // categories and ages summary
-  const categoriesAndAges = data.dataProfileSummary.data;
-  const dataVaxSomLatest = data?.dataSommVaxDetail?.data;
+    const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
 
-  let totalDoses = {
-    prima_dose: _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
-    seconda_dose: _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
-    prima_dose_janssen: _.sum(
-      dataVaxSomLatest
-        ?.filter((e) => e.fornitore === "Janssen")
-        .map((e) => e?.prima_dose)
-    ),
-    vax_somministrati: _.sum(
-      dataSupplier
-        ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
-        ?.map((_e) => _e?.numero_dosi)
-    )?.toLocaleString("it"),
-  };
+    // categories and ages summary
+    const dataVaxSomLatest = data?.dataSommVaxDetail?.data;
 
-  const categories = [
-    {
-      name: "Over 80*",
-      code: "categoria_over80",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_over80"), 0),
-    },
-
-    {
-      name: "Soggetti Fragili e Caregiver",
-      code: "categoria_soggetti_fragili",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_soggetti_fragili"), 0),
-    },
-
-    {
-      name: "Operatori Sanitari e Sociosanitari",
-      code: "categoria_operatori_sanitari_sociosanitari",
-      total: dataVaxSomLatest.reduce(
-        sumDoseX("categoria_operatori_sanitari_sociosanitari"),
-        0
-      ),
-    },
-
-    {
-      name:
-        "Personale non sanitario impiegato in strutture sanitarie e in attività lavorativa a rischio",
-      code: "categoria_personale_non_sanitario",
-      total: dataVaxSomLatest.reduce(
-        sumDoseX("categoria_personale_non_sanitario"),
-        0
-      ),
-    },
-
-    {
-      name: "Ospiti Strutture Residenziali",
-      code: "categoria_ospiti_rsa",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_ospiti_rsa"), 0),
-    },
-
-    {
-      name: "Fascia 70 - 79*",
-      code: "categoria_70_79",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_70_79"), 0),
-    },
-
-    {
-      name: "Fascia 60 - 69*",
-      code: "categoria_60_69",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_60_69"), 0),
-    },
-
-    {
-      name: "Personale Scolastico",
-      code: "categoria_personale_scolastico",
-      total: dataVaxSomLatest.reduce(
-        sumDoseX("categoria_personale_scolastico"),
-        0
-      ),
-    },
-
-    {
-      name: "Comparto Difesa e Sicurezza",
-      code: "categoria_forze_armate",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_forze_armate"), 0),
-    },
-
-    {
-      name: "Altro",
-      code: "categoria_altro",
-      total: dataVaxSomLatest.reduce(sumDoseX("categoria_altro"), 0),
-    },
-  ];
-
-  const groups = _.groupBy(dataSupplier, "fornitore");
-  let allDosesSupplier = Object.keys(groups).map((k) => {
-    let groupByKey = groups[k].map((group) => group.numero_dosi);
-    let sumTotalDoses = _.sum(groupByKey);
-    return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] };
-  });
-
-  let totalSuplier = _.sum(allDosesSupplier.map((e) => e?.totale));
-
-  let allDosesMapByArea = _.groupBy(dataSupplier, "area");
-  let doesesByArea = Object.keys(allDosesMapByArea).map((area) => {
-    let groupByArea = allDosesMapByArea[area].map((dose) => dose.numero_dosi);
-    let totalDosesByArea = _.sum(groupByArea);
-    return { area: areaMapping[area], dosi_somministrate: totalDosesByArea };
-  });
-
-  const categoriesByRegionRAW = data.dataSommVaxSummary.data.reduce(
-    aggrBy("area"),
-    {}
-  );
-
-  let categoriesByRegions = {};
-  Object.keys(categoriesByRegionRAW).map((x) => {
-    categoriesByRegions[x] = [
-      {
-        name: "Over 80*",
-        code: "categoria_over80",
-        total: categoriesByRegionRAW[x]?.reduce(
-          sumDoseX("categoria_over80"),
-          0
+    let totalDoses = {
+        prima_dose: _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
+        seconda_dose: _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
+        pregressa_infezione: _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
+        prima_dose_janssen: _.sum(
+          dataVaxSomLatest
+            ?.filter((e) => e.fornitore === "Janssen")
+            .map((e) => e?.prima_dose)
         ),
-      },
+        vax_somministrati: _.sum(
+          dataSupplier
+            ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
+            ?.map((_e) => _e?.numero_dosi)
+        )?.toLocaleString("it"),
+    };
 
-      {
-        name: "Soggetti fragili e Caregiver",
-        code: "categoria_soggetti_fragili",
-        total: categoriesByRegionRAW[x].reduce(
-          sumDoseX("categoria_soggetti_fragili"),
-          0
-        ),
-      },
-
-      {
-        name: "Operatori Sanitari e Sociosanitari",
-        code: "categoria_operatori_sanitari_sociosanitari",
-        total: categoriesByRegionRAW[x].reduce(
-          sumDoseX("categoria_operatori_sanitari_sociosanitari"),
-          0
-        ),
-      },
-
-      {
-        name:
-          "Personale non sanitario impiegato in strutture sanitarie e in attività lavorativa a rischio",
-        code: "categoria_personale_non_sanitario",
-        total: categoriesByRegionRAW[x].reduce(
-          sumDoseX("categoria_personale_non_sanitario"),
-          0
-        ),
-      },
-
-      {
-        name: "Ospiti Strutture Residenziali",
-        code: "categoria_ospiti_rsa",
-        total: categoriesByRegionRAW[x]?.reduce(
-          sumDoseX("categoria_ospiti_rsa"),
-          0
-        ),
-      },
-
-      {
-        name: "Fascia 70 - 79*",
-        code: "categoria_70_79",
-        total: categoriesByRegionRAW[x].reduce(sumDoseX("categoria_70_79"), 0),
-      },
-
-      {
-        name: "Fascia 60 - 69*",
-        code: "categoria_60_69",
-        total: categoriesByRegionRAW[x].reduce(sumDoseX("categoria_60_69"), 0),
-      },
-
-      {
-        name: "Personale Scolastico",
-        code: "categoria_personale_scolastico",
-        total: categoriesByRegionRAW[x]?.reduce(
-          sumDoseX("categoria_personale_scolastico"),
-          0
-        ),
-      },
-
-      {
-        name: "Comparto Difesa e Sicurezza",
-        code: "categoria_forze_armate",
-        total: categoriesByRegionRAW[x]?.reduce(
-          sumDoseX("categoria_forze_armate"),
-          0
-        ),
-      },
-
-      {
-        name: "Altro",
-        code: "categoria_altro",
-        total: categoriesByRegionRAW[x]?.reduce(sumDoseX("categoria_altro"), 0),
-      },
-    ];
-    return categoriesByRegions;
-  });
-
-  deliverySummary.forEach((ds) => {
-    if (categoriesByRegions[ds.code]) {
-      ds["byCategory"] = categoriesByRegions[ds.code].reduce(
-        aggrBy("code"),
-        {}
-      );
-    } else {
-      ds["byCategory"] = {
-        cat_oss: [
-          {
-            name: "Operatori Sanitari e Sociosanitari",
-            code: "cat_oss",
-            total: 0,
-          },
-        ],
-        cat_pns: [
-          { name: "Personale non sanitario", code: "cat_pns", total: 0 },
-        ],
-        cat_rsa: [
-          { name: "Ospiti Strutture Residenziali", code: "cat_rsa", total: 0 },
-        ],
-        over60: [{ name: "Over 80", code: "over60", total: 0 }],
-      };
+    if (!totalDoses.pregressa_infezione) {
+        totalDoses.pregressa_infezione = 0;
     }
-  });
 
-  const deliveredByArea = _.groupBy(deliverySummary, "code");
+    const groups = _.groupBy(dataSupplier, "fornitore");
+    let allDosesSupplier = Object.keys(groups).map((k) => {
+        let groupByKey = groups[k].map((group) => group.numero_dosi);
+        let sumTotalDoses = _.sum(groupByKey);
+        return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] };
+    });
 
-  const locations = data.dataVaxLocations.data.map(replaceArea);
+    let totalSuplier = _.sum(allDosesSupplier.map((e) => e?.totale));
 
-  let maxNumberOfLocations = 0;
+    let allDosesMapByArea = _.groupBy(dataSupplier, "area");
+    let doesesByArea = Object.keys(allDosesMapByArea).map((area) => {
+        let groupByArea = allDosesMapByArea[area].map((dose) => dose.numero_dosi);
+        let totalDosesByArea = _.sum(groupByArea);
+        return { area: areaMapping[area], dosi_somministrate: totalDosesByArea };
+    });
 
-  const locationsByRegion = _(data.dataVaxLocations.data.map(replaceArea))
-    .groupBy("area")
-    .map((items, area) => {
-      maxNumberOfLocations =
-        maxNumberOfLocations > items.length
-          ? maxNumberOfLocations
-          : items.length;
-      return { area: area, locations: items.length };
-    })
-    .value();
+    const deliveredByArea = _.groupBy(deliverySummary, "code");
 
-  const totalDeliverySummary = _(data.dataSommVaxDetail.data.map(replaceArea))
-    .groupBy("code")
-    .map((items, code) => {
-      const details = _.head(deliveredByArea[code]);
-      return {
-        code: code,
-        area: _.head(items)?.area,
-        categoria_operatori_sanitari_sociosanitari: _.sumBy(
-          items,
-          "categoria_operatori_sanitari_sociosanitari"
-        ),
-        categoria_over80: _.sumBy(items, "categoria_over80"),
-        categoria_ospiti_rsa: _.sumBy(items, "categoria_ospiti_rsa"),
-        categoria_personale_non_sanitario: _.sumBy(
-          items,
-          "categoria_personale_non_sanitario"
-        ),
-        categoria_forze_armate: _.sumBy(items, "categoria_forze_armate"),
-        categoria_personale_scolastico: _.sumBy(
-          items,
-          "categoria_personale_scolastico"
-        ),
-        categoria_altro: _.sumBy(items, "categoria_altro"),
-        byAge: _(items)
-          .groupBy("fascia_anagrafica")
-          .map((rows, age) => {
-            const dosi_somministrate = _.sumBy(
-              rows,
-              (r) => r.sesso_maschile + r.sesso_femminile
-            );
-            const percentage =
-              dosi_somministrate / (details.dosi_consegnate || 1);
-            return {
-              age: age,
-              fascia_anagrafica: age,
-              dosi_somministrate,
-              dosi_consegnate: details.dosi_consegnate || 0,
-              percentuale_somministrazione: +(percentage * 100).toFixed(1),
-              area: _.head(items)?.area,
-              totale: dosi_somministrate,
-            };
-          })
-          .value(),
-        sesso_femminile: _.sumBy(items, "sesso_femminile"),
-        sesso_maschile: _.sumBy(items, "sesso_maschile"),
-        dosi_consegnate: details.dosi_consegnate || 0,
-        dosi_somministrate: details.dosi_somministrate || 0,
-        percentuale_somministrazione: details.percentuale_somministrazione || 0,
-      };
-    })
-    .value();
+    const locations = data.dataVaxLocations.data.map(replaceArea);
 
-  const totalDeliverySummaryByAge = _(
-    data.dataSommVaxDetail.data.map(replaceArea)
-  )
-    .groupBy((i) => i["fascia_anagrafica"].toString().trim())
-    .map((rows, age) => {
-      const details = _(rows)
-        .groupBy("code")
-        .map((rowsData, code) => {
-          const dosi_somministrate = _.sumBy(
-            rowsData,
-            (r) => r.sesso_maschile + r.sesso_femminile
-          );
-          const percentage =
-            dosi_somministrate /
-            (_.head(deliveredByArea[code]).dosi_consegnate || 1);
-          return {
-            age: age,
-            dosi_somministrate,
-            sesso_maschile: _.sumBy(rowsData, "sesso_maschile"),
-            sesso_femminile: _.sumBy(rowsData, "sesso_femminile"),
-            code: code,
-            dosi_consegnate: _.head(deliveredByArea[code]).dosi_consegnate || 0,
-            percentuale_somministrazione: +(percentage * 100).toFixed(1),
-            area: _.head(rowsData).area,
-            //details: rows
-          };
+    let maxNumberOfLocations = 0;
+
+    const locationsByRegion = _(data.dataVaxLocations.data.map(replaceArea))
+        .groupBy("area")
+        .map((items, area) => {
+            maxNumberOfLocations =
+                maxNumberOfLocations > items.length
+                    ? maxNumberOfLocations
+                    : items.length;
+            return { area: area, locations: items.length };
         })
         .value();
-      return {
-        age: age,
-        details: details,
-      };
-    })
-    .groupBy("age")
-    .value();
 
-  const gender = {
-    gen_m: categoriesAndAges.reduce(sumDoseX("sesso_maschile"), 0),
-    gen_f: categoriesAndAges.reduce(sumDoseX("sesso_femminile"), 0),
+    const totalDeliverySummary = _(data.dataSommVaxDetail.data.map(replaceArea))
+        .groupBy("code")
+        .map((items, code) => {
+            const details = _.head(deliveredByArea[code]);
+            return {
+                code: code,
+                area: _.head(items)?.area,
+                byAge: _(items)
+                    .groupBy("fascia_anagrafica")
+                    .map((rows, age) => {
+                        const dosi_somministrate = _.sumBy(
+                            rows,
+                            (r) => r.sesso_maschile + r.sesso_femminile
+                        );
+                        const percentage = dosi_somministrate / (details.dosi_consegnate || 1);
+                        return {
+                            age: age,
+                            fascia_anagrafica: age,
+                            dosi_somministrate,
+                            dosi_consegnate: details.dosi_consegnate || 0,
+                            percentuale_somministrazione: +(percentage * 100).toFixed(1),
+                            area: _.head(items)?.area,
+                            totale: dosi_somministrate,
+                        };
+                    })
+                    .value(),
+                sesso_femminile: _.sumBy(items, "sesso_femminile"),
+                sesso_maschile: _.sumBy(items, "sesso_maschile"),
+                dosi_consegnate: details.dosi_consegnate || 0,
+                dosi_somministrate: details.dosi_somministrate || 0,
+                percentuale_somministrazione: details.percentuale_somministrazione || 0,
+            };
+        })
+        .value();
+
+    const totalDeliverySummaryByAge = _(data.dataSommVaxDetail.data.map(replaceArea))
+        .groupBy((i) => i["fascia_anagrafica"].toString().trim())
+        .map((rows, age) => {
+            const details = _(rows)
+            .groupBy("code")
+            .map((rowsData, code) => {
+                const dosi_somministrate = _.sumBy(
+                    rowsData,
+                    (r) => r.sesso_maschile + r.sesso_femminile
+                );
+                const percentage =
+                    dosi_somministrate /
+                    (_.head(deliveredByArea[code]).dosi_consegnate || 1);
+                return {
+                    age: age,
+                    dosi_somministrate,
+                    sesso_maschile: _.sumBy(rowsData, "sesso_maschile"),
+                    sesso_femminile: _.sumBy(rowsData, "sesso_femminile"),
+                    code: code,
+                    dosi_consegnate: _.head(deliveredByArea[code]).dosi_consegnate || 0,
+                    percentuale_somministrazione: +(percentage * 100).toFixed(1),
+                    area: _.head(rowsData).area,
+                    //details: rows
+                };
+            })
+            .value();
+
+            return {
+                age: age,
+                details: details,
+            };
+        })
+        .groupBy("age")
+        .value();
+
+    /* ages stack bar chart */
+    let dosesAgesColor = {
+        "2ª dose/unica dose": "#196ac6",
+        "1ª dose": "#519ae8",
+        "Totale fascia": "#b6d5f4"
+    };
+
+    let regionsDoses = {};
+    let dosesAges = ["2ª dose/unica dose", "1ª dose", "Totale fascia"];
+    let dosesAgesData = [];
+    let dosesAgesRegionData = {};
+
+    let agesTmp = {};
+    for (let row of data.dataSommVaxDetail.data) {
+        var key = row.fascia_anagrafica;
+
+        if (key === '80-89' || key === '90+') {
+            key = 'over 80'
+        }
+
+        if (!agesTmp.hasOwnProperty(key)) {
+            agesTmp[key] = {
+                "Totale fascia": 0,
+                "1ª dose": 0,
+                "2ª dose/unica dose": 0
+            };
+        }
+
+        if (row.fornitore === 'Janssen') {
+            agesTmp[key]["2ª dose/unica dose"] += row.prima_dose;
+        }
+        else {
+            agesTmp[key]["1ª dose"] += row.prima_dose;
+            agesTmp[key]["2ª dose/unica dose"] += row.seconda_dose;
+        }
+        if (row.hasOwnProperty('pregressa_infezione')) {
+            agesTmp[key]["2ª dose/unica dose"] += row.pregressa_infezione;
+        }
+
+        /* regions data */
+        if (!regionsDoses.hasOwnProperty(row.area)) {
+            regionsDoses[row.area] = {};
+            regionsDoses[row.area][key] = {
+                "Totale fascia": 0,
+                "1ª dose": 0,
+                "2ª dose/unica dose": 0
+            };
+        }
+        else {
+            if (!regionsDoses[row.area].hasOwnProperty(key)) {
+                regionsDoses[row.area][key] = {
+                    "Totale fascia": 0,
+                    "1ª dose": 0,
+                    "2ª dose/unica dose": 0
+                };
+            }
+        }
+        if (row.fornitore === 'Janssen') {
+            regionsDoses[row.area][key]["2ª dose/unica dose"] += row.prima_dose;
+        }
+        else {
+            regionsDoses[row.area][key]["1ª dose"] += row.prima_dose;
+            regionsDoses[row.area][key]["2ª dose/unica dose"] += row.seconda_dose;
+        }
+        if (row.hasOwnProperty('pregressa_infezione')) {
+            regionsDoses[row.area][key]["2ª dose/unica dose"] += row.pregressa_infezione;
+        }
+    }
+
+    let ageDosesTotal = {};
+
+    for (let row of Object.keys(agesTmp).sort().reverse()) {
+        var entry = {
+            label: "Fascia " + row
+        };
+        entry["2ª dose/unica dose"] = agesTmp[row]["2ª dose/unica dose"];
+        entry["1ª dose"] = agesTmp[row]["1ª dose"] - agesTmp[row]["2ª dose/unica dose"];
+
+        entry["Totale platea"] = 0;
+        for (let platea of data.dataPlatea.data) {
+            if (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+')) {
+                entry["Totale platea"] += parseInt(platea.totale_popolazione);
+            }
+        }
+
+        entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"];
+
+        ageDosesTotal[entry['label']] = entry["1ª dose"] + entry["2ª dose/unica dose"];
+
+        dosesAgesData.push(entry);
+    }
+
+    let totalPlatea = 0;
+    for (let platea of data.dataPlatea.data) {
+        totalPlatea += parseInt(platea.totale_popolazione);
+    }
+
+    let secondDoses = {}
+    for (let row of data.dataSommVaxDetail.data) {
+        entry = {};
+        if (secondDoses.hasOwnProperty(row.area)) {
+            entry = secondDoses[row.area];
+        }
+
+        var secondDoseTmp = row.seconda_dose;
+        if (row.fornitore === 'Janssen') {
+            secondDoseTmp = row.prima_dose;
+        }
+        if (row.hasOwnProperty('pregressa_infezione')) {
+            secondDoseTmp += row.pregressa_infezione;
+        }
+
+        if (!secondDoses.hasOwnProperty(row.area)) {
+            entry = {
+                'code': row.area,
+                'area': areaMapping[row.area],
+                'somministrazioni': secondDoseTmp
+            };
+        }
+        else {
+            entry['somministrazioni'] += secondDoseTmp;
+        }
+
+        for (let rowAge of Object.keys(agesTmp)) {
+            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : ('fascia_' + rowAge);
+            if (entry.hasOwnProperty(keyAge)) {
+                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+            }
+            else {
+                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+            }
+        }
+        secondDoses[row.area] = entry;
+    }
+
+    let secondDosesData = []; /* Array delle regioni avente numero somministrazioni seconde dosi globale e per fasce d'età */
+    for (let region of Object.keys(secondDoses)) {
+        secondDosesData.push(secondDoses[region]);
+    }
+
+    let plateaRegionAges = {}; /* Oggetto che contiene i dati della Platea aggregati */
+    for (let platea of data.dataPlatea.data) {
+        if (!plateaRegionAges.hasOwnProperty(platea.area)) {
+            plateaRegionAges[platea.area] = {
+                'popolazione': 0
+            };
+        }
+
+        let keyAge = platea.fascia_anagrafica === '80+' ? 'fascia_over_80' : ('fascia_' + platea.fascia_anagrafica);
+        let popolazione = parseInt(platea.totale_popolazione);
+
+        plateaRegionAges[platea.area][keyAge] = {
+            'popolazione': 0
+        };
+
+        plateaRegionAges[platea.area][keyAge]['popolazione'] = popolazione; // per singola fascia
+        plateaRegionAges[platea.area]['popolazione'] += popolazione; // totale per regione
+    }
+
+    let secondDosesPlateaData = [];
+    for (let region of Object.keys(secondDoses)) {
+        let tmpElem = secondDoses[region];
+
+        let entry = {};
+        for (let subItem of Object.keys(tmpElem)) {
+            if (subItem.includes("fascia")) {
+                entry[subItem] = tmpElem[subItem] / plateaRegionAges[region][subItem]['popolazione'] * 100;
+            }
+            else {
+                entry[subItem] = tmpElem[subItem];
+            }
+        }
+        entry['somministrazioni'] = entry['somministrazioni'] / plateaRegionAges[region]['popolazione'] * 100;
+
+        secondDosesPlateaData.push(entry);
+    }
+
+    for (let region of Object.keys(regionsDoses)) {
+        let arrayTmp = [];
+
+        for (let row of Object.keys(regionsDoses[region]).sort().reverse()) {
+            entry = {
+                label: "Fascia " + row
+            };
+            entry["2ª dose/unica dose"] = regionsDoses[region][row]["2ª dose/unica dose"];
+            entry["1ª dose"] = regionsDoses[region][row]["1ª dose"] - regionsDoses[region][row]["2ª dose/unica dose"];
+
+            entry["Totale platea"] = 0;
+            for (let platea of data.dataPlatea.data) {
+                if (platea.area === region && (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+'))) {
+                    entry["Totale platea"] += parseInt(platea.totale_popolazione);
+                }
+            }
+
+            entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"];
+
+            arrayTmp.push(entry);
+        }
+
+        dosesAgesRegionData[region] = arrayTmp;
+    }
+
+    // suppliers
+    let spectrum = ["#0f69c9", "#4d99eb", "#77b2f2", "#b5d4f5", "#d1e0f0", "#edf2f7", "#ffffff"];
+    let suppliersColor = {};
+    let suppliers = [];
+
+    for (let row of data.dataSommVaxDetail.data) {
+        if (!suppliers.includes(row.fornitore)) {
+            suppliers.push(row.fornitore);
+            if ((suppliers.length - 1) < spectrum.length) {
+                suppliersColor[row.fornitore] = spectrum[suppliers.length-1];
+            }
+            else {
+                suppliersColor[row.fornitore] = "#ffffff";
+            }
+        }
+    }
+
+    // // availability -> supplied - used
+    // let dataAvailabilityTmp = {}; // global
+    // let dataAvailabilityRegionTmp = {}; // region
+
+    // for (let sup of suppliers) {
+    //     dataAvailabilityTmp[sup] = 0; // populate with suppliers
+    // }
+
+    // /* before calculate supplied */
+    // for (let row of data.dataSupplierDoses.data) {
+    //     let descrArea = areaMapping[row.area];
+
+    //     if (!dataAvailabilityRegionTmp.hasOwnProperty(descrArea)) { // region
+    //         dataAvailabilityRegionTmp[descrArea] = {};
+
+    //         for (let sup of suppliers) {
+    //             dataAvailabilityRegionTmp[descrArea][sup] = 0;
+    //         }
+    //     }
+
+    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] += row.numero_dosi; // region
+    //     dataAvailabilityTmp[row.fornitore] += row.numero_dosi; // global
+    // }
+    // /* remove used */
+    // for (let row of data.dataSommVaxDetail.data) {
+    //     let descrArea = areaMapping[row.area];
+
+    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.prima_dose; // region
+    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.seconda_dose; // region
+
+    //     dataAvailabilityTmp[row.fornitore] -= row.prima_dose; // global
+    //     dataAvailabilityTmp[row.fornitore] -= row.seconda_dose; // global
+
+    //     if (row.hasOwnProperty('pregressa_infezione')) {
+    //         dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.pregressa_infezione; // region
+    //         dataAvailabilityTmp[row.fornitore] -= row.pregressa_infezione; // global
+    //     }
+    // }
+
+    // let dataAvailability = []; // chart without filter
+    // for (let sup of Object.keys(dataAvailabilityTmp)) {
+    //     let item = {
+    //         'totale'    : dataAvailabilityTmp[sup],
+    //         'fornitore' : sup
+    //     };
+
+    //     dataAvailability.push(item);
+    // }
+
+    // let totalAvailability = _.sum(dataAvailability.map((e) => e?.totale));
+    // // end
+
+    // all weeks
+    let weeksMappingOptimation = {};
+    var index = 0;
+
+    let suppliersWeek = [];
+    var date = new Date('2020-12-21'); // start date
+    while(true) {
+        let entry = {
+            label: Moment(date).format('DD/MM'),
+            from: Moment(date).format('YYYY-MM-DD'),
+            labelfrom: Moment(date).format('DD/MM'),
+            to: Moment(new Date(date.getTime() + 6 * 86400000)).format('YYYY-MM-DD'),
+            labelto: Moment(new Date(date.getTime() + 6 * 86400000)).format('DD/MM'),
+            total: 0
+        };
+
+        for (let supplier of suppliers) {
+            entry[supplier] = 0;
+        }
+
+        weeksMappingOptimation[Moment(date).format('YYYY-MM-DD')] = index;
+        weeksMappingOptimation[Moment(new Date(date.getTime() + 1 * 86400000)).format('YYYY-MM-DD')] = index;
+        weeksMappingOptimation[Moment(new Date(date.getTime() + 2 * 86400000)).format('YYYY-MM-DD')] = index;
+        weeksMappingOptimation[Moment(new Date(date.getTime() + 3 * 86400000)).format('YYYY-MM-DD')] = index;
+        weeksMappingOptimation[Moment(new Date(date.getTime() + 4 * 86400000)).format('YYYY-MM-DD')] = index;
+        weeksMappingOptimation[Moment(new Date(date.getTime() + 5 * 86400000)).format('YYYY-MM-DD')] = index;
+        weeksMappingOptimation[Moment(new Date(date.getTime() + 6 * 86400000)).format('YYYY-MM-DD')] = index;
+        index++;
+
+        suppliersWeek.push(entry);
+
+        date = new Date(date.getTime() + 7 * 86400000);
+
+        if (date > new Date()) {
+            break;
+        }
+    }
+
+    // weeks data
+    for (let row of data.dataSommVaxDetail.data) {
+        let index = weeksMappingOptimation[Moment(new Date(row.data_somministrazione)).format('YYYY-MM-DD')];
+        let week = suppliersWeek[index];
+
+        week.total += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
+        week[row.fornitore] += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
+    }
+
+    const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
+    const aggr = {
+        timestamp,
+        tot,
+        deliverySummary,
+        locations,
+        dataSomeVaxDetail,
+        locationsByRegion,
+        maxNumberOfLocations,
+        allDosesSupplier,
+        doesesByArea,
+        totalSuplier,
+        totalDoses,
+        totalDeliverySummaryByAge,
+        totalDeliverySummary,
+        suppliersColor,
+        suppliers,
+        suppliersWeek,
+        dosesAges,
+        dosesAgesColor,
+        dosesAgesData,
+        dosesAgesRegionData,
+        ageDosesTotal,
+        secondDosesData,
+        secondDosesPlateaData,
+        totalPlatea,
+        // dataAvailability,
+        // totalAvailability
+    };
+    return aggr;
   };
 
-  const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
-  const aggr = {
-    timestamp,
-    tot,
-    deliverySummary,
-    categoriesAndAges,
-    categories,
-    categoriesByRegions,
-    locations,
-    gender,
-    dataSomeVaxDetail,
-    locationsByRegion,
-    maxNumberOfLocations,
-    allDosesSupplier,
-    doesesByArea,
-    totalSuplier,
-    totalDoses,
-    totalDeliverySummaryByAge,
-    totalDeliverySummary,
-  };
-  return aggr;
-};
+  export const loadData = async () => {
+    const [
+        resSommVaxSummary,
+        resSommVaxDetail,
+        resVaxSummary,
+        resProfileSummaryURL,
+        resVaxLocations,
+        resLastUpdate,
+        resSupplierDoses,
+        resPlatea
+    ] = await Promise.all([
+        fetch(sommVaxSummaryURL),
+        fetch(sommVaxDetailURL),
+        fetch(vaxSummaryURL),
+        fetch(anagraficaSummaryURL),
+        fetch(vaxLocationsURL),
+        fetch(lastUpdateURL),
+        fetch(supplierDoses),
+        fetch(plateaURL)
+    ]);
 
-export const loadData = async () => {
-  const [
-    resSommVaxSummary,
-    resSommVaxDetail,
-    resVaxSummary,
-    resProfileSummaryURL,
-    resVaxLocations,
-    resLastUpdate,
-    resSupplierDoses,
-  ] = await Promise.all([
-    fetch(sommVaxSummaryURL),
-    fetch(sommVaxDetailURL),
-    fetch(vaxSummaryURL),
-    fetch(anagraficaSummaryURL),
-    fetch(vaxLocationsURL),
-    fetch(lastUpdateURL),
-    fetch(supplierDoses),
-  ]);
+    const [
+        dataSommVaxSummary,
+        dataSommVaxDetail,
+        dataVaxSummary,
+        dataProfileSummary,
+        dataVaxLocations,
+        dataLastUpdate,
+        dataSupplierDoses,
+        dataPlatea
+    ] = await Promise.all([
+        resSommVaxSummary.json(),
+        resSommVaxDetail.json(),
+        resVaxSummary.json(),
+        resProfileSummaryURL.json(),
+        resVaxLocations.json(),
+        resLastUpdate.json(),
+        resSupplierDoses.json(),
+        resPlatea.json()
+    ]);
 
-  const [
-    dataSommVaxSummary,
-    dataSommVaxDetail,
-    dataVaxSummary,
-    dataProfileSummary,
-    dataVaxLocations,
-    dataLastUpdate,
-    dataSupplierDoses,
-  ] = await Promise.all([
-    resSommVaxSummary.json(),
-    resSommVaxDetail.json(),
-    resVaxSummary.json(),
-    resProfileSummaryURL.json(),
-    resVaxLocations.json(),
-    resLastUpdate.json(),
-    resSupplierDoses.json(),
-  ]);
-
-  return {
-    ...elaborate({
-      dataSommVaxSummary,
-      dataSommVaxDetail,
-      dataVaxSummary,
-      dataProfileSummary,
-      dataLastUpdate,
-      dataVaxLocations,
-      dataSupplierDoses,
-    }),
-  };
+    return {
+        ...elaborate({
+            dataSommVaxSummary,
+            dataSommVaxDetail,
+            dataVaxSummary,
+            dataProfileSummary,
+            dataLastUpdate,
+            dataVaxLocations,
+            dataSupplierDoses,
+            dataPlatea
+        })
+    };
 };

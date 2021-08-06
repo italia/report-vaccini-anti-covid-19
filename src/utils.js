@@ -27,11 +27,6 @@ export const groupByAge = (array) => {
 export const mapArrayByProp = (array, prop) => array.map((e) => e[prop]);
 export const reduceSum = (array) => array.reduce(sumYear);
 
-export const allTotalGender = (array) => {
-  let sessoMaschile = reduceSum(mapArrayByProp(array, 'sesso_maschile'));
-  let sessoFemminile = reduceSum(mapArrayByProp(array, 'sesso_femminile'));
-  return { gen_m: sessoMaschile, gen_f: sessoFemminile }
-}
 export const aggrBy = (p) => (acc, x) => {
   let key = x[p];
   if (!acc[key]) {

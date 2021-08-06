@@ -9,7 +9,7 @@ export const HeaderBar = () => {
   return (
     <>
       {/* <Header small={false} theme="" type="slim">
-      
+
       </Header> */}
       <div className="row m-0" style={{ backgroundColor: '#0059b3' }}>
         <div className="col-12 col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
@@ -46,8 +46,8 @@ export const HeaderBar = () => {
         {/** TITLE + LOGO*/}
         <div className="col-12 d-flex flex-column justify-content-center mainBanner">
           <div className="d-flex justify-content-center">
-            <img src="logo.png" height="86" width="86" alt="" className="main-logo" />
-            <span className="pl-3">Report Vaccini Anti COVID-19</span>
+            <img src="Coccarda.svg" alt="" height="150" className="main-logo" />
+            <span className="pl-2 pt-5">Report Vaccini Anti COVID-19</span>
           </div>
         </div>
       </div>

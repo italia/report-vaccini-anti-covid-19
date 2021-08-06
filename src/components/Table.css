@@ -5,3 +5,16 @@
 table.dataTable {
     font-size: 15px;
 }
+
+.table.deliveries-table th:nth-child(n+2) {
+    text-align: center !important;
+}
+
+table.dataTable.deliveries-table {
+    margin-top: 20px !important;
+}
+
+table.dataTable.deliveries-table>thead .sorting:after, table.dataTable.deliveries-table>thead .sorting:before,
+table.dataTable.deliveries-table>thead .sorting_asc:after, table.dataTable.deliveries-table>thead .sorting_asc:before {
+    bottom: 1.3em !important;
+}

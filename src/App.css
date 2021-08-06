@@ -14,7 +14,7 @@ body {
 .logo-section p {
   color: white;
   /* font-family: "Titillium Web";
-  font-size: 16px; 
+  font-size: 16px;
   margin-left: 1rem;*/
   padding-top: 8px;
 }
@@ -34,9 +34,11 @@ body {
 }
 
 .main-logo {
-  height: 86px;
+  height: 150px;
   float: left;
   pointer-events: none;
+  position: relative;
+  top: 40px;
 }
 
 .logo {
@@ -46,7 +48,7 @@ body {
 }
 
 .mainBanner {
-  min-height: 180px;
+  min-height: 160px;
   background-color: #0066cc;
   color: white;
   font-size: 2.7rem;
@@ -324,8 +326,18 @@ ul.footer_links li {
   left: 26px;
   z-index:99;
 }
+.circle {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin-top: 4px;
+}
+.legend {
+  color: white;
+  margin-left: 10px;
+}
 .circle-info{
-  
+
   height: 20px;
   width: 20px;
   background-color:transparent;
@@ -455,17 +467,17 @@ loader*/
   left:0;
 }
 .border-pink{
-  border-left: 3px solid #E31F83;
+  /* border-left: 3px solid #E31F83; */
     padding-left: 10px;
     font-size: 40px;
-    height: 39%;
+    height: 59%;
 }
 .center-logo{
-    width: calc(50% + 40px);
+    width: calc(50% + 80px);
     overflow: auto;
     margin: auto;
     position: absolute;
-    top: -40px;
+    top: -50px;
     right: 0;
 }
 .border-blu {

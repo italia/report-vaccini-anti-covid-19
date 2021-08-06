@@ -13,7 +13,7 @@ export const BarChartSupplier = (props) => {
   useEffect(() => {
     doExit();
     draw();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [props]);
 
 
@@ -116,7 +116,7 @@ export const BarChartSupplier = (props) => {
     path
       .enter()
       .append("rect").on('click', (e, d) => {
-        props.handleDeliveryBarChartClick(d);
+        props.handleBarChartClick(d);
       })
       .attr('id', (d) => d?.fornitore)
       .attr('opacity', (d) => {
@@ -131,7 +131,7 @@ export const BarChartSupplier = (props) => {
       .append("title")
       .attr("x", (d) => xScale(d[props.property.xprop]))
       .attr("y", (d) => yScale(d[props.property.yprop]))
-      .text((d) => `Fascia ${d[props.property.xprop]} totale: ${d[props.property.yprop]}`)
+      .text((d) => `Fornitore ${d[props.property.xprop]} totale: ${d[props.property.yprop]}`)
 
     path
       .enter()
