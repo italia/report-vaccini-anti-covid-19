@@ -4,14 +4,15 @@ import Moment from 'moment';
 
 const baseURL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
-const sommVaxSummaryURL = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
-const sommVaxDetailURL = `${baseURL}/somministrazioni-vaccini-latest.json`;
-const vaxSummaryURL = `${baseURL}/vaccini-summary-latest.json`;
-const vaxLocationsURL = `${baseURL}/punti-somministrazione-tipologia.json`;
-const anagraficaSummaryURL = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
-const lastUpdateURL = `${baseURL}/last-update-dataset.json`;
-const supplierDoses = `${baseURL}/consegne-vaccini-latest.json`;
-const plateaURL = `${baseURL}/platea.json`;
+const sommVaxSummaryURL     = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
+const sommVaxDetailURL      = `${baseURL}/somministrazioni-vaccini-latest.json`;
+const vaxSummaryURL         = `${baseURL}/vaccini-summary-latest.json`;
+const vaxLocationsURL       = `${baseURL}/punti-somministrazione-tipologia.json`;
+const anagraficaSummaryURL  = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
+const lastUpdateURL         = `${baseURL}/last-update-dataset.json`;
+const supplierDoses         = `${baseURL}/consegne-vaccini-latest.json`;
+const plateaURL             = `${baseURL}/platea.json`;
+const plateaDoseAggURL      = `${baseURL}/platea-dose-aggiuntiva.json`;
 
 const elaborate = (data) => {
     const tot = data.dataSommVaxSummary.data
@@ -19,32 +20,35 @@ const elaborate = (data) => {
         .reduce(sumDoseX("totale"), 0);
 
     // datatable and map
-    const dataSupplier = data.dataSupplierDoses.data;
+    const dataSupplier      = data.dataSupplierDoses.data;
     const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
-
-    const deliverySummary = data.dataVaxSummary.data.map(replaceArea);
+    const deliverySummary   = data.dataVaxSummary.data.map(replaceArea);
 
     // categories and ages summary
-    const dataVaxSomLatest = data?.dataSommVaxDetail?.data;
+    const dataVaxSomLatest  = data?.dataSommVaxDetail?.data;
 
     let totalDoses = {
-        prima_dose: _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
-        seconda_dose: _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
-        pregressa_infezione: _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
-        prima_dose_janssen: _.sum(
-          dataVaxSomLatest
-            ?.filter((e) => e.fornitore === "Janssen")
-            .map((e) => e?.prima_dose)
-        ),
-        vax_somministrati: _.sum(
-          dataSupplier
-            ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
-            ?.map((_e) => _e?.numero_dosi)
-        )?.toLocaleString("it"),
-    };
+        prima_dose:           _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
+        seconda_dose:         _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
+        pregressa_infezione:  _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
+        dose_aggiuntiva:      _.sum(dataVaxSomLatest?.map((e) => e?.dose_aggiuntiva)),
+        prima_dose_janssen:   _.sum(
+                                dataVaxSomLatest
+                                ?.filter((e) => e.fornitore === "Janssen")
+                                .map((e) => e?.prima_dose)
+                              ),
+        vax_somministrati:    _.sum(
+                                dataSupplier
+                                ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
+                                ?.map((_e) => _e?.numero_dosi)
+                                )?.toLocaleString("it"),
+                              };
 
     if (!totalDoses.pregressa_infezione) {
         totalDoses.pregressa_infezione = 0;
+    }
+    if (!totalDoses.dose_aggiuntiva) {
+        totalDoses.dose_aggiuntiva = 0;
     }
 
     const groups = _.groupBy(dataSupplier, "fornitore");
@@ -152,13 +156,14 @@ const elaborate = (data) => {
 
     /* ages stack bar chart */
     let dosesAgesColor = {
+        "Dose aggiuntiva/richiamo": "#012675",
         "2ª dose/unica dose": "#196ac6",
         "1ª dose": "#519ae8",
         "Totale fascia": "#b6d5f4"
     };
 
     let regionsDoses = {};
-    let dosesAges = ["2ª dose/unica dose", "1ª dose", "Totale fascia"];
+    let dosesAges = ["Dose aggiuntiva/richiamo", "2ª dose/unica dose", "1ª dose", "Totale fascia"];
     let dosesAgesData = [];
     let dosesAgesRegionData = {};
 
@@ -174,7 +179,8 @@ const elaborate = (data) => {
             agesTmp[key] = {
                 "Totale fascia": 0,
                 "1ª dose": 0,
-                "2ª dose/unica dose": 0
+                "2ª dose/unica dose": 0,
+                "Dose aggiuntiva/richiamo": 0
             };
         }
 
@@ -188,6 +194,9 @@ const elaborate = (data) => {
         if (row.hasOwnProperty('pregressa_infezione')) {
             agesTmp[key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
+        if (row.hasOwnProperty('dose_aggiuntiva')) {
+            agesTmp[key]["Dose aggiuntiva/richiamo"]+= row.dose_aggiuntiva;
+        }
 
         /* regions data */
         if (!regionsDoses.hasOwnProperty(row.area)) {
@@ -195,7 +204,8 @@ const elaborate = (data) => {
             regionsDoses[row.area][key] = {
                 "Totale fascia": 0,
                 "1ª dose": 0,
-                "2ª dose/unica dose": 0
+                "2ª dose/unica dose": 0,
+                "Dose aggiuntiva/richiamo": 0
             };
         }
         else {
@@ -203,7 +213,8 @@ const elaborate = (data) => {
                 regionsDoses[row.area][key] = {
                     "Totale fascia": 0,
                     "1ª dose": 0,
-                    "2ª dose/unica dose": 0
+                    "2ª dose/unica dose": 0,
+                    "Dose aggiuntiva/richiamo": 0
                 };
             }
         }
@@ -217,6 +228,9 @@ const elaborate = (data) => {
         if (row.hasOwnProperty('pregressa_infezione')) {
             regionsDoses[row.area][key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
+        if (row.hasOwnProperty('dose_aggiuntiva')) {
+            regionsDoses[row.area][key]["Dose aggiuntiva/richiamo"] += row.dose_aggiuntiva;
+        }
     }
 
     let ageDosesTotal = {};
@@ -225,7 +239,8 @@ const elaborate = (data) => {
         var entry = {
             label: "Fascia " + row
         };
-        entry["2ª dose/unica dose"] = agesTmp[row]["2ª dose/unica dose"];
+        entry["Dose aggiuntiva/richiamo"] = agesTmp[row]["Dose aggiuntiva/richiamo"];
+        entry["2ª dose/unica dose"] = agesTmp[row]["2ª dose/unica dose"] - agesTmp[row]["Dose aggiuntiva/richiamo"];
         entry["1ª dose"] = agesTmp[row]["1ª dose"] - agesTmp[row]["2ª dose/unica dose"];
 
         entry["Totale platea"] = 0;
@@ -235,9 +250,9 @@ const elaborate = (data) => {
             }
         }
 
-        entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"];
+        entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"] - entry["Dose aggiuntiva/richiamo"];
 
-        ageDosesTotal[entry['label']] = entry["1ª dose"] + entry["2ª dose/unica dose"];
+        ageDosesTotal[entry['label']] = entry["1ª dose"] + entry["2ª dose/unica dose"] + entry["Dose aggiuntiva/richiamo"];
 
         dosesAgesData.push(entry);
     }
@@ -334,7 +349,8 @@ const elaborate = (data) => {
             entry = {
                 label: "Fascia " + row
             };
-            entry["2ª dose/unica dose"] = regionsDoses[region][row]["2ª dose/unica dose"];
+            entry["Dose aggiuntiva/richiamo"] = regionsDoses[region][row]["Dose aggiuntiva/richiamo"];
+            entry["2ª dose/unica dose"] = regionsDoses[region][row]["2ª dose/unica dose"] - regionsDoses[region][row]["Dose aggiuntiva/richiamo"];
             entry["1ª dose"] = regionsDoses[region][row]["1ª dose"] - regionsDoses[region][row]["2ª dose/unica dose"];
 
             entry["Totale platea"] = 0;
@@ -344,7 +360,7 @@ const elaborate = (data) => {
                 }
             }
 
-            entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"];
+            entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"] - entry["Dose aggiuntiva/richiamo"];
 
             arrayTmp.push(entry);
         }
@@ -468,6 +484,11 @@ const elaborate = (data) => {
         week[row.fornitore] += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
     }
 
+    let totalPlateaDoseAgg = 0;
+    for (let platea of data.dataPlateaDoseAgg.data) {
+        totalPlateaDoseAgg += parseInt(platea.totale_popolazione);
+    }
+
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
     const aggr = {
         timestamp,
@@ -494,6 +515,7 @@ const elaborate = (data) => {
         secondDosesData,
         secondDosesPlateaData,
         totalPlatea,
+        totalPlateaDoseAgg,
         // dataAvailability,
         // totalAvailability
     };
@@ -509,7 +531,8 @@ const elaborate = (data) => {
         resVaxLocations,
         resLastUpdate,
         resSupplierDoses,
-        resPlatea
+        resPlatea,
+        resPlateaDoseAgg
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
         fetch(sommVaxDetailURL),
@@ -518,7 +541,8 @@ const elaborate = (data) => {
         fetch(vaxLocationsURL),
         fetch(lastUpdateURL),
         fetch(supplierDoses),
-        fetch(plateaURL)
+        fetch(plateaURL),
+        fetch(plateaDoseAggURL)
     ]);
 
     const [
@@ -529,7 +553,8 @@ const elaborate = (data) => {
         dataVaxLocations,
         dataLastUpdate,
         dataSupplierDoses,
-        dataPlatea
+        dataPlatea,
+        dataPlateaDoseAgg
     ] = await Promise.all([
         resSommVaxSummary.json(),
         resSommVaxDetail.json(),
@@ -538,7 +563,8 @@ const elaborate = (data) => {
         resVaxLocations.json(),
         resLastUpdate.json(),
         resSupplierDoses.json(),
-        resPlatea.json()
+        resPlatea.json(),
+        resPlateaDoseAgg.json()
     ]);
 
     return {
@@ -550,7 +576,8 @@ const elaborate = (data) => {
             dataLastUpdate,
             dataVaxLocations,
             dataSupplierDoses,
-            dataPlatea
+            dataPlatea,
+            dataPlateaDoseAgg
         })
     };
 };

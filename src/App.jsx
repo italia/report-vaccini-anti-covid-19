@@ -26,6 +26,15 @@ function App() {
     const totalePersoneVaccinate = isNaN(tot) ? '' : tot?.toLocaleString('it')
     const totalePersoneVaccinatePopolazione = isNaN(tot) ? '' : (tot / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
+    const totaleDoseAggiuntiva = isNaN(summary?.totalDoses?.dose_aggiuntiva) ? '' : summary?.totalDoses?.dose_aggiuntiva?.toLocaleString('it')
+    const percentualeDoseAggiuntivaPopolazione = isNaN(summary?.totalDoses?.dose_aggiuntiva) ? '' : (summary?.totalDoses?.dose_aggiuntiva / summary?.totalPlateaDoseAgg * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+    const prima = (summary?.totalDoses?.prima_dose + summary?.totalDoses?.pregressa_infezione)
+
+    const totalePrimaDose = isNaN(prima) ? '' : prima?.toLocaleString('it')
+    const percentualePrimaDosePopolazione = isNaN(prima) ? '' : (prima / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    console.log('Platea Dose Aggiuntiva ---> ' + summary?.totalPlateaDoseAgg)
+    console.log('Dosi Aggiuntive Somministrate ---> ' + summary?.totalDoses?.dose_aggiuntiva)
     return (
         <div>
             <HeaderBar />
@@ -39,20 +48,47 @@ function App() {
                 </div>
                 <div style={{ padding: 20 }}></div>
                 <div className="row position-powerbi" style={{ backgroundColor: '#17324D' }} >
-                    <div className="col-12">
-                        <div className="p-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
-                            <div className="d-none  d-lg-block" style={{ height: 100, position: 'absolute', left: '20px', top: '20px' }}>
-                                <img src="group_person.svg" alt="Logo" className="img-fluid" />
-                            </div>
+                    <div className="col-md-4 col-sm-12">
+                        <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
                             <div className="position-absolute center-logo">
                                 <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
                             </div>
-                            <div className="text-white w-100" style={{ padding: 20 }}>
+                            <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
                                 <div className="w-100  h-100 align-items-center justify-content-center text-center">
-                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale persone vaccinate</h5>
-                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1}}>{totalePersoneVaccinate}</div>
+                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale con almeno una dose</h5>
+                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totalePrimaDose}</div>
+                                    <div style={{fontSize: 16}}>{percentualePrimaDosePopolazione} % della popolazione over 12</div>
+                                    <div style={{fontSize: 13, top: -10 }}>(persone con almeno una somministrazione)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4 col-sm-12">
+                        <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+                            <div className="position-absolute center-logo">
+                                <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                            </div>
+                            <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
+                                <div className="w-100  h-100 align-items-center justify-content-center text-center">
+                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale ciclo vaccinale</h5>
+                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totalePersoneVaccinate}</div>
                                     <div style={{fontSize: 16}}>{totalePersoneVaccinatePopolazione} % della popolazione over 12</div>
-                                    <div style={{ top: -10 }}>(persone che hanno completato il ciclo vaccinale)</div>
+                                    <div style={{fontSize: 13, top: -10 }}>(persone che hanno completato il ciclo vaccinale)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4 col-sm-12">
+                        <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+                            <div className="position-absolute center-logo">
+                                <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                            </div>
+                            <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
+                                <div className="w-100  h-100 align-items-center justify-content-center text-center">
+                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale dose aggiuntiva/richiamo</h5>
+                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totaleDoseAggiuntiva}</div>
+                                    <div style={{fontSize: 16}}>{percentualeDoseAggiuntivaPopolazione} % della popolazione oggetto di dose aggiuntiva/richiamo</div>
+                                    <div style={{fontSize: 13, top: -10 }}>(persone che hanno completato la dose aggiuntiva/richiamo)</div>
                                 </div>
                             </div>
                         </div>

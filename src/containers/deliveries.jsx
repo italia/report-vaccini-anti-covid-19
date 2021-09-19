@@ -73,7 +73,7 @@ return (
         <div className="row">
             <div className="col-12 d-flex justify-content-end"></div>
         </div>
-        <div className="row" style={{ backgroundColor: "#F8FBFE" }}>
+        <div className="row p-2 pb-5" style={{ backgroundColor: "#F8FBFE" }}>
             <div className="col-12 col-lg-6 h-100 order-md-2 order-lg-1 ">
                 <div className="container-info d-none d-sm-none d-md-flex d-lg-flex">
                     <span data-toggle="tooltip" title="% somministrazioni su dosi consegnate" className="circle-info">i</span>
