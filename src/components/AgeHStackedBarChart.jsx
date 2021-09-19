@@ -169,11 +169,17 @@ export const AgeHStackedBarChart = ({
         else {
           var perc = 0;
           if (d3.select(this.parentNode).attr("dose") === '1ª dose') {
-            let sum = d.data["1ª dose"] + d.data["2ª dose/unica dose"];
+            let sum = d.data["1ª dose"] + d.data["2ª dose/unica dose"] + d.data["Dose aggiuntiva/richiamo"];
             perc = (sum / d.data["Totale platea"]) * 100;
           }
           else {
-            perc = (d.data["2ª dose/unica dose"] / d.data["Totale platea"]) * 100;
+            if (d3.select(this.parentNode).attr("dose") === '2ª dose/unica dose') {
+              let sum = d.data["2ª dose/unica dose"] + d.data["Dose aggiuntiva/richiamo"];
+              perc = (sum / d.data["Totale platea"]) * 100;
+            }
+            else {
+              perc = (d.data["Dose aggiuntiva/richiamo"] / d.data["Totale platea"]) * 100;
+            }
           }
 
           tooltip

@@ -158,7 +158,7 @@ export const AgeDoses = ({ data }) => {
                 {/* // Graph */}
 
                 {/* Legend */}
-                <div className="row" style={{marginBottom: 40, marginLeft: 40}}>
+                <div className="row" style={{marginBottom: 40, marginLeft: 10}}>
                     {dosesAges.map((dose) => {
                         return (
                             <div className="row" key={dose}>
