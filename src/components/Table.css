@@ -7,7 +7,14 @@ table.dataTable {
 }
 
 .table.deliveries-table th:nth-child(n+2) {
-    text-align: center !important;
+    text-align: right !important;
+    padding-left: 15px !important;
+    padding-right: 10px !important;
+}
+
+.table.deliveries-table td:nth-child(n+2) {
+    padding-left: 15px !important;
+    padding-right: 10px !important;
 }
 
 table.dataTable.deliveries-table {
