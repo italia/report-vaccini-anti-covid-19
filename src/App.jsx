@@ -33,8 +33,7 @@ function App() {
 
     const totalePrimaDose = isNaN(prima) ? '' : prima?.toLocaleString('it')
     const percentualePrimaDosePopolazione = isNaN(prima) ? '' : (prima / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
-    console.log('Platea Dose Aggiuntiva ---> ' + summary?.totalPlateaDoseAgg)
-    console.log('Dosi Aggiuntive Somministrate ---> ' + summary?.totalDoses?.dose_aggiuntiva)
+    
     return (
         <div>
             <HeaderBar />

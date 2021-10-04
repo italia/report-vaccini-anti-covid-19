@@ -85,7 +85,7 @@ export const Table = ({ deliveryTableData }) => {
 
           // Update footer
           $(api.column(3).footer()).html(
-            (totalPercentage).toFixed(1) + '%'
+            (totalPercentage).toFixed(1)
           );
 
           $(api.column(2).footer()).html(
