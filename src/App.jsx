@@ -29,11 +29,14 @@ function App() {
     const totaleDoseAggiuntiva = isNaN(summary?.totalDoses?.dose_aggiuntiva) ? '' : summary?.totalDoses?.dose_aggiuntiva?.toLocaleString('it')
     const percentualeDoseAggiuntivaPopolazione = isNaN(summary?.totalDoses?.dose_aggiuntiva) ? '' : (summary?.totalDoses?.dose_aggiuntiva / summary?.totalPlateaDoseAgg * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
+    const totaleDoseBooster = isNaN(summary?.totalDoses?.dose_booster) ? '' : summary?.totalDoses?.dose_booster?.toLocaleString('it')
+    const percentualeDoseBoosterPopolazione = isNaN(summary?.totalDoses?.dose_booster) ? '' : (summary?.totalDoses?.dose_booster / summary?.totalPlateaDoseBooster * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
     const prima = (summary?.totalDoses?.prima_dose + summary?.totalDoses?.pregressa_infezione)
 
     const totalePrimaDose = isNaN(prima) ? '' : prima?.toLocaleString('it')
     const percentualePrimaDosePopolazione = isNaN(prima) ? '' : (prima / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
-    
+
     return (
         <div>
             <HeaderBar />
@@ -46,8 +49,8 @@ function App() {
                     </div>
                 </div>
                 <div style={{ padding: 20 }}></div>
-                <div className="row position-powerbi" style={{ backgroundColor: '#17324D' }} >
-                    <div className="col-md-4 col-sm-12">
+                <div className="row position-powerbi" style={{ backgroundColor: '#17324D', marginBottom:70 }} >
+                    <div className="col-md-6 col-sm-12 mb-3">
                         <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
                             <div className="position-absolute center-logo">
                                 <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
@@ -62,7 +65,7 @@ function App() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4 col-sm-12">
+                    <div className="col-md-6 col-sm-12">
                         <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
                             <div className="position-absolute center-logo">
                                 <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
@@ -77,17 +80,32 @@ function App() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4 col-sm-12">
+                </div>
+                <div className="row position-powerbi mt-4 mb-5" style={{ backgroundColor: '#17324D' }} >
+                    <div className="col-md-6 col-sm-12 mb-3">
                         <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
                             <div className="position-absolute center-logo">
                                 <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
                             </div>
                             <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
                                 <div className="w-100  h-100 align-items-center justify-content-center text-center">
-                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale dose aggiuntiva/richiamo</h5>
+                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale dose addizionale</h5>
                                     <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totaleDoseAggiuntiva}</div>
-                                    <div style={{fontSize: 16}}>{percentualeDoseAggiuntivaPopolazione} % della popolazione oggetto di dose aggiuntiva/richiamo</div>
-                                    <div style={{fontSize: 13, top: -10 }}>(persone che hanno completato la dose aggiuntiva/richiamo)</div>
+                                    <div style={{fontSize: 16}}>{percentualeDoseAggiuntivaPopolazione} % della popolazione potenzialmente oggetto<br />di dose addizionale</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-sm-12">
+                        <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+                            <div className="position-absolute center-logo">
+                                <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                            </div>
+                            <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
+                                <div className="w-100  h-100 align-items-center justify-content-center text-center">
+                                    <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale richiamo (booster)</h5>
+                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totaleDoseBooster}</div>
+                                    <div style={{fontSize: 16}}>{percentualeDoseBoosterPopolazione} % della popolazione potenzialmente oggetto di<br />dose booster che ha ultimato il ciclo vaccinale da<br />almeno sei mesi</div>
                                 </div>
                             </div>
                         </div>

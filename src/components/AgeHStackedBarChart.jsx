@@ -169,16 +169,16 @@ export const AgeHStackedBarChart = ({
         else {
           var perc = 0;
           if (d3.select(this.parentNode).attr("dose") === '1ª dose') {
-            let sum = d.data["1ª dose"] + d.data["2ª dose/unica dose"] + d.data["Dose aggiuntiva/richiamo"];
+            let sum = d.data["1ª dose"] + d.data["2ª dose/unica dose"] + d.data["Dose addizionale/booster"];
             perc = (sum / d.data["Totale platea"]) * 100;
           }
           else {
             if (d3.select(this.parentNode).attr("dose") === '2ª dose/unica dose') {
-              let sum = d.data["2ª dose/unica dose"] + d.data["Dose aggiuntiva/richiamo"];
+              let sum = d.data["2ª dose/unica dose"] + d.data["Dose addizionale/booster"];
               perc = (sum / d.data["Totale platea"]) * 100;
             }
             else {
-              perc = (d.data["Dose aggiuntiva/richiamo"] / d.data["Totale platea"]) * 100;
+              perc = (d.data["Dose addizionale/booster"] / d.data["Totale platea"]) * 100;
             }
           }
 

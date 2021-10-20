@@ -13,6 +13,7 @@ const lastUpdateURL         = `${baseURL}/last-update-dataset.json`;
 const supplierDoses         = `${baseURL}/consegne-vaccini-latest.json`;
 const plateaURL             = `${baseURL}/platea.json`;
 const plateaDoseAggURL      = `${baseURL}/platea-dose-aggiuntiva.json`;
+const plateaDoseBoosterURL  = `${baseURL}/platea-dose-booster.json`;
 
 const elaborate = (data) => {
     const tot = data.dataSommVaxSummary.data
@@ -32,6 +33,7 @@ const elaborate = (data) => {
         seconda_dose:         _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
         pregressa_infezione:  _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
         dose_aggiuntiva:      _.sum(dataVaxSomLatest?.map((e) => e?.dose_aggiuntiva)),
+        dose_booster:         _.sum(dataVaxSomLatest?.map((e) => e?.dose_booster)),
         prima_dose_janssen:   _.sum(
                                 dataVaxSomLatest
                                 ?.filter((e) => e.fornitore === "Janssen")
@@ -49,6 +51,9 @@ const elaborate = (data) => {
     }
     if (!totalDoses.dose_aggiuntiva) {
         totalDoses.dose_aggiuntiva = 0;
+    }
+    if (!totalDoses.dose_booster) {
+        totalDoses.dose_booster = 0;
     }
 
     const groups = _.groupBy(dataSupplier, "fornitore");
@@ -156,14 +161,14 @@ const elaborate = (data) => {
 
     /* ages stack bar chart */
     let dosesAgesColor = {
-        "Dose aggiuntiva/richiamo": "#012675",
+        "Dose addizionale/booster": "#012675",
         "2ª dose/unica dose": "#196ac6",
         "1ª dose": "#519ae8",
         "Totale fascia": "#b6d5f4"
     };
 
     let regionsDoses = {};
-    let dosesAges = ["Dose aggiuntiva/richiamo", "2ª dose/unica dose", "1ª dose", "Totale fascia"];
+    let dosesAges = ["Dose addizionale/booster", "2ª dose/unica dose", "1ª dose", "Totale fascia"];
     let dosesAgesData = [];
     let dosesAgesRegionData = {};
 
@@ -180,7 +185,7 @@ const elaborate = (data) => {
                 "Totale fascia": 0,
                 "1ª dose": 0,
                 "2ª dose/unica dose": 0,
-                "Dose aggiuntiva/richiamo": 0
+                "Dose addizionale/booster": 0
             };
         }
 
@@ -195,7 +200,10 @@ const elaborate = (data) => {
             agesTmp[key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
         if (row.hasOwnProperty('dose_aggiuntiva')) {
-            agesTmp[key]["Dose aggiuntiva/richiamo"]+= row.dose_aggiuntiva;
+            agesTmp[key]["Dose addizionale/booster"]+= row.dose_aggiuntiva;
+        }
+        if (row.hasOwnProperty('dose_booster')) {
+            agesTmp[key]["Dose addizionale/booster"]+= row.dose_booster;
         }
 
         /* regions data */
@@ -205,7 +213,7 @@ const elaborate = (data) => {
                 "Totale fascia": 0,
                 "1ª dose": 0,
                 "2ª dose/unica dose": 0,
-                "Dose aggiuntiva/richiamo": 0
+                "Dose addizionale/booster": 0
             };
         }
         else {
@@ -214,7 +222,7 @@ const elaborate = (data) => {
                     "Totale fascia": 0,
                     "1ª dose": 0,
                     "2ª dose/unica dose": 0,
-                    "Dose aggiuntiva/richiamo": 0
+                    "Dose addizionale/booster": 0
                 };
             }
         }
@@ -229,7 +237,10 @@ const elaborate = (data) => {
             regionsDoses[row.area][key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
         if (row.hasOwnProperty('dose_aggiuntiva')) {
-            regionsDoses[row.area][key]["Dose aggiuntiva/richiamo"] += row.dose_aggiuntiva;
+            regionsDoses[row.area][key]["Dose addizionale/booster"] += row.dose_aggiuntiva;
+        }
+        if (row.hasOwnProperty('dose_booster')) {
+            regionsDoses[row.area][key]["Dose addizionale/booster"] += row.dose_booster;
         }
     }
 
@@ -239,8 +250,8 @@ const elaborate = (data) => {
         var entry = {
             label: "Fascia " + row
         };
-        entry["Dose aggiuntiva/richiamo"] = agesTmp[row]["Dose aggiuntiva/richiamo"];
-        entry["2ª dose/unica dose"] = agesTmp[row]["2ª dose/unica dose"] - agesTmp[row]["Dose aggiuntiva/richiamo"];
+        entry["Dose addizionale/booster"] = agesTmp[row]["Dose addizionale/booster"];
+        entry["2ª dose/unica dose"] = agesTmp[row]["2ª dose/unica dose"] - agesTmp[row]["Dose addizionale/booster"];
         entry["1ª dose"] = agesTmp[row]["1ª dose"] - agesTmp[row]["2ª dose/unica dose"];
 
         entry["Totale platea"] = 0;
@@ -250,9 +261,9 @@ const elaborate = (data) => {
             }
         }
 
-        entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"] - entry["Dose aggiuntiva/richiamo"];
+        entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"] - entry["Dose addizionale/booster"];
 
-        ageDosesTotal[entry['label']] = entry["1ª dose"] + entry["2ª dose/unica dose"] + entry["Dose aggiuntiva/richiamo"];
+        ageDosesTotal[entry['label']] = entry["1ª dose"] + entry["2ª dose/unica dose"] + entry["Dose addizionale/booster"];
 
         dosesAgesData.push(entry);
     }
@@ -349,8 +360,8 @@ const elaborate = (data) => {
             entry = {
                 label: "Fascia " + row
             };
-            entry["Dose aggiuntiva/richiamo"] = regionsDoses[region][row]["Dose aggiuntiva/richiamo"];
-            entry["2ª dose/unica dose"] = regionsDoses[region][row]["2ª dose/unica dose"] - regionsDoses[region][row]["Dose aggiuntiva/richiamo"];
+            entry["Dose addizionale/booster"] = regionsDoses[region][row]["Dose addizionale/booster"];
+            entry["2ª dose/unica dose"] = regionsDoses[region][row]["2ª dose/unica dose"] - regionsDoses[region][row]["Dose addizionale/booster"];
             entry["1ª dose"] = regionsDoses[region][row]["1ª dose"] - regionsDoses[region][row]["2ª dose/unica dose"];
 
             entry["Totale platea"] = 0;
@@ -360,7 +371,7 @@ const elaborate = (data) => {
                 }
             }
 
-            entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"] - entry["Dose aggiuntiva/richiamo"];
+            entry["Totale fascia"] = entry["Totale platea"] - entry["1ª dose"] - entry["2ª dose/unica dose"] - entry["Dose addizionale/booster"];
 
             arrayTmp.push(entry);
         }
@@ -489,6 +500,11 @@ const elaborate = (data) => {
         totalPlateaDoseAgg += parseInt(platea.totale_popolazione);
     }
 
+    let totalPlateaDoseBooster = 0;
+    for (let platea of data.dataPlateaDoseBooster.data) {
+        totalPlateaDoseBooster += parseInt(platea.totale_popolazione);
+    }
+
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
     const aggr = {
         timestamp,
@@ -516,6 +532,7 @@ const elaborate = (data) => {
         secondDosesPlateaData,
         totalPlatea,
         totalPlateaDoseAgg,
+        totalPlateaDoseBooster,
         // dataAvailability,
         // totalAvailability
     };
@@ -532,7 +549,8 @@ const elaborate = (data) => {
         resLastUpdate,
         resSupplierDoses,
         resPlatea,
-        resPlateaDoseAgg
+        resPlateaDoseAgg,
+        resPlateaDoseBooster
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
         fetch(sommVaxDetailURL),
@@ -542,7 +560,8 @@ const elaborate = (data) => {
         fetch(lastUpdateURL),
         fetch(supplierDoses),
         fetch(plateaURL),
-        fetch(plateaDoseAggURL)
+        fetch(plateaDoseAggURL),
+        fetch(plateaDoseBoosterURL)
     ]);
 
     const [
@@ -554,7 +573,8 @@ const elaborate = (data) => {
         dataLastUpdate,
         dataSupplierDoses,
         dataPlatea,
-        dataPlateaDoseAgg
+        dataPlateaDoseAgg,
+        dataPlateaDoseBooster
     ] = await Promise.all([
         resSommVaxSummary.json(),
         resSommVaxDetail.json(),
@@ -564,7 +584,8 @@ const elaborate = (data) => {
         resLastUpdate.json(),
         resSupplierDoses.json(),
         resPlatea.json(),
-        resPlateaDoseAgg.json()
+        resPlateaDoseAgg.json(),
+        resPlateaDoseBooster.json()
     ]);
 
     return {
@@ -577,7 +598,8 @@ const elaborate = (data) => {
             dataVaxLocations,
             dataSupplierDoses,
             dataPlatea,
-            dataPlateaDoseAgg
+            dataPlateaDoseAgg,
+            dataPlateaDoseBooster
         })
     };
 };
