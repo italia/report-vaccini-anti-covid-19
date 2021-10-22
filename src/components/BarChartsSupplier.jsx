@@ -140,7 +140,7 @@ export const BarChartSupplier = (props) => {
       .attr("text-anchor", "center")
 
       .attr("fill", "black")
-      .attr("x", (d) => xScale(d[props.property.xprop]))
+      .attr("x", (d) => xScale(d[props.property.xprop]) -25 )
       .attr("y", (d) =>
         height - yScale(d[props.property.yprop]) >= 0
           ? yScale(d[props.property.yprop]) - 10

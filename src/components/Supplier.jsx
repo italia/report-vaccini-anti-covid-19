@@ -94,9 +94,9 @@ export const Supplier = (data) => {
                     title=""
                     xtitle=""
                     ytitle=""
-                    width="800"
+                    width="900"
                     handleBarChartClick={handleDeliveryBarChartClick}
-                    height="300"
+                    height="350"
                     selected={selectedSupplier}
                     property={{ xprop: "fornitore", yprop: "totale" }}
                     data={deliveryBarChartData}

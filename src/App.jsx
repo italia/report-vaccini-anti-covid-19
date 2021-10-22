@@ -50,7 +50,7 @@ function App() {
                 </div>
                 <div style={{ padding: 20 }}></div>
                 <div className="row position-powerbi" style={{ backgroundColor: '#17324D', marginBottom:70 }} >
-                    <div className="col-md-6 col-sm-12 mb-3">
+                    <div className="col-md-6 col-sm-12 mb-4">
                         <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
                             <div className="position-absolute center-logo">
                                 <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
@@ -82,7 +82,7 @@ function App() {
                     </div>
                 </div>
                 <div className="row position-powerbi mt-4 mb-5" style={{ backgroundColor: '#17324D' }} >
-                    <div className="col-md-6 col-sm-12 mb-3">
+                    <div className="col-md-6 col-sm-12 mb-5">
                         <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
                             <div className="position-absolute center-logo">
                                 <img src="Coccarda.svg" width="150" height="130" alt="Logo" />

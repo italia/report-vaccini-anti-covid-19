@@ -491,8 +491,23 @@ const elaborate = (data) => {
         let index = weeksMappingOptimation[Moment(new Date(row.data_somministrazione)).format('YYYY-MM-DD')];
         let week = suppliersWeek[index];
 
-        week.total += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
-        week[row.fornitore] += (row.prima_dose + row.seconda_dose + (row.hasOwnProperty('pregressa_infezione') ? row.pregressa_infezione : 0));
+        // Totale Somministrazioni Settimanale
+        week.total += (
+            row.prima_dose +
+            row.seconda_dose +
+            row.pregressa_infezione +
+            row.dose_aggiuntiva +
+            row.dose_booster
+        );
+
+        // Totale Somministrazioni Settimanale per fornitore
+        week[row.fornitore] += (
+            row.prima_dose +
+            row.seconda_dose +
+            row.pregressa_infezione +
+            row.dose_aggiuntiva +
+            row.dose_booster
+        );
     }
 
     let totalPlateaDoseAgg = 0;
