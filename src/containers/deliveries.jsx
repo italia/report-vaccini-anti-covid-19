@@ -91,7 +91,7 @@ return (
                         <h5 className="pl-1 pl-sm-1 text-left">
                             <span
                                 data-toggle="tooltip"
-                                title="Nel grafico è rappresentato il tasso di somministrazione,ovvero il rapporto tra le somministrazioni e le dosi consegnate (%)"
+                                title="Nel grafico è rappresentato il tasso di somministrazione, ovvero il rapporto tra le somministrazioni e le dosi consegnate (%)"
                                 className="circle-info"
                                 style={{
                                     position: "relative",
