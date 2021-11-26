@@ -23,22 +23,26 @@ function App() {
         });
     }, []);
 
+    // Completamento ciclo vaccinale
     const tot = (summary?.totalDoses?.seconda_dose + summary?.totalDoses?.prima_dose_janssen + summary?.totalDoses?.pregressa_infezione)
     const totalePersoneVaccinate = isNaN(tot) ? '' : tot?.toLocaleString('it')
     const totalePersoneVaccinatePopolazione = isNaN(tot) ? '' : (tot / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
-    const totaleDoseAggiuntivaBoosterVal = (isNaN(summary?.totalDoses?.dose_aggiuntiva) || isNaN(summary?.totalDoses?.dose_booster)) ? 0 : (summary?.totalDoses?.dose_aggiuntiva + summary?.totalDoses?.dose_booster)
-    const totaleDoseAggiuntivaBooster = totaleDoseAggiuntivaBoosterVal ? totaleDoseAggiuntivaBoosterVal.toLocaleString('it') : '';
-    const percentualeDoseAggiuntivaBoosterPopolazione = totaleDoseAggiuntivaBoosterVal ? (totaleDoseAggiuntivaBoosterVal / (summary?.totalPlateaDoseAgg + summary?.totalPlateaDoseBooster) * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '';
+    // Dose aggiuntiva/booster
+    const totaleDoseAddizionaleBooster = (summary?.totalDoses?.dose_addizionale_booster)
+    const plateaDoseAddizionaleBooster = (summary?.totalPlateaDoseAddizionaleBooster)
+    const percentualeDoseAddizionaleBooster = (totaleDoseAddizionaleBooster / plateaDoseAddizionaleBooster * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
+    // Prima Dose
     const prima = (summary?.totalDoses?.prima_dose + summary?.totalDoses?.pregressa_infezione)
-
     const totalePrimaDose = isNaN(prima) ? '' : prima?.toLocaleString('it')
     const percentualePrimaDosePopolazione = isNaN(prima) ? '' : (prima / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
+    // Guariti
     const totalePersoneGuarite = summary?.totalGuariti?.toLocaleString('it')
     const totalePersoneGuaritePopolazione = isNaN(summary?.totalGuariti) ? '' : (summary?.totalGuariti / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
+    //Prima Dose + Guariti
     const totaleAlmenoUnaGuariti = isNaN(prima) ? '' : (prima + summary?.totalGuariti).toLocaleString('it');
     const percentualeAlmenoUnaGuariti = isNaN(prima) ? '' : ((prima + summary?.totalGuariti) / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
@@ -123,8 +127,8 @@ function App() {
                             <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
                                 <div className="w-100  h-100 align-items-center justify-content-center text-center">
                                     <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale dose addizionale/richiamo (booster)</h5>
-                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totaleDoseAggiuntivaBooster}</div>
-                                    <div style={{fontSize: 16}}>{percentualeDoseAggiuntivaBoosterPopolazione} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinale da<br />almeno cinque mesi</div>
+                                    <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
+                                    <div style={{fontSize: 16}}>{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinale da<br />almeno cinque mesi</div>
                                 </div>
                             </div>
                         </div>
