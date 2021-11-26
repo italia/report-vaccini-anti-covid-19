@@ -14,6 +14,7 @@ const supplierDoses         = `${baseURL}/consegne-vaccini-latest.json`;
 const plateaURL             = `${baseURL}/platea.json`;
 const plateaDoseAggURL      = `${baseURL}/platea-dose-aggiuntiva.json`;
 const plateaDoseBoosterURL  = `${baseURL}/platea-dose-booster.json`;
+const guaritiURL            = `${baseURL}/soggetti-guariti.json`;
 
 const elaborate = (data) => {
     const tot = data.dataSommVaxSummary.data
@@ -268,6 +269,11 @@ const elaborate = (data) => {
         dosesAgesData.push(entry);
     }
 
+    let totalGuariti = 0;
+    for (let row of data.dataGuariti.data) {
+        totalGuariti += parseInt(row.totale_guariti);
+    }
+
     let totalPlatea = 0;
     for (let platea of data.dataPlatea.data) {
         totalPlatea += parseInt(platea.totale_popolazione);
@@ -377,6 +383,113 @@ const elaborate = (data) => {
         }
 
         dosesAgesRegionData[region] = arrayTmp;
+    }
+
+    // guariti
+    let healed = {}
+    for (let row of data.dataGuariti.data) {
+        entry = {};
+        if (healed.hasOwnProperty(row.area)) {
+            entry = healed[row.area];
+        }
+
+        if (!healed.hasOwnProperty(row.area)) {
+            entry = {
+                'code': row.area,
+                'area': areaMapping[row.area],
+                'guariti': row.totale_guariti
+            };
+        }
+        else {
+            entry['guariti'] += row.totale_guariti;
+        }
+
+        for (let rowAge of Object.keys(agesTmp)) {
+            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : ('fascia_' + rowAge);
+            if (entry.hasOwnProperty(keyAge)) {
+                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
+            }
+            else {
+                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
+            }
+        }
+        healed[row.area] = entry;
+    }
+
+    let healedPlateaData = [];
+    for (let region of Object.keys(healed)) {
+        let tmpElem = healed[region];
+
+        let entry = {};
+        for (let subItem of Object.keys(tmpElem)) {
+            entry[subItem] = tmpElem[subItem];
+        }
+
+        healedPlateaData.push(entry);
+    }
+
+    let healedData = [];
+    for (let region of Object.keys(healed)) {
+        healedData.push(healed[region]);
+    }
+
+    let haeledAgesTmp = {};
+    let haeledAgesData = [];
+    let regionHaeledAgesData = [];
+    let regionHaeledAgesDataTmp = {};
+
+    for (let row of data.dataGuariti.data) {
+        var keyAge = row.fascia_anagrafica;
+
+        if (keyAge === '80+' || keyAge === '80-89' || keyAge === '90+') {
+            keyAge = 'over 80'
+        }
+
+        if (!haeledAgesTmp.hasOwnProperty(keyAge)) {
+            haeledAgesTmp[keyAge] = row.totale_guariti;
+        }
+        else {
+            haeledAgesTmp[keyAge] += row.totale_guariti;
+        }
+
+        /* regions data */
+        if (!regionHaeledAgesDataTmp.hasOwnProperty(row.area)) {
+            regionHaeledAgesDataTmp[row.area] = {};
+            regionHaeledAgesDataTmp[row.area][keyAge] = row.totale_guariti;;
+        }
+        else {
+            if (!regionHaeledAgesDataTmp[row.area].hasOwnProperty(keyAge)) {
+                regionHaeledAgesDataTmp[row.area][keyAge] = row.totale_guariti;
+            }
+            else {
+                regionHaeledAgesDataTmp[row.area][keyAge] += row.totale_guariti;
+            }
+        }
+    }
+
+    for (let row of Object.keys(haeledAgesTmp).sort().reverse()) {
+        var entryHealedAges = {
+            label: "Fascia " + row
+        };
+        entryHealedAges["guariti"] = haeledAgesTmp[row];
+
+        haeledAgesData.push(entryHealedAges);
+    }
+
+    for (let region of Object.keys(regionHaeledAgesDataTmp).sort().reverse()) {
+        for (let row of Object.keys(regionHaeledAgesDataTmp[region]).sort().reverse()) {
+            var entryRegionHealed = {
+                label: "Fascia " + row
+            };
+            entryRegionHealed["guariti"] = regionHaeledAgesDataTmp[region][row];
+
+            if (!regionHaeledAgesData.hasOwnProperty(region)) {
+                regionHaeledAgesData[region] = [entryRegionHealed];
+            }
+            else {
+                regionHaeledAgesData[region].push(entryRegionHealed);
+            }
+        }
     }
 
     // suppliers
@@ -548,6 +661,11 @@ const elaborate = (data) => {
         totalPlatea,
         totalPlateaDoseAgg,
         totalPlateaDoseBooster,
+        totalGuariti,
+        healedData,
+        healedPlateaData,
+        haeledAgesData,
+        regionHaeledAgesData
         // dataAvailability,
         // totalAvailability
     };
@@ -565,7 +683,8 @@ const elaborate = (data) => {
         resSupplierDoses,
         resPlatea,
         resPlateaDoseAgg,
-        resPlateaDoseBooster
+        resPlateaDoseBooster,
+        resGuariti
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
         fetch(sommVaxDetailURL),
@@ -576,7 +695,8 @@ const elaborate = (data) => {
         fetch(supplierDoses),
         fetch(plateaURL),
         fetch(plateaDoseAggURL),
-        fetch(plateaDoseBoosterURL)
+        fetch(plateaDoseBoosterURL),
+        fetch(guaritiURL)
     ]);
 
     const [
@@ -589,7 +709,8 @@ const elaborate = (data) => {
         dataSupplierDoses,
         dataPlatea,
         dataPlateaDoseAgg,
-        dataPlateaDoseBooster
+        dataPlateaDoseBooster,
+        dataGuariti
     ] = await Promise.all([
         resSommVaxSummary.json(),
         resSommVaxDetail.json(),
@@ -600,7 +721,8 @@ const elaborate = (data) => {
         resSupplierDoses.json(),
         resPlatea.json(),
         resPlateaDoseAgg.json(),
-        resPlateaDoseBooster.json()
+        resPlateaDoseBooster.json(),
+        resGuariti.json()
     ]);
 
     return {
@@ -614,7 +736,8 @@ const elaborate = (data) => {
             dataSupplierDoses,
             dataPlatea,
             dataPlateaDoseAgg,
-            dataPlateaDoseBooster
+            dataPlateaDoseBooster,
+            dataGuariti
         })
     };
 };
