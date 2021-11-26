@@ -1,17 +1,14 @@
 import { React, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "../App.css";
-import { maxX } from "../utils";
 
 export const BarChart = ({
-  handleDeliveryBarChartClick, 
+  handleRectClick,
   height,
   width,
   data,
-  selected,
-  property,
-  title,
-  ytitle
+  selectedCodeAge,
+  regionSelected
   }) => {
 
   const myRef = useRef();
@@ -20,8 +17,8 @@ export const BarChart = ({
   useEffect(() => {
       doExit();
       draw();
-  // eslint-disable-next-line 
-  },[data, selected]);
+  // eslint-disable-next-line
+  },[data, selectedCodeAge]);
 
 
   const responsivefy = (svg) => {
@@ -56,42 +53,27 @@ export const BarChart = ({
 
   const draw = () => {
 
-    const maxScale = data?.reduce(maxX(property.yprop), 0) || 0;
     // append element
     const svg = d3
       .select(divRef.current)
       .append("svg")
+      .style('margin-bottom', 10)
       .attr("width", width)
       .attr("height", height);
-    const margin = { y: 50, x: 50 };
+    const margin = { y: 30, x: 60 };
 
-    // axis
-    const xScale = d3.scaleBand().padding(0.2);
-    const yScale = d3.scaleLinear().domain([0, maxScale]); //max scale should be dynamic
-    yScale.range([height, 0]);
-    xScale.range([0, width]).domain(data.map((d) => d[property.xprop]));
+
+    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d.guariti; })]);
+    const yScale = d3.scaleBand().padding(0.2);
+    xScale.range([0, width]);
+    yScale.range([0, height]).domain(data.map((d) => d.label));
 
     svg
       .attr("width", width + 2 * margin.x)
       .attr("height", height + 2 * margin.y)
       .call(responsivefy) // Call responsivefy to make the chart responsive
-      .attr("id", "svg-bar");
+      .attr("id", "svg-stack-bar");
 
-    svg
-      .append("text")
-      .attr("x", width / 2 + margin.x)
-      .attr("y", margin.y / 2)
-      .attr("class", "title")
-      .attr("text-anchor", "middle")
-      .attr(title);
-
-    svg
-      .append("text")
-      .attr("x", -(height / 2) - margin.y)
-      .attr("y", margin.x / 2.4)
-      .attr("transform", "rotate(-90)")
-      .attr("class", "title")
-      .text(ytitle);
 
     const chart = svg
       .append("g")
@@ -100,48 +82,74 @@ export const BarChart = ({
     chart
       .append("g")
       .attr("class", "axis")
-      .attr("transform", `translate(0,${height})`)
-      .style('font-size', 20)
-      .call(d3.axisBottom(xScale));
+      .attr("transform", `translate(0, 0)`)
+      .style("font-size", "12px")
+      .call(d3.axisLeft(yScale))
+      .attr('stroke-width', 0)
+        .selectAll("text")
+            .attr("y", 0)
+            .attr("x", -30)
+            .style("text-anchor", "start")
+            .style("fill", "#19191a");
+
+    const tooltip = d3
+      .select('body')
+      .append('div')
+      .attr('class', 'd3-tooltip')
+      .style('position', 'absolute')
+      .style('z-index', '10')
+      .style('display', 'none')
+      .style('padding', '10px')
+      .style('background', 'rgba(0,0,0,0.8)')
+      .style('border-radius', '4px')
+      .style('color', '#fff');
 
     const path = chart.selectAll().data(data);
 
     path
       .enter()
-      .append("rect").on('click', (e, d) => {
-        handleDeliveryBarChartClick(d);
+      .append("g")
+      .attr("fill", "#77b2f2")
+      .selectAll("rect")
+      .data(data)
+      .enter().append("rect")
+      .on("click", (e, d) => {
+        handleRectClick(d);
+        tooltip.html(``).style('display', 'none');
       })
-      .attr('id', (d) => d?.fascia_anagrafica)
-      .attr('opacity', (d) => {
-        if(selected){
-          return selected === d?.fascia_anagrafica ? 1 : 0.3
-        }else{
-          return 1
-        }
-      })
-      .attr("class", "bar")
-      .attr("x", (d) => xScale(d[property.xprop]))
-      .attr("y", (d) => yScale(d[property.yprop]))
-      .attr("height", (d) => height - yScale(d[property.yprop]))
-      .attr("width", xScale.bandwidth())
-      .append("title")
-      .attr("x", (d) => xScale(d[property.xprop]))
-      .attr("y", (d) => yScale(d[property.yprop]))
-      .text((d) => `Fascia ${d[property.xprop]} totale: ${d[property.yprop]}`)
+      .attr("opacity", (d) => {
+        const ageCode = d.label.toLowerCase().replaceAll(' ', '_');
 
-    path
-      .enter()
-      .append("text")
-      .attr("class", "bartext")
-      .attr("text-anchor", "middle")
-      .attr("fill", "white")
-      .attr("x", (d) => xScale(d[property.xprop]) + 35)
-      .attr("y", (d) =>
-        height - yScale(d[property.yprop]) >= 0
-          ? yScale(d[property.yprop]) - 10
-          : yScale(d[property.yprop])
-      )
-      .text((d) => d[property.yprop].toLocaleString('it'));
+        let opac = selectedCodeAge === ageCode ? 1 : !selectedCodeAge ? 1 : 0.1;
+        return opac;
+      })
+      .attr("x", function(d) {
+        return 60;
+      })
+      .attr("y", function(d) {
+        return yScale(d.label);
+      })
+      .attr("width", function(d) {
+        return xScale(d.guariti);
+      })
+      .attr("height", yScale.bandwidth())
+      .on('mousemove', function (event, d) {
+        let regione = regionSelected ? " " + regionSelected : "";
+
+        tooltip
+          .style('top', event.pageY - 10 + 'px')
+          .style('left', event.pageX + 10 + 'px');
+        tooltip
+          .html(
+              `<div style="text-align: center; line-height: 1.15rem;">
+              <div style="font-size: 12px;">${regione} ${d.label}</div>
+              <div style="font-size: 14px;"><b>${d.guariti.toLocaleString('it')}</b></div>`
+          )
+          .style('display', null);
+      })
+      .on('mouseout', function (d) {
+        tooltip.html(``).style('display', 'none');
+    });
 
     path.exit().remove();
   };
