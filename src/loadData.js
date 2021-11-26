@@ -4,17 +4,16 @@ import Moment from 'moment';
 
 const baseURL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
-const sommVaxSummaryURL     = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
-const sommVaxDetailURL      = `${baseURL}/somministrazioni-vaccini-latest.json`;
-const vaxSummaryURL         = `${baseURL}/vaccini-summary-latest.json`;
-const vaxLocationsURL       = `${baseURL}/punti-somministrazione-tipologia.json`;
-const anagraficaSummaryURL  = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
-const lastUpdateURL         = `${baseURL}/last-update-dataset.json`;
-const supplierDoses         = `${baseURL}/consegne-vaccini-latest.json`;
-const plateaURL             = `${baseURL}/platea.json`;
-const plateaDoseAggURL      = `${baseURL}/platea-dose-aggiuntiva.json`;
-const plateaDoseBoosterURL  = `${baseURL}/platea-dose-booster.json`;
-const guaritiURL            = `${baseURL}/soggetti-guariti.json`;
+const sommVaxSummaryURL                     = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
+const sommVaxDetailURL                      = `${baseURL}/somministrazioni-vaccini-latest.json`;
+const vaxSummaryURL                         = `${baseURL}/vaccini-summary-latest.json`;
+const vaxLocationsURL                       = `${baseURL}/punti-somministrazione-tipologia.json`;
+const anagraficaSummaryURL                  = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
+const lastUpdateURL                         = `${baseURL}/last-update-dataset.json`;
+const supplierDoses                         = `${baseURL}/consegne-vaccini-latest.json`;
+const plateaURL                             = `${baseURL}/platea.json`;
+const plateaDoseAddizionaleBoosterURL       = `${baseURL}/platea-dose-addizionale-booster.json`;
+const guaritiURL                            = `${baseURL}/soggetti-guariti.json`;
 
 const elaborate = (data) => {
     const tot = data.dataSommVaxSummary.data
@@ -30,31 +29,28 @@ const elaborate = (data) => {
     const dataVaxSomLatest  = data?.dataSommVaxDetail?.data;
 
     let totalDoses = {
-        prima_dose:           _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
-        seconda_dose:         _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
-        pregressa_infezione:  _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
-        dose_aggiuntiva:      _.sum(dataVaxSomLatest?.map((e) => e?.dose_aggiuntiva)),
-        dose_booster:         _.sum(dataVaxSomLatest?.map((e) => e?.dose_booster)),
-        prima_dose_janssen:   _.sum(
-                                dataVaxSomLatest
-                                ?.filter((e) => e.fornitore === "Janssen")
-                                .map((e) => e?.prima_dose)
-                              ),
-        vax_somministrati:    _.sum(
-                                dataSupplier
-                                ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
-                                ?.map((_e) => _e?.numero_dosi)
-                                )?.toLocaleString("it"),
-                              };
+        prima_dose:                 _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
+        seconda_dose:               _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
+        pregressa_infezione:        _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
+        dose_addizionale_booster:   _.sum(dataVaxSomLatest?.map((e) => e?.dose_addizionale_booster)),
+        prima_dose_janssen:         _.sum(
+                                      dataVaxSomLatest
+                                      ?.filter((e) => e.fornitore === "Janssen")
+                                      .map((e) => e?.prima_dose)
+                                    ),
+        vax_somministrati:          _.sum(
+                                      dataSupplier
+                                      ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
+                                      ?.map((_e) => _e?.numero_dosi)
+                                      )?.toLocaleString("it"),
+    };
 
     if (!totalDoses.pregressa_infezione) {
         totalDoses.pregressa_infezione = 0;
     }
-    if (!totalDoses.dose_aggiuntiva) {
-        totalDoses.dose_aggiuntiva = 0;
-    }
-    if (!totalDoses.dose_booster) {
-        totalDoses.dose_booster = 0;
+
+    if (!totalDoses.dose_addizionale_booster) {
+        totalDoses.dose_addizionale_booster = 0;
     }
 
     const groups = _.groupBy(dataSupplier, "fornitore");
@@ -200,11 +196,9 @@ const elaborate = (data) => {
         if (row.hasOwnProperty('pregressa_infezione')) {
             agesTmp[key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
-        if (row.hasOwnProperty('dose_aggiuntiva')) {
-            agesTmp[key]["Dose addizionale/booster"]+= row.dose_aggiuntiva;
-        }
-        if (row.hasOwnProperty('dose_booster')) {
-            agesTmp[key]["Dose addizionale/booster"]+= row.dose_booster;
+
+        if (row.hasOwnProperty('dose_addizionale_booster')) {
+            agesTmp[key]["Dose addizionale/booster"]+= row.dose_addizionale_booster;
         }
 
         /* regions data */
@@ -237,11 +231,9 @@ const elaborate = (data) => {
         if (row.hasOwnProperty('pregressa_infezione')) {
             regionsDoses[row.area][key]["2ª dose/unica dose"] += row.pregressa_infezione;
         }
-        if (row.hasOwnProperty('dose_aggiuntiva')) {
-            regionsDoses[row.area][key]["Dose addizionale/booster"] += row.dose_aggiuntiva;
-        }
-        if (row.hasOwnProperty('dose_booster')) {
-            regionsDoses[row.area][key]["Dose addizionale/booster"] += row.dose_booster;
+
+        if (row.hasOwnProperty('dose_addizionale_booster')) {
+            regionsDoses[row.area][key]["Dose addizionale/booster"] += row.dose_addizionale_booster;
         }
     }
 
@@ -317,12 +309,14 @@ const elaborate = (data) => {
         secondDoses[row.area] = entry;
     }
 
-    let secondDosesData = []; /* Array delle regioni avente numero somministrazioni seconde dosi globale e per fasce d'età */
+    // Array delle regioni avente numero somministrazioni seconde dosi globale e per fasce d'età
+    let secondDosesData = [];
     for (let region of Object.keys(secondDoses)) {
         secondDosesData.push(secondDoses[region]);
     }
 
-    let plateaRegionAges = {}; /* Oggetto che contiene i dati della Platea aggregati */
+    // Oggetto che contiene i dati della Platea aggregati
+    let plateaRegionAges = {};
     for (let platea of data.dataPlatea.data) {
         if (!plateaRegionAges.hasOwnProperty(platea.area)) {
             plateaRegionAges[platea.area] = {
@@ -452,7 +446,7 @@ const elaborate = (data) => {
             haeledAgesTmp[keyAge] += row.totale_guariti;
         }
 
-        /* regions data */
+        // regions data
         if (!regionHaeledAgesDataTmp.hasOwnProperty(row.area)) {
             regionHaeledAgesDataTmp[row.area] = {};
             regionHaeledAgesDataTmp[row.area][keyAge] = row.totale_guariti;;
@@ -509,58 +503,6 @@ const elaborate = (data) => {
         }
     }
 
-    // // availability -> supplied - used
-    // let dataAvailabilityTmp = {}; // global
-    // let dataAvailabilityRegionTmp = {}; // region
-
-    // for (let sup of suppliers) {
-    //     dataAvailabilityTmp[sup] = 0; // populate with suppliers
-    // }
-
-    // /* before calculate supplied */
-    // for (let row of data.dataSupplierDoses.data) {
-    //     let descrArea = areaMapping[row.area];
-
-    //     if (!dataAvailabilityRegionTmp.hasOwnProperty(descrArea)) { // region
-    //         dataAvailabilityRegionTmp[descrArea] = {};
-
-    //         for (let sup of suppliers) {
-    //             dataAvailabilityRegionTmp[descrArea][sup] = 0;
-    //         }
-    //     }
-
-    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] += row.numero_dosi; // region
-    //     dataAvailabilityTmp[row.fornitore] += row.numero_dosi; // global
-    // }
-    // /* remove used */
-    // for (let row of data.dataSommVaxDetail.data) {
-    //     let descrArea = areaMapping[row.area];
-
-    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.prima_dose; // region
-    //     dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.seconda_dose; // region
-
-    //     dataAvailabilityTmp[row.fornitore] -= row.prima_dose; // global
-    //     dataAvailabilityTmp[row.fornitore] -= row.seconda_dose; // global
-
-    //     if (row.hasOwnProperty('pregressa_infezione')) {
-    //         dataAvailabilityRegionTmp[descrArea][row.fornitore] -= row.pregressa_infezione; // region
-    //         dataAvailabilityTmp[row.fornitore] -= row.pregressa_infezione; // global
-    //     }
-    // }
-
-    // let dataAvailability = []; // chart without filter
-    // for (let sup of Object.keys(dataAvailabilityTmp)) {
-    //     let item = {
-    //         'totale'    : dataAvailabilityTmp[sup],
-    //         'fornitore' : sup
-    //     };
-
-    //     dataAvailability.push(item);
-    // }
-
-    // let totalAvailability = _.sum(dataAvailability.map((e) => e?.totale));
-    // // end
-
     // all weeks
     let weeksMappingOptimation = {};
     var index = 0;
@@ -609,8 +551,7 @@ const elaborate = (data) => {
             row.prima_dose +
             row.seconda_dose +
             row.pregressa_infezione +
-            row.dose_aggiuntiva +
-            row.dose_booster
+            row.dose_addizionale_booster
         );
 
         // Totale Somministrazioni Settimanale per fornitore
@@ -618,19 +559,13 @@ const elaborate = (data) => {
             row.prima_dose +
             row.seconda_dose +
             row.pregressa_infezione +
-            row.dose_aggiuntiva +
-            row.dose_booster
+            row.dose_addizionale_booster
         );
     }
 
-    let totalPlateaDoseAgg = 0;
-    for (let platea of data.dataPlateaDoseAgg.data) {
-        totalPlateaDoseAgg += parseInt(platea.totale_popolazione);
-    }
-
-    let totalPlateaDoseBooster = 0;
-    for (let platea of data.dataPlateaDoseBooster.data) {
-        totalPlateaDoseBooster += parseInt(platea.totale_popolazione);
+    let totalPlateaDoseAddizionaleBooster = 0;
+    for (let platea of data.dataPlateaDoseAddizionaleBooster.data) {
+        totalPlateaDoseAddizionaleBooster += parseInt(platea.totale_popolazione);
     }
 
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
@@ -659,15 +594,12 @@ const elaborate = (data) => {
         secondDosesData,
         secondDosesPlateaData,
         totalPlatea,
-        totalPlateaDoseAgg,
-        totalPlateaDoseBooster,
+        totalPlateaDoseAddizionaleBooster,
         totalGuariti,
         healedData,
         healedPlateaData,
         haeledAgesData,
         regionHaeledAgesData
-        // dataAvailability,
-        // totalAvailability
     };
     return aggr;
   };
@@ -682,8 +614,7 @@ const elaborate = (data) => {
         resLastUpdate,
         resSupplierDoses,
         resPlatea,
-        resPlateaDoseAgg,
-        resPlateaDoseBooster,
+        resPlateaDoseAddizionaleBooster,
         resGuariti
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
@@ -694,8 +625,7 @@ const elaborate = (data) => {
         fetch(lastUpdateURL),
         fetch(supplierDoses),
         fetch(plateaURL),
-        fetch(plateaDoseAggURL),
-        fetch(plateaDoseBoosterURL),
+        fetch(plateaDoseAddizionaleBoosterURL),
         fetch(guaritiURL)
     ]);
 
@@ -708,8 +638,7 @@ const elaborate = (data) => {
         dataLastUpdate,
         dataSupplierDoses,
         dataPlatea,
-        dataPlateaDoseAgg,
-        dataPlateaDoseBooster,
+        dataPlateaDoseAddizionaleBooster,
         dataGuariti
     ] = await Promise.all([
         resSommVaxSummary.json(),
@@ -720,8 +649,7 @@ const elaborate = (data) => {
         resLastUpdate.json(),
         resSupplierDoses.json(),
         resPlatea.json(),
-        resPlateaDoseAgg.json(),
-        resPlateaDoseBooster.json(),
+        resPlateaDoseAddizionaleBooster.json(),
         resGuariti.json()
     ]);
 
@@ -735,8 +663,7 @@ const elaborate = (data) => {
             dataVaxLocations,
             dataSupplierDoses,
             dataPlatea,
-            dataPlateaDoseAgg,
-            dataPlateaDoseBooster,
+            dataPlateaDoseAddizionaleBooster,
             dataGuariti
         })
     };
