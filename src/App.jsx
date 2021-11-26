@@ -95,7 +95,7 @@ function App() {
                                     <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale guariti</h5>
                                     <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totalePersoneGuarite}</div>
                                     <div style={{fontSize: 16}}>{totalePersoneGuaritePopolazione} % della popolazione over 12</div>
-                                    <div style={{fontSize: 13, top: -10 }}>guarita dal al massimo 6 mesi</div>
+                                    <div style={{fontSize: 13, top: -10 }}>guarita da al massimo 6 mesi</div>
                                 </div>
                             </div>
                         </div>
