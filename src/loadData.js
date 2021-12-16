@@ -29,20 +29,29 @@ const elaborate = (data) => {
     const dataVaxSomLatest  = data?.dataSommVaxDetail?.data;
 
     let totalDoses = {
-        prima_dose:                 _.sum(dataVaxSomLatest?.map((e) => e?.prima_dose)),
-        seconda_dose:               _.sum(dataVaxSomLatest?.map((e) => e?.seconda_dose)),
-        pregressa_infezione:        _.sum(dataVaxSomLatest?.map((e) => e?.pregressa_infezione)),
-        dose_addizionale_booster:   _.sum(dataVaxSomLatest?.map((e) => e?.dose_addizionale_booster)),
+        prima_dose:                     _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.prima_dose)),
+        prima_dose_baby:                _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.prima_dose : 0)),
+        seconda_dose:                   _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.seconda_dose)),
+        seconda_dose_baby:              _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.seconda_dose : 0)),
+        pregressa_infezione:            _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.pregressa_infezione)),
+        pregressa_infezione_baby:       _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.pregressa_infezione : 0)),
+        dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.dose_addizionale_booster)),
+        dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.dose_addizionale_booster : 0)),
         prima_dose_janssen:         _.sum(
-                                      dataVaxSomLatest
-                                      ?.filter((e) => e.fornitore === "Janssen")
-                                      .map((e) => e?.prima_dose)
+                                        dataVaxSomLatest
+                                        ?.filter((e) => e.fornitore === "Janssen" && e?.fascia_anagrafica !== '05-11')
+                                        .map((e) => e?.prima_dose)
+                                    ),
+        prima_dose_janssen_baby:         _.sum(
+                                        dataVaxSomLatest
+                                        ?.filter((e) => e.fornitore === "Janssen" && e?.fascia_anagrafica === '05-11')
+                                        .map((e) => e?.prima_dose)
                                     ),
         vax_somministrati:          _.sum(
-                                      dataSupplier
-                                      ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
-                                      ?.map((_e) => _e?.numero_dosi)
-                                      )?.toLocaleString("it"),
+                                        dataSupplier
+                                        ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
+                                        ?.map((_e) => _e?.numero_dosi)
+                                        )?.toLocaleString("it"),
     };
 
     if (!totalDoses.pregressa_infezione) {
@@ -53,12 +62,20 @@ const elaborate = (data) => {
         totalDoses.dose_addizionale_booster = 0;
     }
 
+    if (!totalDoses.pregressa_infezione_baby) {
+        totalDoses.pregressa_infezione_baby = 0;
+    }
+
+    if (!totalDoses.dose_addizionale_booster_baby) {
+        totalDoses.dose_addizionale_booster_baby = 0;
+    }
+
     const groups = _.groupBy(dataSupplier, "fornitore");
     let allDosesSupplier = Object.keys(groups).map((k) => {
         let groupByKey = groups[k].map((group) => group.numero_dosi);
         let sumTotalDoses = _.sum(groupByKey);
         return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] };
-    });
+    }).sort((a, b) => a.totale < b.totale ? 1 : -1);
 
     let totalSuplier = _.sum(allDosesSupplier.map((e) => e?.totale));
 
@@ -176,6 +193,9 @@ const elaborate = (data) => {
         if (key === '80-89' || key === '90+') {
             key = 'over 80'
         }
+        if (key === '5-11') {
+            key = '05-11'
+        }
 
         if (!agesTmp.hasOwnProperty(key)) {
             agesTmp[key] = {
@@ -249,7 +269,7 @@ const elaborate = (data) => {
 
         entry["Totale platea"] = 0;
         for (let platea of data.dataPlatea.data) {
-            if (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+')) {
+            if (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+') || (row === '05-11' && platea.fascia_anagrafica === '05-11')) {
                 entry["Totale platea"] += parseInt(platea.totale_popolazione);
             }
         }
@@ -262,13 +282,25 @@ const elaborate = (data) => {
     }
 
     let totalGuariti = 0;
+    let totalGuaritiBaby = 0;
     for (let row of data.dataGuariti.data) {
-        totalGuariti += parseInt(row.totale_guariti);
+        if (row.fascia_anagrafica === '05-11') {
+            totalGuaritiBaby += parseInt(row.totale_guariti);
+        }
+        else {
+            totalGuariti += parseInt(row.totale_guariti);
+        }
     }
 
     let totalPlatea = 0;
+    let totalPlateaBaby = 0;
     for (let platea of data.dataPlatea.data) {
-        totalPlatea += parseInt(platea.totale_popolazione);
+        if (platea.fascia_anagrafica === '05-11') {
+            totalPlateaBaby += parseInt(platea.totale_popolazione);
+        }
+        else {
+            totalPlatea += parseInt(platea.totale_popolazione);
+        }
     }
 
     let secondDoses = {}
@@ -298,12 +330,12 @@ const elaborate = (data) => {
         }
 
         for (let rowAge of Object.keys(agesTmp)) {
-            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : ('fascia_' + rowAge);
+            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
             if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
             }
             else {
-                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
             }
         }
         secondDoses[row.area] = entry;
@@ -324,7 +356,7 @@ const elaborate = (data) => {
             };
         }
 
-        let keyAge = platea.fascia_anagrafica === '80+' ? 'fascia_over_80' : ('fascia_' + platea.fascia_anagrafica);
+        let keyAge = platea.fascia_anagrafica === '80+' ? 'fascia_over_80' : (platea.fascia_anagrafica === '05-11' ? 'fascia_05-11' : 'fascia_' + platea.fascia_anagrafica);
         let popolazione = parseInt(platea.totale_popolazione);
 
         plateaRegionAges[platea.area][keyAge] = {
@@ -366,7 +398,7 @@ const elaborate = (data) => {
 
             entry["Totale platea"] = 0;
             for (let platea of data.dataPlatea.data) {
-                if (platea.area === region && (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+'))) {
+                if (platea.area === region && (platea.fascia_anagrafica === row || (platea.fascia_anagrafica === '05-11' && row === '05-11') || (row === 'over 80' && platea.fascia_anagrafica === '80+'))) {
                     entry["Totale platea"] += parseInt(platea.totale_popolazione);
                 }
             }
@@ -399,12 +431,12 @@ const elaborate = (data) => {
         }
 
         for (let rowAge of Object.keys(agesTmp)) {
-            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : ('fascia_' + rowAge);
+            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : (rowAge === '05-11' ? 'fascia_05-11' : 'fascia_' + rowAge);
             if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
+                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
             }
             else {
-                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
+                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
             }
         }
         healed[row.area] = entry;
@@ -437,6 +469,9 @@ const elaborate = (data) => {
 
         if (keyAge === '80+' || keyAge === '80-89' || keyAge === '90+') {
             keyAge = 'over 80'
+        }
+        if (keyAge === '05-11') {
+            keyAge = '05-11'
         }
 
         if (!haeledAgesTmp.hasOwnProperty(keyAge)) {
@@ -494,12 +529,21 @@ const elaborate = (data) => {
     for (let row of data.dataSommVaxDetail.data) {
         if (!suppliers.includes(row.fornitore)) {
             suppliers.push(row.fornitore);
-            if ((suppliers.length - 1) < spectrum.length) {
-                suppliersColor[row.fornitore] = spectrum[suppliers.length-1];
-            }
-            else {
-                suppliersColor[row.fornitore] = "#ffffff";
-            }
+        }
+    }
+
+    var indexOfPediatrico = suppliers.indexOf('Pfizer Pediatrico');
+    if (indexOfPediatrico !== -1) {
+        suppliers.splice(indexOfPediatrico, 1);
+        suppliers.push('Pfizer Pediatrico');
+    }
+
+    for (let rowFornitore of suppliers) {
+        if ((Object.keys(suppliersColor).length - 1) < spectrum.length) {
+            suppliersColor[rowFornitore] = spectrum[Object.keys(suppliersColor).length];
+        }
+        else {
+            suppliersColor[rowFornitore] = "#ffffff";
         }
     }
 
@@ -594,8 +638,10 @@ const elaborate = (data) => {
         secondDosesData,
         secondDosesPlateaData,
         totalPlatea,
+        totalPlateaBaby,
         totalPlateaDoseAddizionaleBooster,
         totalGuariti,
+        totalGuaritiBaby,
         healedData,
         healedPlateaData,
         haeledAgesData,

@@ -20,7 +20,7 @@ export const Healed = ({ data }) => {
         if (!isEmpty(data)) {
             setHaeledAgesData(data.haeledAgesData);
             setHealedMapData(data.healedData);
-            setTotalGuariti(data.totalGuariti);
+            setTotalGuariti(data.totalGuariti + data.totalGuaritiBaby);
             setCategoryMapData(data.healedPlateaData);
         }
     }, [data]);
@@ -32,7 +32,7 @@ export const Healed = ({ data }) => {
         setHaeledAgesData(data.haeledAgesData);
 
         setCategoryMapField("guariti");
-        setTotalGuariti(data.totalGuariti);
+        setTotalGuariti(data.totalGuariti + data.totalGuaritiBaby);
         setCategoryMapData(data.healedPlateaData);
     };
 
