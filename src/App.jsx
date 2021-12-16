@@ -46,6 +46,22 @@ function App() {
     const totaleAlmenoUnaGuariti = isNaN(prima) ? '' : (prima + summary?.totalGuariti).toLocaleString('it');
     const percentualeAlmenoUnaGuariti = isNaN(prima) ? '' : ((prima + summary?.totalGuariti) / summary?.totalPlatea * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
+
+    // Prima Dose Baby
+    const primaBaby = (summary?.totalDoses?.prima_dose_baby + summary?.totalDoses?.pregressa_infezione_baby)
+    const totalePrimaDoseBaby = isNaN(primaBaby) ? '' : primaBaby?.toLocaleString('it')
+    const percentualePrimaDosePopolazioneBaby = isNaN(primaBaby) ? '' : (primaBaby / summary?.totalPlateaBaby * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+    // Completamento ciclo vaccinale Baby
+    const totBaby = (summary?.totalDoses?.seconda_dose_baby + summary?.totalDoses?.prima_dose_janssen_baby + summary?.totalDoses?.pregressa_infezione_baby)
+    const totalePersoneVaccinateBaby = isNaN(totBaby) ? '' : totBaby?.toLocaleString('it')
+    const totalePersoneVaccinatePopolazioneBaby = isNaN(totBaby) ? '' : (totBaby / summary?.totalPlateaBaby * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+    // Guariti Baby
+    const totalePersoneGuariteBaby = summary?.totalGuaritiBaby?.toLocaleString('it')
+    const totalePersoneGuaritePopolazioneBaby = isNaN(summary?.totalGuaritiBaby) ? '' : (summary?.totalGuaritiBaby / summary?.totalPlateaBaby * 100).toLocaleString('it', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+
     return (
         <div>
             <HeaderBar />
@@ -134,6 +150,64 @@ function App() {
                         </div>
                     </div>
                 </div>
+
+                <div className="mt-4 mb-5" style={{ bottom: 30 }} >
+                    <div style={{ marginTop: 40 }} className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
+                        <div style={{textAlign: 'center', marginBottom: 50}}>
+                            <h3 className="text-center">Somministrazione platea 5-11 anni</h3>
+                        </div>
+                    </div>
+                    <div className="row ml-4 mr-4 position-powerbi" style={{ backgroundColor: '#17324D', marginBottom:20, top:-50 }} >
+                        <div className="col-md-4 col-sm-12 mb-4">
+                            <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+                                <div className="position-absolute center-logo">
+                                    <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                                </div>
+                                <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
+                                    <div className="w-100  h-100 align-items-center justify-content-center text-center">
+                                        <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale con almeno una dose</h5>
+                                        <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totalePrimaDoseBaby}</div>
+                                        <div style={{fontSize: 16}}>{percentualePrimaDosePopolazioneBaby} % della popolazione 5-11</div>
+                                        <div style={{fontSize: 13, top: -10 }}>(persone con almeno una somministrazione)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+                                <div className="position-absolute center-logo">
+                                    <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                                </div>
+                                <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
+                                    <div className="w-100  h-100 align-items-center justify-content-center text-center">
+                                        <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale ciclo vaccinale</h5>
+                                        <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totalePersoneVaccinateBaby}</div>
+                                        <div style={{fontSize: 16}}>{totalePersoneVaccinatePopolazioneBaby} % della popolazione 5-11</div>
+                                        <div style={{fontSize: 13, top: -10 }}>(persone che hanno completato il ciclo vaccinale)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <div className="p-2 pt-4 position-relative d-flex justify-content-center  h-100" style={{ backgroundColor: '#17324D', minHeight: 240 }}>
+                                <div className="position-absolute center-logo">
+                                    <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                                </div>
+                                <div className="text-white w-100" style={{ padding: 10, marginTop: 15 }}>
+                                    <div className="w-100  h-100 align-items-center justify-content-center text-center">
+                                        <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale guariti</h5>
+                                        <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totalePersoneGuariteBaby}</div>
+                                        <div style={{fontSize: 16}}>{totalePersoneGuaritePopolazioneBaby} % della popolazione 5-11</div>
+                                        <div style={{fontSize: 13, top: -10 }}>guarita da al massimo 6 mesi</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
 
                 <Deliveries data={summary} /> {/* Tabella Distribuzione Dosi */}
                 <Healed data={summary} /> {/* Grafico guariti */}
