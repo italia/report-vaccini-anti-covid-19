@@ -144,7 +144,7 @@ function App() {
                                 <div className="w-100  h-100 align-items-center justify-content-center text-center">
                                     <h5 style={{ marginRight: 0, marginTop: 25, fontWeight: 600 }}>Totale dose addizionale/richiamo (booster)</h5>
                                     <div style={{fontSize: 36, fontWeight: 500, lineHeight: 1, marginBottom:5}}>{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
-                                    <div style={{fontSize: 16}}>{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinale da<br />almeno cinque mesi</div>
+                                    <div style={{fontSize: 16}}>{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinale da<br />almeno quattro mesi</div>
                                 </div>
                             </div>
                         </div>
