@@ -1,6 +1,5 @@
 import { React, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import "../App.css";
 import { maxX } from "../utils";
 
 export const BarChartSupplier = (props) => {
@@ -103,7 +102,7 @@ export const BarChartSupplier = (props) => {
       .append("g")
       .attr("class", "axis-dark")
       .attr("transform", `translate(0,${height})`)
-      .style('font-size', 20)
+      .style('font-size', 16)
       .call(d3.axisBottom(xScale));
 
     // chart
@@ -120,7 +119,7 @@ export const BarChartSupplier = (props) => {
       })
       .attr('id', (d) => d?.fornitore)
       .attr('opacity', (d) => {
-        let opac = props.selected?.fornitore === d?.fornitore ? 1 : !props.selected ? 1 : 0.3;
+        let opac = props.selected?.fornitore === d?.fornitore ? 1 : !props.selected ? 1 : 0.1;
         return opac;
       })
       .attr("class", "bg-bar")
@@ -138,9 +137,8 @@ export const BarChartSupplier = (props) => {
       .append("text")
       .attr("class", "bartext-dark")
       .attr("text-anchor", "center")
-
       .attr("fill", "black")
-      .attr("x", (d) => xScale(d[props.property.xprop]) -25 )
+      .attr("x", (d) => xScale(d[props.property.xprop])  )
       .attr("y", (d) =>
         height - yScale(d[props.property.yprop]) >= 0
           ? yScale(d[props.property.yprop]) - 10

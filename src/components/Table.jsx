@@ -1,7 +1,6 @@
 import { React, useEffect } from "react";
 import * as $ from "jquery";
 import DataTable from "datatables.net";
-import "./Table.css";
 import "../naturalSortAlgorithm";
 
 

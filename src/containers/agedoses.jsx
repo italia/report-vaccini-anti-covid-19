@@ -90,61 +90,60 @@ export const AgeDoses = ({ data }) => {
     };
 
     return (
-        <div className="row ">
+        <div className="row">
             {/* Box Title */}
-            <div style={{ marginTop: 40 }} className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
-                <div style={{textAlign: 'center'}}>
-                    <h3 className="text-center">Somministrazioni per fascia d'età - dose</h3>
+            <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
+                <div>
+                    <h3>Somministrazioni per fascia d'età - dose</h3>
                 </div>
             </div>
             {/* // Box Title */}
 
-            <div className="col-12 col-md-12 h-100 m-3 ">
-                {/* Total Box - Mobile View */}
-                <div className="m-3  d-lg-none" style={{ position: "relative", background: "#013366" }}>
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center" style={{ position: "absolute", left:-40, top:-25}}/>
-                    <div className="text-white w-100 ">
-                        <div className="w-100  h-100 d-flex justify-content-center pt-5">
+            <div className="col-12 col-md-12 m-3">
+                {/* Total Box - Mobile Layout */}
+                <div className="d-lg-none bg-box box-mobile m-3">
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center box-logo-left"/>
+                    <div className="text-white">
+                        <div className="d-flex justify-content-center pt-5">
                             <h5>Totale somministrazioni</h5>
                         </div>
-                        <div className="w-100  h-100 d-flex justify-content-center">
-                            <p className="numeri_box">
+                        <div className="d-flex justify-content-center">
+                            <p className="box-numbers">
                                 {totalByCategory && totalByCategory.toLocaleString("it")}
                             </p>
                         </div>
-                        <div className="col-12 d-flex justify-content-end  pb-2">
-                            <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height={35}/>
+                        <div className="col-12 d-flex justify-content-end pb-2">
+                            <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height="36px"/>
                         </div>
                     </div>
                 </div>
-                {/* // Total Box - Mobile View */}
+                {/* // Total Box - Mobile Layout */}
 
-                {/* Total Box - Desktop View */}
-                <div className="col-3 col-md-3  d-none d-lg-block" style={{ height: 100 }} >
-                    <div style={{ position: "relative", background: "#17324D", top: -55, left: 40 }} >
-                        <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block" style={{ zIndex: 10, position: 'absolute', right: -50, top: -25 }} />
-                        <div className="text-white w-100">
-                            <div className="w-100  h-100 d-flex justify-content-start pt-3 pl-4">
-                                <h5>Totale<br></br>somministrazioni</h5>
+                {/* Total Box - Desktop Layout */}
+                <div className="col-4 col-md-4 d-none d-lg-block">
+                    <div className="bg-box box-card box-left">
+                        <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block box-logo-left"/>
+                        <div className="text-white">
+                            <div className="d-flex justify-content-start pt-3 pl-5">
+                                <h5>Totale somministrazioni</h5>
                             </div>
-                            <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                                <p className="numeri_box">
+                            <div className="d-flex justify-content-start pl-5">
+                                <p className="box-numbers">
                                     {totalByCategory && totalByCategory.toLocaleString("it")}
                                 </p>
                             </div>
-                            <div className="col-12 d-flex justify-content-end  pb-2">
-                                <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />
+                            <div className="col-12 d-flex justify-content-end pb-2">
+                                <img alt="Reset" src="reset_white.png" onClick={resetFilter} height="36px"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* // Total Box - Desktop View */}
+                {/* // Total Box - Desktop Layout */}
             </div>
-            <div className="col-12 col-md-6 h-100" style={{marginTop: 50}}>
+            <div className="col-12 col-md-6">
 
                 {/* Graph */}
                 <AgeHStackedBarChart
-                    xtitle="Somministrazione settimanale"
                     width={+350}
                     height={+300}
                     property={{ xprop: "label", yprop: "total" }}
@@ -158,12 +157,12 @@ export const AgeDoses = ({ data }) => {
                 {/* // Graph */}
 
                 {/* Legend */}
-                <div className="row" style={{marginBottom: 40, marginLeft: 10}}>
+                <div className="row mb-4 ml-4">
                     {dosesAges.map((dose) => {
                         return (
                             <div className="row" key={dose}>
                                 <div className="circle" style={{ backgroundColor: dosesAgesColor[dose] }}></div>
-                                <span className="legend" style={{color: '#19191a', marginRight: 25}}>{dose}</span>
+                                <div className="legend-dark mr-4">{dose}</div>
                             </div>
                         )
                     })}
@@ -173,11 +172,11 @@ export const AgeDoses = ({ data }) => {
                 <p className="d-block d-sm-none text-center">*Tieni premuto sulle barre del grafico per visualizzare i dati sulle dosi somministrate</p>
                 <p className="d-none d-sm-block text-center">*Passa con il mouse sulle barre del grafico per visualizzare i dati sulle dosi somministrate</p>
             </div>
-            <div className="col-12 col-md-6 h-100" style={{ overflow: "hidden" }}>
+            <div className="col-12 col-md-6">
 
                 {/* Map Title - Mobile View*/}
                 <div className="p-4 d-lg-none">
-                    <div className="w-100 h-100 text-center">
+                    <div className="text-center">
                         <h5>Percentuale vaccinati per regione</h5>
                     </div>
                 </div>
@@ -207,13 +206,14 @@ export const AgeDoses = ({ data }) => {
                             )
                         }
                     }
-                    className="ml-5 w-100 h-100"
+                    className="ml-5"
                 />
                 {/* // Map Graph */}
 
                 {/* Map Title - Desktop View*/}
-                <div className="p-4 position-relative d-none d-lg-block" style={{ left: "300px", top: "-390px" }}>
-                    <div className="w-100 h-100 d-flex justify-content-start pr-5">
+                {/* <div className="p-4 position-relative d-none d-lg-block" style={{ left: "300px", top: "-390px" }}> */}
+                <div className="p-4 d-none d-lg-block map-legend">
+                    <div className="d-flex justify-content-start pr-5">
                         <h5 className="pl-3 pl-sm-1">
                             Percentuale vaccinati
                             <br /> per regione

@@ -2,7 +2,6 @@ import { React, useEffect, useState } from "react";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import _ from "lodash";
-import "./MapArea.css";
 
 export const MapArea = ({
     handleMapDeliveryClick,
@@ -44,7 +43,7 @@ export const MapArea = ({
         }, []);
 
     return (
-        <div className="map-area mt-sx-3" style={{ marginTop: "80px" }}>
+        <div className="map-area">
             <svg className="h-100 w-100" height={height}>
                 <g className="countries">
                     {geographies.map((d, i) => {

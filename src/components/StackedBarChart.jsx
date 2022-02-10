@@ -1,7 +1,5 @@
 import { React, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import "../App.css";
-// import { maxX } from "../utils";
 
 export const StackedBarChart = ({
   height,
@@ -155,7 +153,7 @@ export const StackedBarChart = ({
       })
       .attr("width", xScale.bandwidth())
       .on('mouseover', function (d, i) {
-        d3.select(this).transition().attr('fill', '#e31f82');
+        d3.select(this).transition().attr('fill', '#0BD9D3');
       })
       .on('mousemove', function (event, d) {
         tooltip
