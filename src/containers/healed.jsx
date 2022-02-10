@@ -9,10 +9,7 @@ export const Healed = ({ data }) => {
     const [categoryMapField, setCategoryMapField] = useState("guariti");
     const [totalGuariti, setTotalGuariti] = useState(0);
     const [healedMapData, setHealedMapData] = useState([]);
-
-
     const [haeledAgesData, setHaeledAgesData] = useState([]);
-
     const [selectedCodeAge, setSelectedCodeAge] = useState(null);
     const [selectedCodeRegion, setSelectedCodeRegion] = useState(null);
 
@@ -28,9 +25,7 @@ export const Healed = ({ data }) => {
     const resetFilter = () => {
         setSelectedCodeAge(null);
         setSelectedCodeRegion(null);
-
         setHaeledAgesData(data.haeledAgesData);
-
         setCategoryMapField("guariti");
         setTotalGuariti(data.totalGuariti + data.totalGuaritiBaby);
         setCategoryMapData(data.healedPlateaData);
@@ -91,72 +86,70 @@ export const Healed = ({ data }) => {
     };
 
     return (
-        <div className="row ">
+        <div className="row">
             {/* Box Title */}
-            <div style={{ marginTop: 40 }} className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
-                <div style={{textAlign: 'center'}}>
-                    <h3 className="text-center">Platea guariti da al massimo sei mesi</h3>
+            <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
+                <div className="text-center">
+                    <h3 class="mb-0">Platea guariti da al massimo sei mesi</h3>
+                    <h3 class="mt-0">senza alcuna somministrazione</h3>
                 </div>
             </div>
             {/* // Box Title */}
 
-            <div className="col-12 col-md-12 h-100 m-3 ">
-                {/* Total Box - Mobile View */}
-                <div className="m-3  d-lg-none" style={{ position: "relative", background: "#013366" }}>
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center" style={{ position: "absolute", left:-40, top:-25}}/>
-                    <div className="text-white w-100 ">
-                        <div className="w-100  h-100 d-flex justify-content-center pt-5">
+            <div className="col-12 col-md-12 m-3">
+                {/* Total Box - Mobile Layout */}
+                <div className="d-lg-none bg-box box-mobile m-3">
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center box-logo-left"/>
+                    <div className="text-white">
+                        <div className="d-flex justify-content-center pt-5">
                             <h5>Totale guariti</h5>
                         </div>
-                        <div className="w-100  h-100 d-flex justify-content-center">
-                            <p className="numeri_box">
+                        <div className="d-flex justify-content-center">
+                            <p className="box-numbers">
                                 {totalGuariti && totalGuariti.toLocaleString("it")}
                             </p>
                         </div>
-                        <div className="col-12 d-flex justify-content-end  pb-2">
-                            <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height={35}/>
+                        <div className="col-12 d-flex justify-content-end pb-2">
+                            <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height="36px"/>
                         </div>
                     </div>
                 </div>
-                {/* // Total Box - Mobile View */}
+                {/* // Total Box - Mobile Layout */}
 
-                {/* Total Box - Desktop View */}
-                <div className="col-3 col-md-3  d-none d-lg-block" style={{ height: 100 }} >
-                    <div style={{ position: "relative", background: "#17324D", top: -55, left: 40 }} >
-                        <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block" style={{ zIndex: 10, position: 'absolute', right: -50, top: -25 }} />
-                        <div className="text-white w-100">
-                            <div className="w-100  h-100 d-flex justify-content-start pt-3 pl-4">
-                                <h5>Totale<br></br>guariti</h5>
+                {/* Total Box - Desktop Layout */}
+                <div className="col-4 col-md-4 d-none d-lg-block">
+                    <div className="bg-box box-card box-left">
+                        <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block box-logo-left"/>
+                        <div className="text-white">
+                            <div className="d-flex justify-content-start pt-3 pl-5">
+                                <h5>Totale guariti</h5>
                             </div>
-                            <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                                <p className="numeri_box">
+                            <div className="d-flex justify-content-start pl-5">
+                                <p className="box-numbers">
                                     {totalGuariti && totalGuariti.toLocaleString("it")}
                                 </p>
                             </div>
-                            <div className="col-12 d-flex justify-content-end  pb-2">
-                                <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />
+                            <div className="col-12 d-flex justify-content-end pb-2">
+                                <img alt="Reset" src="reset_white.png" onClick={resetFilter} height="36px"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* // Total Box - Desktop View */}
+                {/* // Total Box - Desktop Layout */}
             </div>
-            <div className="col-12 col-md-6 h-100" style={{marginTop: 50}}>
+            <div className="col-12 col-md-6">
 
                 {/* Graph */}
                 <BarChart
-                    title=""
-                    xtitle="Fascia d'età"
-                    ytitle=""
-                    handleRectClick={handleAgeBarChartClick}
                     width={+350}
                     height={+300}
+                    handleRectClick={handleAgeBarChartClick}
                     selectedCodeAge={selectedCodeAge}
                     data={haeledAgesData}
                 />
                 {/* // Graph */}
             </div>
-            <div className="col-12 col-md-6 h-100" style={{ overflow: "hidden" }}>
+            <div className="col-12 col-md-6 my-0 py-0">
                 {/* Map Graph */}
                 <MapArea
                     fillMapDeliveryArea={fillMapCategoryArea}
@@ -179,11 +172,11 @@ export const Healed = ({ data }) => {
                             )
                         }
                     }
-                    className="ml-5 w-100 h-100"
+                    className="ml-5"
                 />
                 {/* // Map Graph */}
 
-                <p className="d-none d-sm-block text-center">*Seleziona la Regione/Provincia Autonoma per visualizzare il dettaglio.</p>
+                <p className="text-center">*Seleziona la Regione/Provincia Autonoma per visualizzare il dettaglio.</p>
             </div>
         </div>
     )

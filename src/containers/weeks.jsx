@@ -24,15 +24,17 @@ export const Weeks = ({ data }) => {
       }, [data]);
 
     return (
-        <div>
-            <div className="row justify-content-center p-5 bg-title-plot mt-5">
-                <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="img-fluid d-none d-lg-block" style={{ zIndex: 10, position: 'relative', top: -25 }} />
-                <h3 className="text-center mt-2">Andamento settimanale delle somministrazioni</h3>
+        <div className="row">
+            {/* Title Box - Desktop View */}
+            <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
+                <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="img-fluid d-none d-lg-block align-items-center" />
+                <h3>Andamento settimanale delle somministrazioni</h3>
             </div>
-            <div className="row position-powerbi m-2 p-2" style={{ backgroundColor: "#F8FBFE", marginTop: 20 }}>
+            {/* // Title Box - Desktop View */}
+            <div className="row col-12 m-2 p-2 ">
                 <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex"></div>
                 <div className="col-12 col-md-6  position-relative">
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-lg-none sd-sm-block" style={{ zIndex: 20, position: "absolute", right:-40, top:-25}}/>
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-lg-none sd-sm-block box-logo-right"/>
                     <div className="bg-gradient-bar"></div>
                 </div>
                 <div className="col-12 col-md-4" style={{ backgroundColor: "#17324D" }}>
@@ -40,7 +42,7 @@ export const Weeks = ({ data }) => {
                         <div className="p-4">
                             <img src="group_person.svg" alt="Logo" className="img-fluid" />
                         </div>
-                        <div style={{marginTop: 40, marginLeft: 40}}>
+                        <div className="mt-4 ml-3">
                             {suppliers.map((supply, index) => {
                                 return (
                                     <div className="row" key={supply}>
@@ -52,8 +54,8 @@ export const Weeks = ({ data }) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-md-8" style={{ backgroundColor: "#17324D" }}>
-                <div style={{color:"#ffffff", textAlign:"center", marginTop: 20}}>*Passa con il mouse sulle barre del grafico per visualizzare i dati della settimana</div>
+                <div className="col-12 col-md-8 text-white"  style={{ backgroundColor: "#17324D" }}>
+                <div className="text-white text-center mt-3 ">*Passa con il mouse sulle barre del grafico per visualizzare i dati della settimana</div>
                     <StackedBarChart
                         title=""
                         xtitle="Somministrazione settimanale"
@@ -74,7 +76,7 @@ export const Weeks = ({ data }) => {
                     <RangeWeek min={0} max={suppliersWeek.length} from={from} to={to} changeFrom={(value) => setFrom(value)} changeTo={(value) => setTo(value)}  />
                 )}
             </div>
-                <div style={{color:"#17324D", textAlign:"center"}}>*Fai scorrere i selettori per aumentare o diminuire le settimane da visualizzare</div>
+                <div>*Fai scorrere i selettori per aumentare o diminuire le settimane da visualizzare</div>
         </div>
     )
 };

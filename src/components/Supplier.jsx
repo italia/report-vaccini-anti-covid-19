@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from "react";
-import "../App.css";
 import { isEmpty } from "lodash";
 import { simulateClick } from './../utils';
 import { BarChartSupplier } from "./BarChartsSupplier";
@@ -44,57 +43,58 @@ export const Supplier = (data) => {
 
     return (
         <div className="row">
-            <div className="col-12 col-md-12 h-100" style={{marginTop: 40}}>
-                <div className="col-12 d-flex justify-content-center align-items-center p-5 bg-title-plot">
-                    <h3 className="text-center">Distribuzione vaccini per fornitore</h3>
+            <div className="col-12 col-md-12 mt-4">
+                {/* Box Title */}
+            <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
+                <div className="text-center">
+                    <h3>Distribuzione vaccini per fornitore</h3>
                 </div>
-                <div className="col-12 col-md-12 h-100 p-0">
+            </div>
+            {/* // Box Title */}
 
-                    {/* Total Box - Mobile Layout */}
-                    <div className="m-3 d-lg-none" style={{ position: 'relative', background: '#013366' }}>
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center" style={{ position: "absolute", right:-40, top:-25}}/>
-                        <div className="text-white w-100">
-                            <div className="w-100  h-100 d-flex justify-content-center pt-3">
+            <div className="col-12 col-md-12 m-3">
+                {/* Total Box - Mobile Layout */}
+                <div className="d-lg-none bg-box box-mobile m-3">
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center box-logo-right"/>
+                        <div className="text-white">
+                            <div className="d-flex justify-content-center pt-5">
                                 <h5>Totale vaccini distribuiti</h5>
                             </div>
-                            <div className="w-100  h-100 d-flex justify-content-center">
-                                <p className="numeri_box">{totalSuplier?.toLocaleString('it')}</p>
+                            <div className="d-flex justify-content-center">
+                                <p className="box-numbers">{totalSuplier?.toLocaleString('it')}</p>
                             </div>
-                            <div className="col-12 d-flex justify-content-end  pb-2">
-                                <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height={35} />
+                            <div className="col-12 d-flex justify-content-end pb-2">
+                                <img alt="reset-plot2" src="reset_white.png" onClick={resetFilter} height="36px"/>
                             </div>
                         </div>
                     </div>
                     {/* // Total Box - Mobile Layout */}
 
-                    {/* Total Box - Mobile Desktop */}
-                    <div className="offset-md-9 col-md-3  d-none d-lg-block" style={{ height: 100 }}>
-                        <div style={{ position: 'relative', background: '#17324D', top: -70, left: -50, }}>
-                            <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-lg-block" style={{ position: "absolute", right: -45, top: -25, zIndex: 10 }} />
-                            <div className="text-white w-100">
-                                <div className="w-100 h-100 d-flex justify-content-start pt-3 pl-4">
-                                    <h5>Totale<br></br>vaccini distribuiti</h5>
+                    {/* Total Box - Desktop Layout */}
+                    <div className="offset-md-8 col-md-4 d-none d-lg-block">
+                        <div className="bg-box box-card box-right">
+                            <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block box-logo-right"/>
+                            <div className="text-white">
+                                <div className="d-flex justify-content-start pt-3 pl-5">
+                                    <h5>Totale vaccini distribuiti</h5>
                                 </div>
-                                <div className="w-100  h-100 d-flex justify-content-start pl-4">
-                                    <p className="numeri_box" >{totalSuplier?.toLocaleString('it')}</p>
+                                <div className="d-flex justify-content-start pl-5">
+                                    <p className="box-numbers" >{totalSuplier?.toLocaleString('it')}</p>
                                 </div>
-                                <div className="col-12 d-flex justify-content-end  pb-2">
-                                    <img alt="Reset" src="reset_white.png" onClick={resetFilter} height={35} />
+                                <div className="col-12 d-flex justify-content-end pb-2">
+                                    <img alt="Reset" src="reset_white.png" onClick={resetFilter} height="36px"/>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* // Total Box - Mobile Desktop */}
+                    {/* // Total Box - Desktop Layout */}
                 </div>
             </div>
 
             {/* Supplier BarChart */}
-            <div className="col-12 col-md-6 h-100 pb-5">
+            <div className="col-12 col-md-7 w-100 h-100 pb-5">
                 <BarChartSupplier
-                    title=""
-                    xtitle=""
-                    ytitle=""
-                    width="900"
+                    width="850"
                     handleBarChartClick={handleDeliveryBarChartClick}
                     height="350"
                     selected={selectedSupplier}
@@ -103,7 +103,6 @@ export const Supplier = (data) => {
                 />
             </div>
             {/* Supplier BarChart */}
-            <div className=" d-none d-sm-none d-md-block d-lg-none  col-md-6"></div>
         </div>
     );
 };

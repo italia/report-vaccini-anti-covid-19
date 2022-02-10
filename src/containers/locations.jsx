@@ -4,11 +4,17 @@ import { MapArea } from "./../components/MapArea";
 import { LocationsTable } from "./../components/LocationsTable";
 
 const TextBoxTotal = ({locationCount}) => (
-    <div className="text-white w-100">
-        <div className="w-100  h-100 d-flex justify-content-start pt-5 pl-4">
-            <h3>Totale: {locationCount}</h3>
+
+    <>
+
+        <div className="d-flex pl-5 pt-3">
+            <h5>Totale punti somministrazione</h5>
         </div>
-    </div>
+        <div className="d-flex pl-5">
+            <p className="box-numbers">{locationCount}</p>
+        </div>
+
+    </>
 )
 
 const TextBoxMap = () => (
@@ -56,52 +62,54 @@ export const Locations = ({ data }) => {
 
     return (
         <div className="row">
-            <div className="col-12  d-flex justify-content-center align-items-center p-5 bg-title-plot" style={{ marginTop: 40 }}>
-                <div style={{textAlign: 'center'}}>
-                    <h3 className="text-center">Principali Punti di Somministrazione</h3>
+            {/* Box Title */}
+            <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
+                <div className="text-center">
+                    <h3>Principali punti di somministrazione</h3>
                     <p>(Sono inclusi i punti di somministrazione ospedalieri e territoriali;<br />
                         non sono inclusi i punti di somministrazione temporanei)</p>
                 </div>
             </div>
-            <div className="col-12 col-md-12 h-100 p-3 mb-3" style={{marginTop: -10}}>
+            {/* Box Title */}
+
+            <div className="col-12 col-md-12 m-3">
                 {/* Total Box - Mobile View */}
-                <div className="d-lg-none m-3 pl-5" style={{background: "#013366",}}>
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="" style={{ position: "absolute", left:-10, top:0}}/>
-
-                    <TextBoxTotal locationCount={locationCount}/>
-
-                    <div className="col-12 d-flex justify-content-end  pb-2">
-                        <img alt="reset-plot" src="reset_white.png" onClick={resetFilter} height={35} />
+                <div className="d-lg-none bg-box box-mobile m-3">
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center box-logo-left"/>
+                        <div className="text-white">
+                            <TextBoxTotal locationCount={locationCount}/>
+                        </div>
+                    <div className="col-12 d-flex justify-content-end pb-2">
+                        <img alt="reset-plot" src="reset_white.png" onClick={resetFilter} height="36" />
                     </div>
-
                 </div>
                 {/* // Total Box - Mobile View */}
 
                 {/* Total Box - Desktop View */}
-                <div className="col-3 col-md-3 h-100 d-none d-lg-block">
-                    <div style={{ position: "relative", background: "#17324D", top: -50, left: 25, }} >
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block" style={{ zIndex: 10, position: 'absolute', right: -50, top: -25 }} />
-                        <div className="text-white w-100">
+                <div className="col-4 col-md-4 d-none d-lg-block">
+                <div className="bg-box box-card box-left">
+                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block box-logo-left"/>
+                        <div className="text-white">
 
                         <TextBoxTotal locationCount={locationCount}/>
 
-                            <div className="col-12 d-flex justify-content-end  pb-2">
-                                <img alt="reset-white" src="reset_white.png" onClick={resetFilter} height={35} />
+                            <div className="col-12 d-flex justify-content-end pb-2">
+                                <img alt="reset-white" src="reset_white.png" onClick={resetFilter} height="36px" />
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* // Total Box - Desktop View */}
             </div>
-            <div className="col-12 col-md-6 pt-5">
+            <div className="col-12 col-md-6">
                 {/* Map Legend - Mobile View */}
-                <div className="p-2 position-relative d-lg-none" style={{top:-100}}>Principali Punti di Somministrazione per Regione</div>
+                <div className="p-2 d-lg-none text-center">Principali Punti di Somministrazione per Regione</div>
 
                 {/* Map Legend - Desktop View */}
-                <div className="p-4 mb-2 position-relative d-none d-lg-block" style={{ left: "300px", top: "-60px" }} ><TextBoxMap/></div>
+                <div className="d-none d-lg-block map-legend" ><TextBoxMap/></div>
 
                 {/* Map Graph */}
-                <div style={{marginTop: -150}}>
+                <div className="mt-5">
                 <MapArea
                     fillMapDeliveryArea={fillMapDeliveryArea}
                     summary={data.locationsByRegion}
@@ -114,7 +122,7 @@ export const Locations = ({ data }) => {
                 {/* // Map Graph */}
             </div>
             {/* Data Table */}
-            <div className="col-12 col-md-6 pt-3 pl-3" style={{marginTop: -20}}>
+            <div className="col-12 col-md-6 pl-3">
                 <LocationsTable
                     summary={{ ...summary }}
                     selected={selectedLocation}
