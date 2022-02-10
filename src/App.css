@@ -225,3 +225,8 @@ table.dataTable.deliveries-table>thead .sorting:after, table.dataTable.deliverie
 table.dataTable.deliveries-table>thead .sorting_asc:after, table.dataTable.deliveries-table>thead .sorting_asc:before {
     bottom: 1.3em !important;
 }
+span.border-divider{
+    border-top: 1px solid #b1b1b3!important;
+    width: 50%;
+    align-self: center;
+}
