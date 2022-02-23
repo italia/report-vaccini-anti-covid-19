@@ -269,7 +269,7 @@ const elaborate = (data) => {
 
         entry["Totale platea"] = 0;
         for (let platea of data.dataPlatea.data) {
-            if (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+') || (row === '05-11' && platea.fascia_anagrafica === '05-11')) {
+            if (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+')) {
                 entry["Totale platea"] += parseInt(platea.totale_popolazione);
             }
         }
@@ -282,13 +282,15 @@ const elaborate = (data) => {
     }
 
     let totalGuariti = 0;
+    let totalGuaritiDoppia = 0;
     let totalGuaritiBaby = 0;
     for (let row of data.dataGuariti.data) {
         if (row.fascia_anagrafica === '05-11') {
-            totalGuaritiBaby += parseInt(row.totale_guariti);
+            totalGuaritiBaby += parseInt(row.guariti_senza_somm);
         }
         else {
-            totalGuariti += parseInt(row.totale_guariti);
+            totalGuariti += parseInt(row.guariti_senza_somm);
+            totalGuaritiDoppia += parseInt(row.guariti_post_somm);
         }
     }
 
@@ -332,10 +334,10 @@ const elaborate = (data) => {
         for (let rowAge of Object.keys(agesTmp)) {
             let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
             if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
             }
             else {
-                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
             }
         }
         secondDoses[row.area] = entry;
@@ -398,7 +400,7 @@ const elaborate = (data) => {
 
             entry["Totale platea"] = 0;
             for (let platea of data.dataPlatea.data) {
-                if (platea.area === region && (platea.fascia_anagrafica === row || (platea.fascia_anagrafica === '05-11' && row === '05-11') || (row === 'over 80' && platea.fascia_anagrafica === '80+'))) {
+                if (platea.area === region && (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+'))) {
                     entry["Totale platea"] += parseInt(platea.totale_popolazione);
                 }
             }
@@ -411,114 +413,137 @@ const elaborate = (data) => {
         dosesAgesRegionData[region] = arrayTmp;
     }
 
-    // guariti
-    let healed = {}
+    /* healed stack bar chart */
+    let healedColor = {
+        "Guariti senza somministrazione da al massimo 6 mesi": "#012675",
+        "Guariti post 2ª dose/unica dose da al massimo 4 mesi": "#b6d5f4"
+    };
+
+    let regionsHealed = {};
+    let healed = ["Guariti senza somministrazione da al massimo 6 mesi", "Guariti post 2ª dose/unica dose da al massimo 4 mesi"];
+    let healedData = [];
+    let healedRegionData = {};
+
+    let healedTmp = {};
     for (let row of data.dataGuariti.data) {
-        entry = {};
-        if (healed.hasOwnProperty(row.area)) {
-            entry = healed[row.area];
+        key = row.fascia_anagrafica;
+
+        if (key === '80+') {
+            key = 'over 80'
         }
 
-        if (!healed.hasOwnProperty(row.area)) {
+        if (!healedTmp.hasOwnProperty(key)) {
+            healedTmp[key] = {
+                "Guariti post 2ª dose/unica dose da al massimo 4 mesi": 0,
+                "Guariti senza somministrazione da al massimo 6 mesi": 0
+            };
+        }
+
+        healedTmp[key]["Guariti senza somministrazione da al massimo 6 mesi"] += row.guariti_senza_somm;
+        healedTmp[key]["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] += row.guariti_post_somm;
+
+
+        /* regions data */
+        if (!regionsHealed.hasOwnProperty(row.area)) {
+            regionsHealed[row.area] = {};
+            regionsHealed[row.area][key] = {
+                "Guariti post 2ª dose/unica dose da al massimo 4 mesi": 0,
+                "Guariti senza somministrazione da al massimo 6 mesi": 0
+            };
+        }
+        else {
+            if (!regionsHealed[row.area].hasOwnProperty(key)) {
+                regionsHealed[row.area][key] = {
+                    "Guariti senza somministrazione da al massimo 6 mesi": 0,
+                    "Guariti post 2ª dose/unica dose da al massimo 4 mesi": 0
+                };
+            }
+        }
+
+        regionsHealed[row.area][key]["Guariti senza somministrazione da al massimo 6 mesi"] += row.guariti_senza_somm;
+        regionsHealed[row.area][key]["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] += row.guariti_post_somm;
+    }
+
+
+    let healedTotal = {};
+
+    for (let row of Object.keys(healedTmp).sort().reverse()) {
+        entry = {
+            label: "Fascia " + row
+        };
+        entry["Guariti senza somministrazione da al massimo 6 mesi"] = healedTmp[row]["Guariti senza somministrazione da al massimo 6 mesi"];
+        entry["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] = healedTmp[row]["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] - healedTmp[row]["Guariti senza somministrazione da al massimo 6 mesi"];
+
+        healedTotal[entry['label']] = healedTmp[row]["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] + healedTmp[row]["Guariti senza somministrazione da al massimo 6 mesi"];
+
+        healedData.push(entry);
+    }
+
+    for (let region of Object.keys(regionsHealed)) {
+        let arrayTmp = [];
+
+        for (let row of Object.keys(regionsHealed[region]).sort().reverse()) {
+            entry = {
+                label: "Fascia " + row
+            };
+            entry["Guariti senza somministrazione da al massimo 6 mesi"] = regionsHealed[region][row]["Guariti senza somministrazione da al massimo 6 mesi"];
+            entry["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] = regionsHealed[region][row]["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] - regionsHealed[region][row]["Guariti senza somministrazione da al massimo 6 mesi"];
+
+            entry["Totale"] = regionsHealed[region][row]["Guariti post 2ª dose/unica dose da al massimo 4 mesi"] + regionsHealed[region][row]["Guariti senza somministrazione da al massimo 6 mesi"];
+
+            arrayTmp.push(entry);
+        }
+
+        healedRegionData[region] = arrayTmp;
+    }
+
+    let regionsHealedTmp = {}
+    for (let row of data.dataGuariti.data) {
+        entry = {};
+        if (regionsHealedTmp.hasOwnProperty(row.area)) {
+            entry = regionsHealedTmp[row.area];
+        }
+
+        let valueSum = row.guariti_senza_somm + row.guariti_post_somm;
+        if (!regionsHealedTmp.hasOwnProperty(row.area)) {
             entry = {
                 'code': row.area,
                 'area': areaMapping[row.area],
-                'guariti': row.totale_guariti
+                'guariti': valueSum
             };
         }
         else {
-            entry['guariti'] += row.totale_guariti;
+            entry['guariti'] += valueSum;
         }
 
-        for (let rowAge of Object.keys(agesTmp)) {
-            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : (rowAge === '05-11' ? 'fascia_05-11' : 'fascia_' + rowAge);
+        for (let rowAge of Object.keys(healedTmp)) {
+            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
             if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
+                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+'))) ? valueSum : 0;
             }
             else {
-                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === '05-11' && row.fascia_anagrafica === '05-11') || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+' || row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? row.totale_guariti : 0;
+                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+'))) ? valueSum : 0;
             }
         }
-        healed[row.area] = entry;
+
+        regionsHealedTmp[row.area] = entry;
     }
 
-    let healedPlateaData = [];
-    for (let region of Object.keys(healed)) {
-        let tmpElem = healed[region];
+    let healedMapData = [];
+    for (let region of Object.keys(regionsHealedTmp)) {
+        let tmpElem = regionsHealedTmp[region];
 
         let entry = {};
         for (let subItem of Object.keys(tmpElem)) {
-            entry[subItem] = tmpElem[subItem];
-        }
-
-        healedPlateaData.push(entry);
-    }
-
-    let healedData = [];
-    for (let region of Object.keys(healed)) {
-        healedData.push(healed[region]);
-    }
-
-    let haeledAgesTmp = {};
-    let haeledAgesData = [];
-    let regionHaeledAgesData = [];
-    let regionHaeledAgesDataTmp = {};
-
-    for (let row of data.dataGuariti.data) {
-        var keyAge = row.fascia_anagrafica;
-
-        if (keyAge === '80+' || keyAge === '80-89' || keyAge === '90+') {
-            keyAge = 'over 80'
-        }
-        if (keyAge === '05-11') {
-            keyAge = '05-11'
-        }
-
-        if (!haeledAgesTmp.hasOwnProperty(keyAge)) {
-            haeledAgesTmp[keyAge] = row.totale_guariti;
-        }
-        else {
-            haeledAgesTmp[keyAge] += row.totale_guariti;
-        }
-
-        // regions data
-        if (!regionHaeledAgesDataTmp.hasOwnProperty(row.area)) {
-            regionHaeledAgesDataTmp[row.area] = {};
-            regionHaeledAgesDataTmp[row.area][keyAge] = row.totale_guariti;;
-        }
-        else {
-            if (!regionHaeledAgesDataTmp[row.area].hasOwnProperty(keyAge)) {
-                regionHaeledAgesDataTmp[row.area][keyAge] = row.totale_guariti;
+            if (subItem.includes("fascia")) {
+                entry[subItem] = tmpElem[subItem];
             }
             else {
-                regionHaeledAgesDataTmp[row.area][keyAge] += row.totale_guariti;
+                entry[subItem] = tmpElem[subItem];
             }
         }
-    }
 
-    for (let row of Object.keys(haeledAgesTmp).sort().reverse()) {
-        var entryHealedAges = {
-            label: "Fascia " + row
-        };
-        entryHealedAges["guariti"] = haeledAgesTmp[row];
-
-        haeledAgesData.push(entryHealedAges);
-    }
-
-    for (let region of Object.keys(regionHaeledAgesDataTmp).sort().reverse()) {
-        for (let row of Object.keys(regionHaeledAgesDataTmp[region]).sort().reverse()) {
-            var entryRegionHealed = {
-                label: "Fascia " + row
-            };
-            entryRegionHealed["guariti"] = regionHaeledAgesDataTmp[region][row];
-
-            if (!regionHaeledAgesData.hasOwnProperty(region)) {
-                regionHaeledAgesData[region] = [entryRegionHealed];
-            }
-            else {
-                regionHaeledAgesData[region].push(entryRegionHealed);
-            }
-        }
+        healedMapData.push(entry);
     }
 
     // suppliers
@@ -635,17 +660,20 @@ const elaborate = (data) => {
         dosesAgesData,
         dosesAgesRegionData,
         ageDosesTotal,
+        healed,
+        healedColor,
+        healedData,
+        healedRegionData,
+        healedTotal,
+        healedMapData,
         secondDosesData,
         secondDosesPlateaData,
         totalPlatea,
         totalPlateaBaby,
         totalPlateaDoseAddizionaleBooster,
         totalGuariti,
-        totalGuaritiBaby,
-        healedData,
-        healedPlateaData,
-        haeledAgesData,
-        regionHaeledAgesData
+        totalGuaritiDoppia,
+        totalGuaritiBaby
     };
     return aggr;
   };
