@@ -1,87 +1,89 @@
 import React, { useEffect, useState } from "react";
 import { isEmpty, max } from "lodash";
-import { BarChart } from "../components/BarChart";
+import { HealedHStackedBarChart } from "../components/HealedHStackedBarChart";
 import { MapArea } from "../components/MapArea";
 
 export const Healed = ({ data }) => {
+    const [healedColor, setHealedColor] = useState([]);
+    const [healed, setHealed] = useState([]);
+    const [healedData, setHealedData] = useState([]);
 
     const [categoryMapData, setCategoryMapData] = useState([]);
     const [categoryMapField, setCategoryMapField] = useState("guariti");
-    const [totalGuariti, setTotalGuariti] = useState(0);
-    const [healedMapData, setHealedMapData] = useState([]);
-    const [haeledAgesData, setHaeledAgesData] = useState([]);
+
+    const [categorySelectedRegion, setCategorySelectedRegion] = useState(null);
+    const [categorySelectedRegionDescr, setCategorySelectedRegionDescr] = useState(null);
     const [selectedCodeAge, setSelectedCodeAge] = useState(null);
-    const [selectedCodeRegion, setSelectedCodeRegion] = useState(null);
+
+    const [totalByCategory, setTotalByCategory] = useState(0);
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setHaeledAgesData(data.haeledAgesData);
-            setHealedMapData(data.healedData);
-            setTotalGuariti(data.totalGuariti + data.totalGuaritiBaby);
-            setCategoryMapData(data.healedPlateaData);
+            setHealedColor(data.healedColor);
+            setHealed(data.healed);
+            setHealedData(data.healedData);
+
+            setTotalByCategory(data.totalGuariti + data.totalGuaritiBaby + data.totalGuaritiDoppia);
+            setCategoryMapData(data.healedMapData);
         }
     }, [data]);
 
     const resetFilter = () => {
         setSelectedCodeAge(null);
-        setSelectedCodeRegion(null);
-        setHaeledAgesData(data.haeledAgesData);
+        setCategorySelectedRegion(null);
+        setCategorySelectedRegionDescr(null);
+        setTotalByCategory(data.totalGuariti + data.totalGuaritiBaby + data.totalGuaritiDoppia);
+        setHealedData(data.healedData);
         setCategoryMapField("guariti");
-        setTotalGuariti(data.totalGuariti + data.totalGuaritiBaby);
-        setCategoryMapData(data.healedPlateaData);
+        setCategoryMapData(data.healedMapData);
     };
 
     const fillMapCategoryArea = ({ region, maxValue, field }) => {
         let scaleOp = 0;
-        if (region.code === selectedCodeRegion) {
-            scaleOp = 1;
-        } else if (!selectedCodeRegion) {
-            scaleOp = max([region[field] / maxValue, 0.1]);
+        if (region.code === categorySelectedRegion) {
+          scaleOp = 1;
+        } else if (!categorySelectedRegion) {
+          scaleOp = max([region[field] / maxValue, 0.1]);
         } else {
-            const valueToFill = region[field] / (2 * maxValue);
-            scaleOp = max([valueToFill, 0.1]);
+          const valueToFill = region[field] / (2 * maxValue);
+          scaleOp = max([valueToFill, 0.1]);
         }
         return `rgba(0,102,204,${scaleOp}) `;
     };
 
-    const handleMapClick = (region) => {
+    const handleMapCategoryClick = (region) => {
         if (selectedCodeAge) {
-            resetFilter();
+          resetFilter();
         }
 
-        if (selectedCodeRegion === region.code) {
-            resetFilter();
+        if (categorySelectedRegion === region.code) {
+          resetFilter();
         } else {
-            setSelectedCodeRegion(region.code);
-            setHaeledAgesData(data.regionHaeledAgesData[region.code]);
+          setCategorySelectedRegion(region.code);
+          setCategorySelectedRegionDescr(region.area);
+          setHealedData(data.healedRegionData[region.code]);
 
-            for(let row of data?.healedData) {
-                if (row.code === region.code) {
-                    setTotalGuariti(row.guariti);
-                }
-            }
+          var val = 0;
+          for(let row of data.healedRegionData[region.code]) {
+            val += row.Totale;
+          }
+          setTotalByCategory(val);
         }
     };
 
-    const handleAgeBarChartClick = (cat) => {
-        if (selectedCodeRegion) {
-            resetFilter();
+    const handleCategoryBarChartClick = (cat) => {
+        if (categorySelectedRegion) {
+          resetFilter();
         }
 
-        const ageCode = cat.label.toLowerCase().replaceAll(' ', '_');
+        const ageCode = cat.data.label.toLowerCase().replaceAll(' ', '_');
 
         if (selectedCodeAge === ageCode) {
-            resetFilter();
+          resetFilter();
         } else {
-            setSelectedCodeAge(ageCode);
-            setCategoryMapField(ageCode);
-
-            for(let row of data?.haeledAgesData) {
-                const tmp = row.label.toLowerCase().replaceAll(' ', '_');
-                if (tmp === ageCode) {
-                    setTotalGuariti(row.guariti);
-                }
-            }
+          setSelectedCodeAge(ageCode);
+          setCategoryMapField(ageCode);
+          setTotalByCategory(data.healedTotal[cat.data.label]);
         }
     };
 
@@ -90,8 +92,7 @@ export const Healed = ({ data }) => {
             {/* Box Title */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
                 <div className="text-center">
-                    <h3 class="mb-0">Platea guariti da al massimo sei mesi</h3>
-                    <h3 class="mt-0">senza alcuna somministrazione</h3>
+                    <h3 class="mb-0">Platea guariti</h3>
                 </div>
             </div>
             {/* // Box Title */}
@@ -106,7 +107,7 @@ export const Healed = ({ data }) => {
                         </div>
                         <div className="d-flex justify-content-center">
                             <p className="box-numbers">
-                                {totalGuariti && totalGuariti.toLocaleString("it")}
+                                {totalByCategory && totalByCategory.toLocaleString("it")}
                             </p>
                         </div>
                         <div className="col-12 d-flex justify-content-end pb-2">
@@ -126,7 +127,7 @@ export const Healed = ({ data }) => {
                             </div>
                             <div className="d-flex justify-content-start pl-5">
                                 <p className="box-numbers">
-                                    {totalGuariti && totalGuariti.toLocaleString("it")}
+                                    {totalByCategory && totalByCategory.toLocaleString("it")}
                                 </p>
                             </div>
                             <div className="col-12 d-flex justify-content-end pb-2">
@@ -140,26 +141,44 @@ export const Healed = ({ data }) => {
             <div className="col-12 col-md-6">
 
                 {/* Graph */}
-                <BarChart
+                <HealedHStackedBarChart
                     width={+350}
                     height={+300}
-                    handleRectClick={handleAgeBarChartClick}
+                    property={{ xprop: "label", yprop: "total" }}
+                    handleRectClick={handleCategoryBarChartClick}
+                    regionSelected={categorySelectedRegionDescr}
                     selectedCodeAge={selectedCodeAge}
-                    data={haeledAgesData}
+                    colors={healedColor}
+                    keys={healed}
+                    data={healedData}
                 />
                 {/* // Graph */}
+
+                 {/* Legend */}
+                 <div className="row mb-4 ml-4">
+                    {healed.map((itemVal) => {
+                        return (
+                            <div className="row" key={itemVal}>
+                                <div className="circle" style={{ backgroundColor: healedColor[itemVal] }}></div>
+                                <div className="legend-dark mr-4">{itemVal}</div>
+                            </div>
+                        )
+                    })}
+                </div>
+                {/* // Legend */}
+
             </div>
             <div className="col-12 col-md-6 my-0 py-0">
                 {/* Map Graph */}
                 <MapArea
                     fillMapDeliveryArea={fillMapCategoryArea}
                     summary={categoryMapData}
-                    handleMapDeliveryClick={handleMapClick}
+                    handleMapDeliveryClick={handleMapCategoryClick}
                     fillBy={categoryMapField}
                     percentage={false}
                     tooltip={(r) => {
                             var region = null;
-                            for(let row of healedMapData) {
+                            for(let row of categoryMapData) {
                                 if (row.code === r.code) {
                                     region = row;
                                 }

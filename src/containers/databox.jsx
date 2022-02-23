@@ -13,8 +13,14 @@ export const Databox = ({ data }) => {
     const [totalePersoneGuarite, setTotalePersoneGuarite] = useState(''); // Guariti
     const [totalePersoneGuaritePopolazione, setTotalePersoneGuaritePopolazione] = useState(''); // Percentuale Guariti
 
+    const [totalePersoneGuariteDoppiaDose, setTotalePersoneGuariteDoppiaDose] = useState(''); // Guariti con doppia dose
+    const [totalePersoneGuaritePopolazioneDoppiaDose, setTotalePersoneGuaritePopolazioneDoppiaDose] = useState(''); // Percentuale Guariti con doppia dose
+
     const [totaleAlmenoUnaGuariti, setTotaleAlmenoUnaGuariti] = useState(''); // Prima Dose + Guariti
     const [percentualeAlmenoUnaGuariti, setPercentualeAlmenoUnaGuariti] = useState(''); // Percentuale Prima Dose + Guariti
+
+    const [totaleDoseAddizionaleGuaritiDoppiaDose, setTotaleDoseAddizionaleGuaritiDoppiaDose] = useState(''); // Booster + Guariti doppia dose
+    const [percentualeDoseAddizionaleGuaritiDoppiaDose, setPercentualeDoseAddizionaleGuaritiDoppiaDose] = useState(''); // Percentuale Booster + Guariti doppia dose
 
     const [totalePrimaDoseBaby, setTotalePrimaDoseBaby] = useState(''); // Prima Dose Baby
     const [percentualePrimaDosePopolazioneBaby, setPercentualePrimaDosePopolazioneBaby] = useState(''); // Percentuale Prima Dose Baby
@@ -25,6 +31,8 @@ export const Databox = ({ data }) => {
     const [totalePersoneGuariteBaby, setTotalePersoneGuariteBaby] = useState(''); // Guariti Baby
     const [totalePersoneGuaritePopolazioneBaby, setTotalePersoneGuaritePopolazioneBaby] = useState(''); // Percentuale Guariti Baby
 
+    const [totalePrimaDoseConGuaritiBaby, setTotalePrimaDoseConGuaritiBaby] = useState(''); // Prima Dose Baby + Guariti Baby
+    const [percentualeTotalePrimaDoseConGuaritiBaby, setPercentualeTotalePrimaDoseConGuaritiBaby] = useState(''); // Percentuale Prima Dose Baby + Guariti Baby
 
     useEffect(() => {
 
@@ -54,6 +62,13 @@ export const Databox = ({ data }) => {
         setTotalePersoneGuarite(format(data?.totalGuariti));
         setTotalePersoneGuaritePopolazione(format(data?.totalGuariti / data?.totalPlatea * 100, true));
 
+        // Guariti con doppia dose
+        setTotalePersoneGuariteDoppiaDose(data?.totalGuaritiDoppia);
+        setTotalePersoneGuaritePopolazioneDoppiaDose(format(data?.totalGuaritiDoppia/ data?.totalPlateaDoseAddizionaleBooster * 100, true));
+
+        // Dose aggiuntiva/booster + Guariti con doppia dose
+        setTotaleDoseAddizionaleGuaritiDoppiaDose(format(data?.totalGuaritiDoppia + data?.totalDoses?.dose_addizionale_booster));
+        setPercentualeDoseAddizionaleGuaritiDoppiaDose(format((data?.totalGuaritiDoppia + data?.totalDoses?.dose_addizionale_booster) / data?.totalPlateaDoseAddizionaleBooster * 100, true));
 
         // Prima Dose Baby
         let primaBaby = (data?.totalDoses?.prima_dose_baby + data?.totalDoses?.pregressa_infezione_baby);
@@ -72,6 +87,10 @@ export const Databox = ({ data }) => {
         // Guariti Baby
         setTotalePersoneGuariteBaby(format(data?.totalGuaritiBaby));
         setTotalePersoneGuaritePopolazioneBaby(format(data?.totalGuaritiBaby / data?.totalPlateaBaby * 100, true));
+
+        // Prima Dose + Guariti Baby
+        setTotalePrimaDoseConGuaritiBaby(format(primaBaby + data?.totalGuaritiBaby));
+        setPercentualeTotalePrimaDoseConGuaritiBaby(format((primaBaby + data?.totalGuaritiBaby) / data?.totalPlateaBaby * 100, true));
     }, [data]);
 
     function format(data, digit = false) {
@@ -144,9 +163,9 @@ export const Databox = ({ data }) => {
                 </div>
             </div>
             <div className="row mb-3"></div>
-            <div className="row my-4 bg-box">
-                <div className="col-md-12 col-sm-12 mb-5 box-card">
-                    <div className="p-2 pt-4 position-relative d-flex justify-content-center">
+            <div className="row bg-box mb-3">
+                <div className="col-md-6 col-sm-12">
+                    <div className="box-card p-2 my-4">
                         <div className="position-absolute center-logo">
                             <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
                         </div>
@@ -155,6 +174,33 @@ export const Databox = ({ data }) => {
                                 <h5 className="mt-4">Totale dose addizionale/richiamo (booster)</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
                                 <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinale da<br />almeno quattro mesi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                    <div className="box-card p-2 my-4">
+                        <div className="position-absolute center-logo">
+                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                        </div>
+                        <div className="p-1 mt-4">
+                            <div className="align-items-center justify-content-center text-center">
+                                <h5 className="mt-4">Totale guariti post 2ª dose/unica dose</h5>
+                                <div className="box-numbers">{totalePersoneGuariteDoppiaDose?.toLocaleString('it')}</div>
+                                <div className="box-text">{totalePersoneGuaritePopolazioneDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster guarita post 2ª dose/unica dose da al massimo 4 mesi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row bg-box my-4">
+                <div className="col-md-12 col-sm-12 mb-5">
+                    <div className="p-2 position-relative d-flex justify-content-center">
+                        <div className="text-white">
+                            <div className="align-items-center justify-content-center text-center">
+                                <h5 className="mt-4">Totale dose addizionale/richiamo (booster) + guariti post 2ª dose/unica dose</h5>
+                                <div className="box-numbers">{totaleDoseAddizionaleGuaritiDoppiaDose}</div>
+                                <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinare<br />da almeno quattro mesi</div>
                             </div>
                         </div>
                     </div>
@@ -210,6 +256,19 @@ export const Databox = ({ data }) => {
                                     <div className="box-text">{totalePersoneGuaritePopolazioneBaby} % della popolazione 5-11</div>
                                     <div className="box-label" >guarita da al massimo 6 mesi senza alcuna somministrazione</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row bg-box my-4">
+                <div className="col-md-12 col-sm-12 mb-5">
+                    <div className="p-2 position-relative d-flex justify-content-center">
+                        <div className="text-white">
+                            <div className="align-items-center justify-content-center text-center">
+                                <h5 className="mt-4">Totale con almeno una dose + guariti da al massimo 6 mesi senza alcuna somministrazione</h5>
+                                <div className="box-numbers">{totalePrimaDoseConGuaritiBaby}</div>
+                                <div className="box-text">{percentualeTotalePrimaDoseConGuaritiBaby} % della popolazione 5-11</div>
                             </div>
                         </div>
                     </div>
