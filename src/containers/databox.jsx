@@ -173,7 +173,7 @@ export const Databox = ({ data }) => {
                             <div className="align-items-center justify-content-center text-center">
                                 <h5 className="mt-4">Totale dose addizionale/richiamo (booster)</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
-                                <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale da<br />almeno quattro mesi</div>
+                                <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
                             </div>
                         </div>
                     </div>
@@ -187,7 +187,7 @@ export const Databox = ({ data }) => {
                             <div className="align-items-center justify-content-center text-center">
                                 <h5 className="mt-4">Totale guariti post 2ª dose/unica dose</h5>
                                 <div className="box-numbers">{totalePersoneGuariteDoppiaDose?.toLocaleString('it')}</div>
-                                <div className="box-text">{totalePersoneGuaritePopolazioneDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster guarita post 2ª dose/unica dose da al massimo 4 mesi</div>
+                                <div className="box-text">{totalePersoneGuaritePopolazioneDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster guarita post 2ª dose/unica dose<br />da al massimo 4 mesi</div>
                             </div>
                         </div>
                     </div>
@@ -200,7 +200,7 @@ export const Databox = ({ data }) => {
                             <div className="align-items-center justify-content-center text-center">
                                 <h5 className="mt-4">Totale dose addizionale/richiamo (booster) + guariti post 2ª dose/unica dose</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleGuaritiDoppiaDose}</div>
-                                <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno quattro mesi</div>
+                                <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
                             </div>
                         </div>
                     </div>
