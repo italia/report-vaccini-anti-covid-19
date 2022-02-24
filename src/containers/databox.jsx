@@ -173,7 +173,7 @@ export const Databox = ({ data }) => {
                             <div className="align-items-center justify-content-center text-center">
                                 <h5 className="mt-4">Totale dose addizionale/richiamo (booster)</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
-                                <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che hanno ultimato il ciclo vaccinale da<br />almeno quattro mesi</div>
+                                <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale da<br />almeno quattro mesi</div>
                             </div>
                         </div>
                     </div>
