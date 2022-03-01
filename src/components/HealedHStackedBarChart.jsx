@@ -7,6 +7,7 @@ export const HealedHStackedBarChart = ({
   width,
   data,
   keys,
+  labels,
   colors,
   selectedCodeAge,
   regionSelected
@@ -19,7 +20,7 @@ export const HealedHStackedBarChart = ({
       doExit();
       draw();
       // eslint-disable-next-line
-  }, [data, keys, selectedCodeAge]);
+  }, [data, keys, labels, selectedCodeAge]);
 
 
   const responsivefy = (svg) => {
@@ -66,7 +67,7 @@ export const HealedHStackedBarChart = ({
     const margin = { y: 30, x: 60 };
 
     // axis
-    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['Guariti post 2ª dose/unica dose da al massimo 4 mesi']; })]);
+    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['post'] + d['senza']; })]);
     const yScale = d3.scaleBand().padding(0.2);
     xScale.range([0, width]);
     yScale.range([0, height]).domain(data.map((d) => d.label));
@@ -113,7 +114,7 @@ export const HealedHStackedBarChart = ({
       .enter()
       .append("g")
       .attr("fill", function(d) {
-        return colors[d.key];
+        return colors[d.index];
       })
       .attr("dose", function(d) {
         return d.key;
@@ -156,7 +157,7 @@ export const HealedHStackedBarChart = ({
           .html(
               `<div style="text-align: center; line-height: 1.15rem;">
               <div style="font-size: 12px;">${regione} ${d.data.label}</div>
-              <div style="text-align: center"><b>${d3.select(this.parentNode).attr("dose")} </b></div>
+              <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
               <div style="font-size: 14px;">${(d[1]).toLocaleString('it')}</div>`
           )
           .style('display', null);

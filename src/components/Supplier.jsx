@@ -19,7 +19,17 @@ export const Supplier = (data) => {
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setdeliveryBarChartData(data?.data?.allDosesSupplier);
+            let tmp = data?.data?.allDosesSupplier;
+            if (tmp) {
+                tmp.map(val => {
+                    if (val.fornitore.includes("Vaxzevria")) {
+                        val.fornitore = "Vaxzevria";
+                    }
+
+                    return val;
+                })
+            }
+            setdeliveryBarChartData(tmp);
             setTotalSuplier(data?.data?.totalSuplier);
         }
     }, [data]);

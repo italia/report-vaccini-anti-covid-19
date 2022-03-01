@@ -6,6 +6,8 @@ import { MapArea } from "./../components/MapArea";
 export const AgeDoses = ({ data }) => {
     const [dosesAgesColor, setdosesAgesColor] = useState([]);
     const [dosesAges, setdosesAges] = useState([]);
+    const [dosesAgesKeys, setDosesAgesKeys] = useState([]);
+    const [keyValueDoses, setKeyValueDoses] = useState({});
     const [dosesAgesData, setDosesAgesData] = useState([]);
 
     const [categoryMapData, setCategoryMapData] = useState([]);
@@ -22,6 +24,8 @@ export const AgeDoses = ({ data }) => {
         if (!isEmpty(data)) {
             setdosesAgesColor(data.dosesAgesColor);
             setdosesAges(data.dosesAges);
+            setDosesAgesKeys(data.keysDosesAges);
+            setKeyValueDoses(data.keyValueDoses);
             setDosesAgesData(data.dosesAgesData);
 
             setTotalByCategory(data.tot);
@@ -151,17 +155,18 @@ export const AgeDoses = ({ data }) => {
                     regionSelected={categorySelectedRegionDescr}
                     selectedCodeAge={selectedCodeAge}
                     colors={dosesAgesColor}
-                    keys={dosesAges}
+                    keys={dosesAgesKeys}
+                    labels={keyValueDoses}
                     data={dosesAgesData}
                 />
                 {/* // Graph */}
 
                 {/* Legend */}
                 <div className="row mb-4 ml-4">
-                    {dosesAges.map((dose) => {
+                    {dosesAges.map((dose, index) => {
                         return (
                             <div className="row" key={dose}>
-                                <div className="circle" style={{ backgroundColor: dosesAgesColor[dose] }}></div>
+                                <div className="circle" style={{ backgroundColor: dosesAgesColor[index] }}></div>
                                 <div className="legend-dark mr-4">{dose}</div>
                             </div>
                         )

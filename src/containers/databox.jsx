@@ -10,6 +10,9 @@ export const Databox = ({ data }) => {
     const [totaleDoseAddizionaleBooster, setTotaleDoseAddizionaleBooster] = useState(''); // Dose aggiuntiva/booster
     const [percentualeDoseAddizionaleBooster, setPercentualeDoseAddizionaleBooster] = useState(''); // Percentuale Dose aggiuntiva/booster
 
+    const [totaleDoseImmunocompromessi, setTotaleDoseImmunocompromessi] = useState(''); // Dose immunocompromessi
+    const [percentualeDoseImmunocompromessi, setPercentualeDoseImmunocompromessi] = useState(''); // Percentuale Dose immunocompromessi
+
     const [totalePersoneGuarite, setTotalePersoneGuarite] = useState(''); // Guariti
     const [totalePersoneGuaritePopolazione, setTotalePersoneGuaritePopolazione] = useState(''); // Percentuale Guariti
 
@@ -57,6 +60,10 @@ export const Databox = ({ data }) => {
         // Dose aggiuntiva/booster
         setTotaleDoseAddizionaleBooster(data?.totalDoses?.dose_addizionale_booster);
         setPercentualeDoseAddizionaleBooster(format(data?.totalDoses?.dose_addizionale_booster / data?.totalPlateaDoseAddizionaleBooster * 100, true));
+
+        // Dose immunocompromessi
+        setTotaleDoseImmunocompromessi(data?.totalDoses?.dose_immunocompromessi);
+        setPercentualeDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi / data?.totalPlateaDoseImmunocompromessi * 100, true));
 
         // Guariti
         setTotalePersoneGuarite(format(data?.totalGuariti));
@@ -193,7 +200,7 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
             </div>
-            <div className="row bg-box my-4">
+            <div className="row bg-box my-4 mb-5">
                 <div className="col-md-12 col-sm-12 mb-5">
                     <div className="p-2 position-relative d-flex justify-content-center">
                         <div className="text-white">
@@ -201,6 +208,25 @@ export const Databox = ({ data }) => {
                                 <h5 className="mt-4">Totale dose addizionale/richiamo (booster) + guariti post 2ª dose/unica dose</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleGuaritiDoppiaDose}</div>
                                 <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row bg-box my-4">
+                <div className="col-md-12 col-sm-12">
+                    <div className="box-card p-2 my-5">
+                        <div className="position-absolute center-logo">
+                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                        </div>
+                        <div className="p-0 position-relative d-flex justify-content-center">
+                            <div className="text-white">
+                                <div className="align-items-center justify-content-center text-center">
+                                    <h5 className="mt-4">Totale dose booster immunocompromessi</h5>
+                                    <div className="box-numbers">{totaleDoseImmunocompromessi}</div>
+                                    <div className="box-text">{percentualeDoseImmunocompromessi} % della popolazione immunocompromessa potenzialmente oggetto di<br />dose booster che ha ultimato il ciclo vaccinale con richiamo<br />da almeno 4 mesi</div>
+                                </div>
                             </div>
                         </div>
                     </div>
