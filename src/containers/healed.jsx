@@ -6,8 +6,10 @@ import { MapArea } from "../components/MapArea";
 export const Healed = ({ data }) => {
     const [healedColor, setHealedColor] = useState([]);
     const [healed, setHealed] = useState([]);
+    const [healedKeys, setHealedKeys] = useState([]);
     const [healedData, setHealedData] = useState([]);
-
+    const [keyValueHealed, setKeyValueHealed] = useState({});
+    
     const [categoryMapData, setCategoryMapData] = useState([]);
     const [categoryMapField, setCategoryMapField] = useState("guariti");
 
@@ -22,9 +24,12 @@ export const Healed = ({ data }) => {
             setHealedColor(data.healedColor);
             setHealed(data.healed);
             setHealedData(data.healedData);
+            setHealedKeys(data.keysHealed);
 
             setTotalByCategory(data.totalGuariti + data.totalGuaritiBaby + data.totalGuaritiDoppia);
             setCategoryMapData(data.healedMapData);
+
+            setKeyValueHealed(data.keyValueHealed);
         }
     }, [data]);
 
@@ -149,17 +154,18 @@ export const Healed = ({ data }) => {
                     regionSelected={categorySelectedRegionDescr}
                     selectedCodeAge={selectedCodeAge}
                     colors={healedColor}
-                    keys={healed}
+                    keys={healedKeys}
+                    labels={keyValueHealed}
                     data={healedData}
                 />
                 {/* // Graph */}
 
                  {/* Legend */}
                  <div className="row mb-4 ml-4">
-                    {healed.map((itemVal) => {
+                    {healed.map((itemVal, index) => {
                         return (
                             <div className="row" key={itemVal}>
-                                <div className="circle" style={{ backgroundColor: healedColor[itemVal] }}></div>
+                                <div className="circle" style={{ backgroundColor: healedColor[index] }}></div>
                                 <div className="legend-dark mr-4">{itemVal}</div>
                             </div>
                         )

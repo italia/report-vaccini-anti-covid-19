@@ -7,6 +7,7 @@ export const AgeHStackedBarChart = ({
   width,
   data,
   keys,
+  labels,
   colors,
   selectedCodeAge,
   regionSelected
@@ -19,7 +20,7 @@ export const AgeHStackedBarChart = ({
       doExit();
       draw();
       // eslint-disable-next-line
-  }, [data, keys, selectedCodeAge]);
+  }, [data, keys, labels, selectedCodeAge]);
 
 
   const responsivefy = (svg) => {
@@ -113,7 +114,7 @@ export const AgeHStackedBarChart = ({
       .enter()
       .append("g")
       .attr("fill", function(d) {
-        return colors[d.key];
+        return colors[d.index];
       })
       .attr("dose", function(d) {
         return d.key;
@@ -149,7 +150,7 @@ export const AgeHStackedBarChart = ({
       .on('mousemove', function (event, d) {
         let regione = regionSelected ? " " + regionSelected : "";
 
-        if (d3.select(this.parentNode).attr("dose") === 'Totale fascia') {
+        if (d3.select(this.parentNode).attr("dose") === 'totale') {
           tooltip
             .style('top', event.pageY - 10 + 'px')
             .style('left', event.pageX + 10 + 'px');
@@ -166,17 +167,23 @@ export const AgeHStackedBarChart = ({
         }
         else {
           var perc = 0;
-          if (d3.select(this.parentNode).attr("dose") === '1ª dose') {
-            let sum = d.data["1ª dose"] + d.data["2ª dose/unica dose"] + d.data["Dose addizionale/booster"];
+          if (d3.select(this.parentNode).attr("dose") === 'prima') {
+            let sum = d.data["prima"] + d.data["seconda"] + d.data["addizionale"] + d.data["immunocompromessi"];
             perc = (sum / d.data["Totale platea"]) * 100;
           }
           else {
-            if (d3.select(this.parentNode).attr("dose") === '2ª dose/unica dose') {
-              let sum = d.data["2ª dose/unica dose"] + d.data["Dose addizionale/booster"];
+            if (d3.select(this.parentNode).attr("dose") === 'seconda') {
+              let sum = d.data["seconda"] + d.data["addizionale"] + d.data["immunocompromessi"];
               perc = (sum / d.data["Totale platea"]) * 100;
             }
             else {
-              perc = (d.data["Dose addizionale/booster"] / d.data["Totale platea"]) * 100;
+              if (d3.select(this.parentNode).attr("dose") === 'addizionale') {
+                let sum = d.data["addizionale"] + d.data["immunocompromessi"];
+                perc = (sum / d.data["Totale platea"]) * 100;
+              }
+              else {
+                perc = (d.data["immunocompromessi"] / d.data["Totale platea"]) * 100;
+              }
             }
           }
 
@@ -187,7 +194,7 @@ export const AgeHStackedBarChart = ({
             .html(
                 `<div style="text-align: center; line-height: 1.15rem;">
                 <div style="font-size: 12px;">${regione} ${d.data.label}</div>
-                <div style="text-align: center"><b>${d3.select(this.parentNode).attr("dose")} </b></div>
+                <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
                 <div style="font-size: 14px;"><b>(${perc.toFixed(2).toLocaleString("it")} %)</b></div>
                 <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
             )

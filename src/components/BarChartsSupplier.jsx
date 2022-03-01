@@ -69,46 +69,16 @@ export const BarChartSupplier = (props) => {
       .call(responsivefy) // Call responsivefy to make the chart responsive
       .attr("id", "svg-bar");
 
-    svg
-      .append("text")
-      .attr("x", width / 8 + margin.x)
-      .attr("y", margin.y / 6)
-      .attr("class", "title-bar-dark")
-      .attr("text-anchor", "middle")
-      .attr(props.title);
-
-    // svg
-    //   .append("text")
-    //   .attr("x", width / 2 + margin.x)
-    //   .attr("y", margin.y * 2)
-    //   .attr("transform", `translate(0,${height - margin.y / 4})`)
-    //   .attr("class", "title-bar")
-    //   .text(props.xtitle);
-
-    svg
-      .append("text")
-      .attr("x", -(height / 2) - margin.y)
-      .attr("y", margin.x / 2.4)
-      .attr("transform", "rotate(-90)")
-      .attr("class", "title-bar-dark")
-      .text(props.ytitle);
-
     const chart = svg
       .append("g")
       .attr("transform", `translate(${margin.x},${margin.y})`);
 
-    // chart.append("g").attr("class", "axis").call(d3.axisLeft(yScale));
     chart
       .append("g")
       .attr("class", "axis-dark")
       .attr("transform", `translate(0,${height})`)
       .style('font-size', 16)
       .call(d3.axisBottom(xScale));
-
-    // chart
-    //   .append("g")
-    //   .attr("class", "grid-hline")
-    //   .call(d3.axisLeft().scale(yScale).tickSize(-width, 0, 0).tickFormat(""));
 
     const path = chart.selectAll().data(data);
 
@@ -138,7 +108,7 @@ export const BarChartSupplier = (props) => {
       .attr("class", "bartext-dark")
       .attr("text-anchor", "center")
       .attr("fill", "black")
-      .attr("x", (d) => xScale(d[props.property.xprop])  )
+      .attr("x", (d) => xScale(d[props.property.xprop]) -5 )
       .attr("y", (d) =>
         height - yScale(d[props.property.yprop]) >= 0
           ? yScale(d[props.property.yprop]) - 10
