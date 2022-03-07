@@ -62,7 +62,7 @@ export const Databox = ({ data }) => {
         setPercentualeDoseAddizionaleBooster(format(data?.totalDoses?.dose_addizionale_booster / data?.totalPlateaDoseAddizionaleBooster * 100, true));
 
         // Dose immunocompromessi
-        setTotaleDoseImmunocompromessi(data?.totalDoses?.dose_immunocompromessi);
+        setTotaleDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi));
         setPercentualeDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi / data?.totalPlateaDoseImmunocompromessi * 100, true));
 
         // Guariti
