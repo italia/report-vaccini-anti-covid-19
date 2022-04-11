@@ -13,6 +13,9 @@ export const Databox = ({ data }) => {
     const [totaleDoseImmunocompromessi, setTotaleDoseImmunocompromessi] = useState(''); // Dose immunocompromessi
     const [percentualeDoseImmunocompromessi, setPercentualeDoseImmunocompromessi] = useState(''); // Percentuale Dose immunocompromessi
 
+    const [totalePersoneSecondBooster, setTotalePersoneSecondBooster] = useState(''); // Dose seconda booster
+    const [percentualePersoneSecondBooster, setPercentualePersoneSecondBooster] = useState(''); // Percentuale Dose seconda booster
+
     const [totalePersoneGuarite, setTotalePersoneGuarite] = useState(''); // Guariti
     const [totalePersoneGuaritePopolazione, setTotalePersoneGuaritePopolazione] = useState(''); // Percentuale Guariti
 
@@ -64,6 +67,10 @@ export const Databox = ({ data }) => {
         // Dose immunocompromessi
         setTotaleDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi));
         setPercentualeDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi / data?.totalPlateaDoseImmunocompromessi * 100, true));
+
+        // Dose second booster
+        setTotalePersoneSecondBooster(format(data?.totalDoses?.dose_second_booster));
+        setPercentualePersoneSecondBooster(format(data?.totalDoses?.dose_second_booster / data?.totalPlateaDoseSecondBooster * 100, true));
 
         // Guariti
         setTotalePersoneGuarite(format(data?.totalGuariti));
@@ -214,19 +221,33 @@ export const Databox = ({ data }) => {
                 </div>
             </div>
 
-            <div className="row bg-box my-4">
-                <div className="col-md-12 col-sm-12">
-                    <div className="box-card p-2 my-5">
+            <div className="row bg-box mb-3">
+                <div className="col-md-6 col-sm-12">
+                    <div className="box-card p-1 my-4">
                         <div className="position-absolute center-logo">
                             <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
                         </div>
-                        <div className="p-0 position-relative d-flex justify-content-center">
+                        <div className="p-1 mt-3">
                             <div className="text-white">
                                 <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-4">Totale dose booster immunocompromessi</h5>
+                                    <h5 className="mt-4">Totale dose <br/>booster immunocompromessi</h5>
                                     <div className="box-numbers">{totaleDoseImmunocompromessi}</div>
                                     <div className="box-text">{percentualeDoseImmunocompromessi} % della popolazione immunocompromessa potenzialmente oggetto di<br />dose booster che ha ultimato il ciclo vaccinale con richiamo<br />da almeno 4 mesi</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                    <div className="box-card p-1 my-4">
+                        <div className="position-absolute center-logo">
+                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
+                        </div>
+                        <div className="p-1 mt-3">
+                            <div className="align-items-center justify-content-center text-center">
+                                <h5 className="mt-4">Totale dose<br/>second booster</h5>
+                                <div className="box-numbers">{totalePersoneSecondBooster?.toLocaleString('it')}</div>
+                                <div className="box-text">{percentualePersoneSecondBooster} % della popolazione oggetto di seconda<br />dose booster cha ha ricevuto la dose booster<br />da almeno 4 mesi</div>
                             </div>
                         </div>
                     </div>

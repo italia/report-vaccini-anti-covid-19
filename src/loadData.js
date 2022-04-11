@@ -14,6 +14,7 @@ const supplierDoses                         = `${baseURL}/consegne-vaccini-lates
 const plateaURL                             = `${baseURL}/platea.json`;
 const plateaDoseAddizionaleBoosterURL       = `${baseURL}/platea-dose-addizionale-booster.json`;
 const plateaDoseImmunocompromessiURL        = `${baseURL}/platea-booster-immunocompromessi.json`;
+const plateaDoseSecondBoosterURL            = `${baseURL}/platea-second-booster.json`;
 const guaritiURL                            = `${baseURL}/soggetti-guariti.json`;
 
 const elaborate = (data) => {
@@ -39,6 +40,7 @@ const elaborate = (data) => {
         dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.dose_addizionale_booster)),
         dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.dose_addizionale_booster : 0)),
         dose_immunocompromessi:         _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.booster_immuno)),
+        dose_second_booster:            _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.d2_booster)),
         prima_dose_janssen:         _.sum(
                                         dataVaxSomLatest
                                         ?.filter((e) => e.fornitore === "Janssen" && e?.fascia_anagrafica !== '05-11')
@@ -177,6 +179,7 @@ const elaborate = (data) => {
 
     /* ages stack bar chart */
     let keyValueDoses = {
+        "second_booster": "Second Booster",
         "immunocompromessi": "Booster Immunocompromessi",
         "addizionale": "Dose addizionale/booster",
         "seconda": "2ª dose/unica dose",
@@ -189,7 +192,7 @@ const elaborate = (data) => {
     for(let keyOfKeyValues of Object.keys(keyValueDoses)) {
         dosesAges.push(keyValueDoses[keyOfKeyValues]);
     }
-    let dosesAgesColor = ["#002166", "#0a5dbb", "#166ed3", "#219ae8", "#b6d5f4"]; // color
+    let dosesAgesColor = ["#061b56", "#0d2d85", "#0a5dbb", "#3073cf", "#548bd6", "#b6d5f4"]; // color
 
     let regionsDoses = {};
     let dosesAgesData = [];
@@ -226,6 +229,9 @@ const elaborate = (data) => {
         if (row.hasOwnProperty('booster_immuno')) {
             agesTmp[key]['immunocompromessi'] += row.booster_immuno;
         }
+        if (row.hasOwnProperty('d2_booster')) {
+            agesTmp[key]['second_booster'] += row.d2_booster;
+        }
 
         /* regions data */
         if (!regionsDoses.hasOwnProperty(row.area)) {
@@ -258,6 +264,9 @@ const elaborate = (data) => {
         if (row.hasOwnProperty('booster_immuno')) {
             regionsDoses[row.area][key]['immunocompromessi'] += row.booster_immuno;
         }
+        if (row.hasOwnProperty('d2_booster')) {
+            regionsDoses[row.area][key]['second_booster'] += row.d2_booster;
+        }
     }
 
     let ageDosesTotal = {};
@@ -266,7 +275,9 @@ const elaborate = (data) => {
         var entry = {
             label: "Fascia " + row
         };
-        entry['immunocompromessi'] = agesTmp[row]['immunocompromessi'];
+
+        entry['second_booster'] = agesTmp[row]['second_booster'];
+        entry['immunocompromessi'] = agesTmp[row]['immunocompromessi']  - agesTmp[row]['second_booster'];
         entry['addizionale'] = agesTmp[row]['addizionale'] - agesTmp[row]['immunocompromessi'];
         entry['seconda'] = agesTmp[row]['seconda'] - agesTmp[row]['addizionale'];
         entry['prima'] = agesTmp[row]['prima'] - agesTmp[row]['seconda'];
@@ -280,7 +291,7 @@ const elaborate = (data) => {
 
         entry['totale'] = entry["Totale platea"] - agesTmp[row]['prima'];
 
-        ageDosesTotal[entry['label']] = agesTmp[row]['prima'] + agesTmp[row]['seconda'] + agesTmp[row]['addizionale'] + agesTmp[row]['immunocompromessi'];
+        ageDosesTotal[entry['label']] = agesTmp[row]['prima'] + agesTmp[row]['seconda'] + agesTmp[row]['addizionale'] + agesTmp[row]['immunocompromessi'] + agesTmp[row]['second_booster'];
 
         dosesAgesData.push(entry);
     }
@@ -398,7 +409,9 @@ const elaborate = (data) => {
             entry = {
                 label: "Fascia " + row
             };
-            entry['immunocompromessi'] = regionsDoses[region][row]['immunocompromessi'];
+
+            entry['second_booster'] = regionsDoses[region][row]['second_booster'];
+            entry['immunocompromessi'] = regionsDoses[region][row]['immunocompromessi'] - regionsDoses[region][row]['second_booster'];
             entry['addizionale'] = regionsDoses[region][row]['addizionale'] - regionsDoses[region][row]['immunocompromessi'];
             entry['seconda'] = regionsDoses[region][row]['seconda'] - regionsDoses[region][row]['addizionale'];
             entry['prima'] = regionsDoses[region][row]['prima'] - regionsDoses[region][row]['seconda'];
@@ -410,7 +423,7 @@ const elaborate = (data) => {
                 }
             }
 
-            entry['totale'] = entry["Totale platea"] - entry['prima'] - entry['seconda'] - entry['addizionale'] - entry['immunocompromessi'];
+            entry['totale'] = entry["Totale platea"] - entry['prima'] - entry['seconda'] - entry['addizionale'] - entry['immunocompromessi'] - entry['second_booster'];
 
             arrayTmp.push(entry);
         }
@@ -653,6 +666,11 @@ const elaborate = (data) => {
         totalPlateaDoseImmunocompromessi += parseInt(platea.totale_popolazione);
     }
 
+    let totalPlateaDoseSecondBooster = 0;
+    for (let platea of data.dataPlateaSecondBooster.data) {
+        totalPlateaDoseSecondBooster += parseInt(platea.totale_popolazione);
+    }
+
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
     const aggr = {
         timestamp,
@@ -692,6 +710,7 @@ const elaborate = (data) => {
         totalPlateaBaby,
         totalPlateaDoseAddizionaleBooster,
         totalPlateaDoseImmunocompromessi,
+        totalPlateaDoseSecondBooster,
         totalGuariti,
         totalGuaritiDoppia,
         totalGuaritiBaby
@@ -711,6 +730,7 @@ const elaborate = (data) => {
         resPlatea,
         resPlateaDoseAddizionaleBooster,
         resPlateaDoseImmunocompromessi,
+        resPlateaDoseSecondBooster,
         resGuariti
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
@@ -723,6 +743,7 @@ const elaborate = (data) => {
         fetch(plateaURL),
         fetch(plateaDoseAddizionaleBoosterURL),
         fetch(plateaDoseImmunocompromessiURL),
+        fetch(plateaDoseSecondBoosterURL),
         fetch(guaritiURL)
     ]);
 
@@ -737,6 +758,7 @@ const elaborate = (data) => {
         dataPlatea,
         dataPlateaDoseAddizionaleBooster,
         dataPlateaDoseImmunocompromessi,
+        dataPlateaSecondBooster,
         dataGuariti
     ] = await Promise.all([
         resSommVaxSummary.json(),
@@ -749,6 +771,7 @@ const elaborate = (data) => {
         resPlatea.json(),
         resPlateaDoseAddizionaleBooster.json(),
         resPlateaDoseImmunocompromessi.json(),
+        resPlateaDoseSecondBooster.json(),
         resGuariti.json()
     ]);
 
@@ -764,6 +787,7 @@ const elaborate = (data) => {
             dataPlatea,
             dataPlateaDoseAddizionaleBooster,
             dataPlateaDoseImmunocompromessi,
+            dataPlateaSecondBooster,
             dataGuariti
         })
     };
