@@ -23,8 +23,8 @@ export const HeaderBar = () => {
         <div className="col-12 col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pr-sm-0 pt-2 pb-2">
             <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
             <p className="pt-2">
-                <a className="text-decoration-none" href="https://www.governo.it/it/dipartimenti/commissario-straordinario-lemergenza-covid-19/cscovid19-commissario/14419" aria-label ="Commissario Straordinario Covid-19" rel="noreferrer" alt="Commissario Straordinario Covid">
-                Commissario Straordinario Covid-19
+                <a className="text-decoration-none" href="https://www.governo.it/it/dipartimenti/unit-il-completamento-della-campagna-vaccinale-e-ladozione-di-altre-misure-di-contrasto" aria-label ="Unità Completamento Campagna Vaccinale" rel="noreferrer" alt="Unità Completamento Campagna Vaccinale">
+                Unità Completamento Campagna Vaccinale
                 </a>
             </p>
         </div>

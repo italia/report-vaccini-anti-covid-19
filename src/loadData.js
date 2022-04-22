@@ -179,7 +179,7 @@ const elaborate = (data) => {
 
     /* ages stack bar chart */
     let keyValueDoses = {
-        "second_booster": "Second Booster",
+        "second_booster": "2ª dose Booster",
         "immunocompromessi": "Booster Immunocompromessi",
         "addizionale": "Dose addizionale/booster",
         "seconda": "2ª dose/unica dose",
