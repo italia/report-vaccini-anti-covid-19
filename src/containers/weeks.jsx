@@ -26,15 +26,14 @@ export const Weeks = ({ data }) => {
     return (
         <div className="row">
             {/* Title Box - Desktop View */}
-            <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
-                <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="img-fluid d-none d-lg-block align-items-center" />
+            <div className="col-12 d-flex justify-content-center align-items-center section-title px-5 mx-2">
                 <h3>Andamento settimanale delle somministrazioni</h3>
             </div>
             {/* // Title Box - Desktop View */}
             <div className="row col-12 m-2 p-2 ">
                 <div className="col-12 col-md-6 align-items-end testo-info-campania d-none d-sm-none d-md-flex d-lg-flex"></div>
                 <div className="col-12 col-md-6  position-relative">
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-lg-none sd-sm-block box-logo-right"/>
+
                     <div className="bg-gradient-bar"></div>
                 </div>
                 <div className="col-12 col-md-4" style={{ backgroundColor: "#17324D" }}>

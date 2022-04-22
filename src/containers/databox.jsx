@@ -115,16 +115,20 @@ export const Databox = ({ data }) => {
     }
 
     return (
-        <div className="p-3">
-            <div className="row bg-box mb-3">
+        <div className="p-3 mb-5">
+
+            <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
+                <div className="mb-2" >
+                    <h3 className="text-center">Ciclo Vaccinale Primario</h3>
+                </div>
+            </div>
+
+            <div className="row bg-box p-2 mb-4">
                 <div className="col-md-4 col-sm-12">
-                    <div className="box-card p-2 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-4">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="align-items-center justify-content-center text-center mb-4">
-                                <h5 className="mt-4">Totale con almeno una dose</h5>
+                                <h5 className="mt-2">Con almeno una dose</h5>
                                 <div className="box-numbers">{totalePrimaDose}</div>
                                 <div className="box-text">{percentualePrimaDosePopolazione} % della popolazione over 12</div>
                                 <div className="box-label" >(persone con almeno una somministrazione)</div>
@@ -133,13 +137,10 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
                 <div className="col-md-4 col-sm-12">
-                    <div className="box-card p-2 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-4">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="align-items-center justify-content-center text-center mb-4">
-                                <h5 className="mt-4">Totale ciclo vaccinale</h5>
+                                <h5 className="mt-2">Ciclo vaccinale</h5>
                                 <div className="box-numbers">{totalePersoneVaccinate}</div>
                                 <div className="box-text">{totalePersoneVaccinatePopolazione} % della popolazione over 12</div>
                                 <div className="box-label" >(persone che hanno completato il ciclo vaccinale)</div>
@@ -148,13 +149,10 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
                 <div className="col-md-4 col-sm-12">
-                    <div className="box-card p-2 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-4">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="align-items-center justify-content-center text-center mb-4">
-                                <h5 className="mt-4">Totale guariti</h5>
+                                <h5 className="mt-2">Guariti</h5>
                                 <div className="box-numbers">{totalePersoneGuarite}</div>
                                 <div className="box-text">{totalePersoneGuaritePopolazione} % della popolazione over 12</div>
                                 <div className="box-label" >guarita da al massimo 6 mesi senza alcuna somministrazione</div>
@@ -162,13 +160,11 @@ export const Databox = ({ data }) => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row bg-box mb-5">
-                <div className="col-md-12 col-sm-12 mb-5">
-                    <div className="p-2 position-relative d-flex justify-content-center">
-                        <div className="text-white">
-                            <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-4">Totale con almeno una dose + guariti da al massimo 6 mesi senza alcuna somministrazione</h5>
+                <div className="col-md-12 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Totale</h5>
                                 <div className="box-numbers">{totaleAlmenoUnaGuariti}</div>
                                 <div className="box-text">{percentualeAlmenoUnaGuariti} % della popolazione over 12</div>
                             </div>
@@ -176,16 +172,20 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
             </div>
-            <div className="row mb-3"></div>
-            <div className="row bg-box mb-3">
+
+
+            <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
+                <div className="mb-2" >
+                    <h3 className="text-center">Dose Addizionale/Booster</h3>
+                </div>
+            </div>
+
+            <div className="row bg-box p-2 mb-4">
                 <div className="col-md-6 col-sm-12">
-                    <div className="box-card p-2 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-4">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-4">Totale dose addizionale/richiamo (booster)</h5>
+                                <h5 className="mt-2">Dose addizionale/richiamo (booster)</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
                                 <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
                             </div>
@@ -193,44 +193,42 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
                 <div className="col-md-6 col-sm-12">
-                    <div className="box-card p-2 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-4">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-4">Totale guariti post 2ª dose/unica dose</h5>
+                                <h5 className="mt-2">Guariti post 2ª dose/unica dose</h5>
                                 <div className="box-numbers">{totalePersoneGuariteDoppiaDose?.toLocaleString('it')}</div>
                                 <div className="box-text">{totalePersoneGuaritePopolazioneDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster guarita post 2ª dose/unica dose<br />da al massimo 4 mesi</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row bg-box my-4 mb-5">
-                <div className="col-md-12 col-sm-12 mb-5">
-                    <div className="p-2 position-relative d-flex justify-content-center">
-                        <div className="text-white">
-                            <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-4">Totale dose addizionale/richiamo (booster) + guariti post 2ª dose/unica dose</h5>
+                <div className="col-md-12 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Totale</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleGuaritiDoppiaDose}</div>
-                                <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
+                                <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della platea dose booster</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="row bg-box mb-3">
+            <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
+                <div className="mb-2" >
+                    <h3 className="text-center">Seconda dose booster</h3>
+                </div>
+            </div>
+
+            <div className="row bg-box p-2 mb-4">
                 <div className="col-md-6 col-sm-12">
-                    <div className="box-card p-1 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-3">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="text-white">
                                 <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-4">Totale dose <br/>booster immunocompromessi</h5>
+                                    <h5 className="mt-2">Booster immunocompromessi</h5>
                                     <div className="box-numbers">{totaleDoseImmunocompromessi}</div>
                                     <div className="box-text">{percentualeDoseImmunocompromessi} % della popolazione immunocompromessa potenzialmente oggetto di<br />dose booster che ha ultimato il ciclo vaccinale con richiamo<br />da almeno 4 mesi</div>
                                 </div>
@@ -239,13 +237,10 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
                 <div className="col-md-6 col-sm-12">
-                    <div className="box-card p-1 my-4">
-                        <div className="position-absolute center-logo">
-                            <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                        </div>
-                        <div className="p-1 mt-3">
+                    <div className="box-card p-2">
+                        <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-4">Totale dose<br/>second booster</h5>
+                                <h5 className="mt-2">2ª dose booster</h5>
                                 <div className="box-numbers">{totalePersoneSecondBooster?.toLocaleString('it')}</div>
                                 <div className="box-text">{percentualePersoneSecondBooster} % della popolazione oggetto di seconda<br />dose booster cha ha ricevuto la dose booster<br />da almeno 4 mesi</div>
                             </div>
@@ -254,66 +249,55 @@ export const Databox = ({ data }) => {
                 </div>
             </div>
 
-            <div className="my-5">
-                <div className="col-12 d-flex justify-content-center align-items-center p-5 section-title">
-                    <div className="mb-3" >
-                        <h3 className="text-center">Somministrazione platea 5-11 anni</h3>
-                    </div>
-                </div>
-                <div className="row bg-box mb-3">
-                    <div className="col-md-4 col-sm-12 mb-4 mt-3">
-                        <div className="p-2 my-2 box-card">
-                            <div className="position-absolute center-logo">
-                                <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                            </div>
-                            <div className="p-1 mt-4">
-                                <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-4">Totale con almeno una dose</h5>
-                                    <div className="box-numbers">{totalePrimaDoseBaby}</div>
-                                    <div className="box-text">{percentualePrimaDosePopolazioneBaby} % della popolazione 5-11</div>
-                                    <div className="box-label" >(persone con almeno una somministrazione)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-4 col-sm-12 mb-4 mt-3">
-                        <div className="p-2 my-2 box-card">
-                            <div className="position-absolute center-logo">
-                                <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                            </div>
-                            <div className="p-1 mt-4">
-                                <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-4">Totale ciclo vaccinale</h5>
-                                    <div className="box-numbers">{totalePersoneVaccinateBaby}</div>
-                                    <div className="box-text">{totalePersoneVaccinatePopolazioneBaby} % della popolazione 5-11</div>
-                                    <div className="box-label" >(persone che hanno completato il ciclo vaccinale)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-4 col-sm-12 mb-4 mt-3">
-                        <div className="p-2 my-2 box-card">
-                            <div className="position-absolute center-logo">
-                                <img src="Coccarda.svg" width="150" height="130" alt="Logo" />
-                            </div>
-                            <div className="p-1 mt-4">
-                                <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-4">Totale guariti</h5>
-                                    <div className="box-numbers">{totalePersoneGuariteBaby}</div>
-                                    <div className="box-text">{totalePersoneGuaritePopolazioneBaby} % della popolazione 5-11</div>
-                                    <div className="box-label" >guarita da al massimo 6 mesi senza alcuna somministrazione</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
+                <div className="mb-2" >
+                    <h3 className="text-center">Somministrazione platea 5-11 anni</h3>
                 </div>
             </div>
-            <div className="row bg-box my-4">
-                <div className="col-md-12 col-sm-12 mb-5">
-                    <div className="p-2 position-relative d-flex justify-content-center">
-                        <div className="text-white">
-                            <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-4">Totale con almeno una dose + guariti da al massimo 6 mesi senza alcuna somministrazione</h5>
+
+
+            <div className="row bg-box mb-4">
+                <div className="col-md-4 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Con almeno una dose</h5>
+                                <div className="box-numbers">{totalePrimaDoseBaby}</div>
+                                <div className="box-text">{percentualePrimaDosePopolazioneBaby} % della popolazione 5-11</div>
+                                <div className="box-label" >(persone con almeno una somministrazione)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Ciclo vaccinale</h5>
+                                <div className="box-numbers">{totalePersoneVaccinateBaby}</div>
+                                <div className="box-text">{totalePersoneVaccinatePopolazioneBaby} % della popolazione 5-11</div>
+                                <div className="box-label" >(persone che hanno completato il ciclo vaccinale)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Guariti</h5>
+                                <div className="box-numbers">{totalePersoneGuariteBaby}</div>
+                                <div className="box-text">{totalePersoneGuaritePopolazioneBaby} % della popolazione 5-11</div>
+                                <div className="box-label" >guarita da al massimo 6 mesi senza alcuna somministrazione</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-12 col-sm-12">
+                    <div className="box-card">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Totale</h5>
                                 <div className="box-numbers">{totalePrimaDoseConGuaritiBaby}</div>
                                 <div className="box-text">{percentualeTotalePrimaDoseConGuaritiBaby} % della popolazione 5-11</div>
                             </div>

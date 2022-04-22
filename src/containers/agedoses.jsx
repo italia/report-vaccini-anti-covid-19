@@ -106,7 +106,6 @@ export const AgeDoses = ({ data }) => {
             <div className="col-12 col-md-12 m-3">
                 {/* Total Box - Mobile Layout */}
                 <div className="d-lg-none bg-box box-mobile m-3">
-                    <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-flex text-center box-logo-left"/>
                     <div className="text-white">
                         <div className="d-flex justify-content-center pt-5">
                             <h5>Totale somministrazioni</h5>
@@ -126,7 +125,6 @@ export const AgeDoses = ({ data }) => {
                 {/* Total Box - Desktop Layout */}
                 <div className="col-4 col-md-4 d-none d-lg-block">
                     <div className="bg-box box-card box-left">
-                        <img src="Coccarda.svg" width="100" height="100" alt="Logo" className="d-none d-md-block d-lg-block box-logo-left"/>
                         <div className="text-white">
                             <div className="d-flex justify-content-start pt-3 pl-5">
                                 <h5>Totale somministrazioni</h5>

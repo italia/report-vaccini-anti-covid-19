@@ -85,6 +85,10 @@ h6 { font-size: 24px; font-weight: 400; }
     text-align: center;
 }
 
+.section-title.small {
+    min-height: 130px;
+}
+
 /* Map Graph */
 
 .country:hover {

@@ -17,7 +17,7 @@ export const Total = (props) => {
                     <div className="pl-2 mt-4 numbers">{props.summary.tot?.toLocaleString('it')}</div>
                 </div>
                 <span className="border-divider mb-2"></span>
-                <div className="d-flex justify-content-center mb-5">
+                <div className="d-flex justify-content-center">
                     {" "}
                     <h3>Totale somministrazioni</h3>
                 </div>
