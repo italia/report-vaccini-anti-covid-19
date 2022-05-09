@@ -190,15 +190,30 @@ export const AgeHStackedBarChart = ({
           tooltip
             .style('top', event.pageY - 10 + 'px')
             .style('left', event.pageX + 10 + 'px');
-          tooltip
-            .html(
-                `<div style="text-align: center; line-height: 1.15rem;">
-                <div style="font-size: 12px;">${regione} ${d.data.label}</div>
-                <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
-                <div style="font-size: 14px;"><b>(${perc.toFixed(2).toLocaleString("it")} %)</b></div>
-                <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
-            )
-            .style('display', null);
+
+            if ( perc < 0) {
+
+                tooltip
+                    .html(
+                        `<div style="text-align: center; line-height: 1.15rem;">
+                        <div style="font-size: 12px;">${regione} ${d.data.label}</div>
+                        <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
+                        <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
+                    )
+                    .style('display', null);
+
+            } else {
+
+                tooltip
+                    .html(
+                        `<div style="text-align: center; line-height: 1.15rem;">
+                        <div style="font-size: 12px;">${regione} ${d.data.label}</div>
+                        <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
+                        <div style="font-size: 14px;"><b>(${perc.toFixed(2).toLocaleString("it")} %)</b></div>
+                        <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
+                    )
+                    .style('display', null);
+            }
         }
       })
       .on('mouseout', function (d) {
