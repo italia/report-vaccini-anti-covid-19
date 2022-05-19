@@ -31,25 +31,25 @@ const elaborate = (data) => {
     const dataVaxSomLatest  = data?.dataSommVaxDetail?.data;
 
     let totalDoses = {
-        prima_dose:                     _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.prima_dose)),
-        prima_dose_baby:                _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.prima_dose : 0)),
-        seconda_dose:                   _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.seconda_dose)),
-        seconda_dose_baby:              _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.seconda_dose : 0)),
-        pregressa_infezione:            _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.pregressa_infezione)),
-        pregressa_infezione_baby:       _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.pregressa_infezione : 0)),
-        dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.dose_addizionale_booster)),
-        dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? e?.dose_addizionale_booster : 0)),
-        dose_immunocompromessi:         _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.booster_immuno)),
-        dose_second_booster:            _.sum(dataVaxSomLatest?.map((e) => e?.fascia_anagrafica === '05-11' ? 0 : e?.d2_booster)),
+        prima_dose:                     _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.d1)),
+        prima_dose_baby:                _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.d1 : 0)),
+        seconda_dose:                   _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.d2)),
+        seconda_dose_baby:              _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.d2 : 0)),
+        pregressa_infezione:            _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.dpi)),
+        pregressa_infezione_baby:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.dpi : 0)),
+        dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db1)),
+        dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.db1 : 0)),
+        dose_immunocompromessi:         _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.dbi)),
+        dose_second_booster:            _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db2)),
         prima_dose_janssen:         _.sum(
                                         dataVaxSomLatest
-                                        ?.filter((e) => e.fornitore === "Janssen" && e?.fascia_anagrafica !== '05-11')
-                                        .map((e) => e?.prima_dose)
+                                        ?.filter((e) => e.forn === "Janssen" && e?.eta !== '05-11')
+                                        .map((e) => e?.d1)
                                     ),
         prima_dose_janssen_baby:         _.sum(
                                         dataVaxSomLatest
-                                        ?.filter((e) => e.fornitore === "Janssen" && e?.fascia_anagrafica === '05-11')
-                                        .map((e) => e?.prima_dose)
+                                        ?.filter((e) => e.forn === "Janssen" && e?.eta === '05-11')
+                                        .map((e) => e?.d1)
                                     ),
         vax_somministrati:          _.sum(
                                         dataSupplier
@@ -74,7 +74,7 @@ const elaborate = (data) => {
         totalDoses.dose_addizionale_booster_baby = 0;
     }
 
-    const groups = _.groupBy(dataSupplier, "fornitore");
+    const groups = _.groupBy(dataSupplier, "forn");
     let allDosesSupplier = Object.keys(groups).map((k) => {
         let groupByKey = groups[k].map((group) => group.numero_dosi);
         let sumTotalDoses = _.sum(groupByKey);
@@ -115,11 +115,11 @@ const elaborate = (data) => {
                 code: code,
                 area: _.head(items)?.area,
                 byAge: _(items)
-                    .groupBy("fascia_anagrafica")
+                    .groupBy("eta")
                     .map((rows, age) => {
                         const dosi_somministrate = _.sumBy(
                             rows,
-                            (r) => r.sesso_maschile + r.sesso_femminile
+                            (r) => r.m + r.f
                         );
                         const percentage = dosi_somministrate / (details.dosi_consegnate || 1);
                         return {
@@ -133,8 +133,8 @@ const elaborate = (data) => {
                         };
                     })
                     .value(),
-                sesso_femminile: _.sumBy(items, "sesso_femminile"),
-                sesso_maschile: _.sumBy(items, "sesso_maschile"),
+                sesso_femminile: _.sumBy(items, "f"),
+                sesso_maschile: _.sumBy(items, "m"),
                 dosi_consegnate: details.dosi_consegnate || 0,
                 dosi_somministrate: details.dosi_somministrate || 0,
                 percentuale_somministrazione: details.percentuale_somministrazione || 0,
@@ -143,14 +143,14 @@ const elaborate = (data) => {
         .value();
 
     const totalDeliverySummaryByAge = _(data.dataSommVaxDetail.data.map(replaceArea))
-        .groupBy((i) => i["fascia_anagrafica"].toString().trim())
+        .groupBy((i) => i["eta"].toString().trim())
         .map((rows, age) => {
             const details = _(rows)
             .groupBy("code")
             .map((rowsData, code) => {
                 const dosi_somministrate = _.sumBy(
                     rowsData,
-                    (r) => r.sesso_maschile + r.sesso_femminile
+                    (r) => r.m + r.f
                 );
                 const percentage =
                     dosi_somministrate /
@@ -158,8 +158,8 @@ const elaborate = (data) => {
                 return {
                     age: age,
                     dosi_somministrate,
-                    sesso_maschile: _.sumBy(rowsData, "sesso_maschile"),
-                    sesso_femminile: _.sumBy(rowsData, "sesso_femminile"),
+                    sesso_maschile: _.sumBy(rowsData, "m"),
+                    sesso_femminile: _.sumBy(rowsData, "f"),
                     code: code,
                     dosi_consegnate: _.head(deliveredByArea[code]).dosi_consegnate || 0,
                     percentuale_somministrazione: +(percentage * 100).toFixed(1),
@@ -200,7 +200,7 @@ const elaborate = (data) => {
 
     let agesTmp = {};
     for (let row of data.dataSommVaxDetail.data) {
-        var key = row.fascia_anagrafica;
+        var key = row.eta;
 
         if (key === '80-89' || key === '90+') {
             key = 'over 80'
@@ -216,21 +216,21 @@ const elaborate = (data) => {
             }
         }
 
-        if (row.fornitore === 'Janssen') {
-            agesTmp[key]['seconda'] += row.prima_dose;
+        if (row.forn === 'Janssen') {
+            agesTmp[key]['seconda'] += row.d1;
         }
         else {
-            agesTmp[key]['prima'] += row.prima_dose;
-            agesTmp[key]['seconda'] += row.seconda_dose;
+            agesTmp[key]['prima'] += row.d1;
+            agesTmp[key]['seconda'] += row.d2;
         }
-        agesTmp[key]['seconda'] += row.pregressa_infezione;
+        agesTmp[key]['seconda'] += row.dpi;
 
-        agesTmp[key]['addizionale'] += row.dose_addizionale_booster;
-        if (row.hasOwnProperty('booster_immuno')) {
-            agesTmp[key]['immunocompromessi'] += row.booster_immuno;
+        agesTmp[key]['addizionale'] += row.db1;
+        if (row.hasOwnProperty('dbi')) {
+            agesTmp[key]['immunocompromessi'] += row.dbi;
         }
-        if (row.hasOwnProperty('d2_booster')) {
-            agesTmp[key]['second_booster'] += row.d2_booster;
+        if (row.hasOwnProperty('db2')) {
+            agesTmp[key]['second_booster'] += row.db2;
         }
 
         /* regions data */
@@ -251,21 +251,21 @@ const elaborate = (data) => {
                 }
             }
         }
-        if (row.fornitore === 'Janssen') {
-            regionsDoses[row.area][key]['seconda'] += row.prima_dose;
+        if (row.forn === 'Janssen') {
+            regionsDoses[row.area][key]['seconda'] += row.d1;
         }
         else {
-            regionsDoses[row.area][key]['prima'] += row.prima_dose;
-            regionsDoses[row.area][key]['seconda'] += row.seconda_dose;
+            regionsDoses[row.area][key]['prima'] += row.d1;
+            regionsDoses[row.area][key]['seconda'] += row.d2;
         }
-        regionsDoses[row.area][key]['seconda'] += row.pregressa_infezione;
-        regionsDoses[row.area][key]['addizionale'] += row.dose_addizionale_booster;
+        regionsDoses[row.area][key]['seconda'] += row.dpi;
+        regionsDoses[row.area][key]['addizionale'] += row.db1;
 
-        if (row.hasOwnProperty('booster_immuno')) {
-            regionsDoses[row.area][key]['immunocompromessi'] += row.booster_immuno;
+        if (row.hasOwnProperty('dbi')) {
+            regionsDoses[row.area][key]['immunocompromessi'] += row.dbi;
         }
-        if (row.hasOwnProperty('d2_booster')) {
-            regionsDoses[row.area][key]['second_booster'] += row.d2_booster;
+        if (row.hasOwnProperty('db2')) {
+            regionsDoses[row.area][key]['second_booster'] += row.db2;
         }
     }
 
@@ -284,7 +284,7 @@ const elaborate = (data) => {
 
         entry["Totale platea"] = 0;
         for (let platea of data.dataPlatea.data) {
-            if (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+')) {
+            if (platea.eta === row || (row === 'over 80' && platea.eta === '80+')) {
                 entry["Totale platea"] += parseInt(platea.totale_popolazione);
             }
         }
@@ -300,7 +300,7 @@ const elaborate = (data) => {
     let totalGuaritiDoppia = 0;
     let totalGuaritiBaby = 0;
     for (let row of data.dataGuariti.data) {
-        if (row.fascia_anagrafica === '05-11') {
+        if (row.eta === '05-11') {
             totalGuaritiBaby += parseInt(row.guariti_senza_somm);
         }
         else {
@@ -312,7 +312,7 @@ const elaborate = (data) => {
     let totalPlatea = 0;
     let totalPlateaBaby = 0;
     for (let platea of data.dataPlatea.data) {
-        if (platea.fascia_anagrafica === '05-11') {
+        if (platea.eta === '05-11') {
             totalPlateaBaby += parseInt(platea.totale_popolazione);
         }
         else {
@@ -327,12 +327,12 @@ const elaborate = (data) => {
             entry = secondDoses[row.area];
         }
 
-        var secondDoseTmp = row.seconda_dose;
-        if (row.fornitore === 'Janssen') {
-            secondDoseTmp = row.prima_dose;
+        var secondDoseTmp = row.d2;
+        if (row.forn === 'Janssen') {
+            secondDoseTmp = row.d1;
         }
-        if (row.hasOwnProperty('pregressa_infezione')) {
-            secondDoseTmp += row.pregressa_infezione;
+        if (row.hasOwnProperty('dpi')) {
+            secondDoseTmp += row.dpi;
         }
 
         if (!secondDoses.hasOwnProperty(row.area)) {
@@ -349,10 +349,10 @@ const elaborate = (data) => {
         for (let rowAge of Object.keys(agesTmp)) {
             let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
             if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+                entry[keyAge] += (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '90+' || row.eta === '80-89'))) ? secondDoseTmp : 0;
             }
             else {
-                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '90+' || row.fascia_anagrafica === '80-89'))) ? secondDoseTmp : 0;
+                entry[keyAge] = (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '90+' || row.eta === '80-89'))) ? secondDoseTmp : 0;
             }
         }
         secondDoses[row.area] = entry;
@@ -373,7 +373,7 @@ const elaborate = (data) => {
             };
         }
 
-        let keyAge = platea.fascia_anagrafica === '80+' ? 'fascia_over_80' : (platea.fascia_anagrafica === '05-11' ? 'fascia_05-11' : 'fascia_' + platea.fascia_anagrafica);
+        let keyAge = platea.eta === '80+' ? 'fascia_over_80' : (platea.eta === '05-11' ? 'fascia_05-11' : 'fascia_' + platea.eta);
         let popolazione = parseInt(platea.totale_popolazione);
 
         plateaRegionAges[platea.area][keyAge] = {
@@ -418,7 +418,7 @@ const elaborate = (data) => {
 
             entry["Totale platea"] = 0;
             for (let platea of data.dataPlatea.data) {
-                if (platea.area === region && (platea.fascia_anagrafica === row || (row === 'over 80' && platea.fascia_anagrafica === '80+'))) {
+                if (platea.area === region && (platea.eta === row || (row === 'over 80' && platea.eta === '80+'))) {
                     entry["Totale platea"] += parseInt(platea.totale_popolazione);
                 }
             }
@@ -451,7 +451,7 @@ const elaborate = (data) => {
 
     let healedTmp = {};
     for (let row of data.dataGuariti.data) {
-        key = row.fascia_anagrafica;
+        key = row.eta;
 
         if (key === '80+') {
             key = 'over 80'
@@ -543,10 +543,10 @@ const elaborate = (data) => {
         for (let rowAge of Object.keys(healedTmp)) {
             let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
             if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+'))) ? valueSum : 0;
+                entry[keyAge] += (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '80+'))) ? valueSum : 0;
             }
             else {
-                entry[keyAge] = (rowAge === row.fascia_anagrafica || (rowAge === 'over 80' && (row.fascia_anagrafica === '80+'))) ? valueSum : 0;
+                entry[keyAge] = (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '80+'))) ? valueSum : 0;
             }
         }
 
@@ -576,8 +576,8 @@ const elaborate = (data) => {
     let suppliers = [];
 
     for (let row of data.dataSommVaxDetail.data) {
-        if (!suppliers.includes(row.fornitore)) {
-            suppliers.push(row.fornitore);
+        if (!suppliers.includes(row.forn)) {
+            suppliers.push(row.forn);
         }
     }
 
@@ -636,23 +636,23 @@ const elaborate = (data) => {
 
     // weeks data
     for (let row of data.dataSommVaxDetail.data) {
-        let index = weeksMappingOptimation[Moment(new Date(row.data_somministrazione)).format('YYYY-MM-DD')];
+        let index = weeksMappingOptimation[Moment(new Date(row.data)).format('YYYY-MM-DD')];
         let week = suppliersWeek[index];
 
         // Totale Somministrazioni Settimanale
         week.total += (
-            row.prima_dose +
-            row.seconda_dose +
-            row.pregressa_infezione +
-            row.dose_addizionale_booster
+            row.d1 +
+            row.d2 +
+            row.dpi +
+            row.db1
         );
 
         // Totale Somministrazioni Settimanale per fornitore
-        week[row.fornitore] += (
-            row.prima_dose +
-            row.seconda_dose +
-            row.pregressa_infezione +
-            row.dose_addizionale_booster
+        week[row.forn] += (
+            row.d1 +
+            row.d2 +
+            row.dpi +
+            row.db1
         );
     }
 
