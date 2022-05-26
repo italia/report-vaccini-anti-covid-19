@@ -26,7 +26,7 @@ export const Healed = ({ data }) => {
             setHealedData(data.healedData);
             setHealedKeys(data.keysHealed);
 
-            setTotalByCategory(data.totalGuariti + data.totalGuaritiBaby + data.totalGuaritiDoppia);
+            setTotalByCategory(data.totalGuariti + data.totalGuaritiDoppia + data.totalGuaritiBooster);
             setCategoryMapData(data.healedMapData);
 
             setKeyValueHealed(data.keyValueHealed);
@@ -37,7 +37,7 @@ export const Healed = ({ data }) => {
         setSelectedCodeAge(null);
         setCategorySelectedRegion(null);
         setCategorySelectedRegionDescr(null);
-        setTotalByCategory(data.totalGuariti + data.totalGuaritiBaby + data.totalGuaritiDoppia);
+        setTotalByCategory(data.totalGuariti + data.totalGuaritiDoppia + data.totalGuaritiBooster);
         setHealedData(data.healedData);
         setCategoryMapField("guariti");
         setCategoryMapData(data.healedMapData);

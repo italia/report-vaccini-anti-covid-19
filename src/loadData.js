@@ -298,15 +298,19 @@ const elaborate = (data) => {
 
     let totalGuariti = 0;
     let totalGuaritiDoppia = 0;
+    let totalGuaritiBooster = 0;
+    let totalGuaritiBoosterNotBaby = 0;
     let totalGuaritiBaby = 0;
     for (let row of data.dataGuariti.data) {
         if (row.eta === '05-11') {
             totalGuaritiBaby += parseInt(row.guariti_senza_somm);
         }
         else {
-            totalGuariti += parseInt(row.guariti_senza_somm);
-            totalGuaritiDoppia += parseInt(row.guariti_post_somm);
+            totalGuaritiBoosterNotBaby += parseInt(row.guariti_post_1booster);
         }
+        totalGuariti += parseInt(row.guariti_senza_somm);
+        totalGuaritiDoppia += parseInt(row.guariti_post_somm);
+        totalGuaritiBooster += parseInt(row.guariti_post_1booster);
     }
 
     let totalPlatea = 0;
@@ -434,11 +438,12 @@ const elaborate = (data) => {
     /* healed stack bar chart */
     let keyValueHealed = {
         "senza": "Guariti senza somministrazione da al massimo 6 mesi",
-        "post": "Guariti post 2ª dose/unica dose da al massimo 4 mesi"
+        "post": "Guariti post 2ª dose/unica dose da al massimo 4 mesi",
+        "booster": "Guariti post 1ª dose booster da al massimo 6 mesi"
     }
     let keysHealed = Object.keys(keyValueHealed);
 
-    let healedColor = ["#012675", "#b6d5f4"];
+    let healedColor = ["#b6d5f4", "#0a5dbb", "#012675" ];
 
     let regionsHealed = {};
     let healed = [];
@@ -466,6 +471,7 @@ const elaborate = (data) => {
 
         healedTmp[key]["senza"] += row.guariti_senza_somm;
         healedTmp[key]["post"] += row.guariti_post_somm;
+        healedTmp[key]["booster"] += row.guariti_post_1booster;
 
 
         /* regions data */
@@ -487,6 +493,7 @@ const elaborate = (data) => {
 
         regionsHealed[row.area][key]["senza"] += row.guariti_senza_somm;
         regionsHealed[row.area][key]["post"] += row.guariti_post_somm;
+        regionsHealed[row.area][key]["booster"] += row.guariti_post_1booster;
     }
 
     let healedTotal = {};
@@ -495,13 +502,16 @@ const elaborate = (data) => {
         entry = {
             label: "Fascia " + row
         };
-        entry["senza"] = healedTmp[row]["senza"];
-        entry["post"] = healedTmp[row]["post"] - healedTmp[row]["senza"];
+        entry["senza"] = healedTmp[row]["senza"];                           // 318K boo
+        entry["post"] = healedTmp[row]["post"] - healedTmp[row]["senza"];   // 40K  senza
+        entry["booster"] = healedTmp[row]["booster"] - healedTmp[row]["post"];       // 100K post
 
-        healedTotal[entry['label']] = healedTmp[row]["post"] + healedTmp[row]["senza"];
+        healedTotal[entry['label']] = healedTmp[row]["booster"] + healedTmp[row]["post"] + healedTmp[row]["senza"];
 
         healedData.push(entry);
     }
+
+    console.log("Totali", healedTotal);
 
     for (let region of Object.keys(regionsHealed)) {
         let arrayTmp = [];
@@ -512,8 +522,9 @@ const elaborate = (data) => {
             };
             entry["senza"] = regionsHealed[region][row]["senza"];
             entry["post"] = regionsHealed[region][row]["post"] - regionsHealed[region][row]["senza"];
+            entry["booster"] = regionsHealed[region][row]["booster"] - regionsHealed[region][row]["post"];
 
-            entry["Totale"] = regionsHealed[region][row]["post"] + regionsHealed[region][row]["senza"];
+            entry["Totale"] = regionsHealed[region][row]["booster"] + regionsHealed[region][row]["post"] + regionsHealed[region][row]["senza"];
 
             arrayTmp.push(entry);
         }
@@ -713,6 +724,8 @@ const elaborate = (data) => {
         totalPlateaDoseSecondBooster,
         totalGuariti,
         totalGuaritiDoppia,
+        totalGuaritiBooster,
+        totalGuaritiBoosterNotBaby,
         totalGuaritiBaby
     };
     return aggr;
