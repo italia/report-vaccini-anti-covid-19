@@ -652,18 +652,14 @@ const elaborate = (data) => {
 
         // Totale Somministrazioni Settimanale
         week.total += (
-            row.d1 +
-            row.d2 +
-            row.dpi +
-            row.db1
+            row.f +
+            row.m 
         );
 
         // Totale Somministrazioni Settimanale per fornitore
         week[row.forn] += (
-            row.d1 +
-            row.d2 +
-            row.dpi +
-            row.db1
+            row.f +
+            row.m 
         );
     }
 
