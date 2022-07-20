@@ -10,8 +10,8 @@ export const Databox = ({ data }) => {
     const [totaleDoseAddizionaleBooster, setTotaleDoseAddizionaleBooster] = useState(''); // Dose aggiuntiva/booster
     const [percentualeDoseAddizionaleBooster, setPercentualeDoseAddizionaleBooster] = useState(''); // Percentuale Dose aggiuntiva/booster
 
-    const [totaleDoseImmunocompromessi, setTotaleDoseImmunocompromessi] = useState(''); // Dose immunocompromessi
-    const [percentualeDoseImmunocompromessi, setPercentualeDoseImmunocompromessi] = useState(''); // Percentuale Dose immunocompromessi
+    const [totaleDoseImmunocompromessiFragili, setTotaleDoseImmunocompromessiFragili] = useState(''); // Dose immunocompromessi
+    const [percentualeDoseImmunocompromessiFragili, setPercentualeDoseImmunocompromessiFragili] = useState(''); // Percentuale Dose immunocompromessi
 
     const [totalePersoneSecondBooster, setTotalePersoneSecondBooster] = useState(''); // Dose seconda booster
     const [percentualePersoneSecondBooster, setPercentualePersoneSecondBooster] = useState(''); // Percentuale Dose seconda booster
@@ -70,9 +70,9 @@ export const Databox = ({ data }) => {
         setTotaleDoseAddizionaleBooster(data?.totalDoses?.dose_addizionale_booster);
         setPercentualeDoseAddizionaleBooster(format(data?.totalDoses?.dose_addizionale_booster / data?.totalPlateaDoseAddizionaleBooster * 100, true));
 
-        // Dose immunocompromessi
-        setTotaleDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi));
-        setPercentualeDoseImmunocompromessi(format(data?.totalDoses?.dose_immunocompromessi / data?.totalPlateaDoseImmunocompromessi * 100, true));
+        // Dose fragili/immunocompromessi
+        setTotaleDoseImmunocompromessiFragili(format(data?.totalDoses?.dose_immunocompromessi_fragili));
+        setPercentualeDoseImmunocompromessiFragili(format(data?.totalDoses?.dose_immunocompromessi_fragili / data?.totalPlateaDoseImmunocompromessiFragili * 100, true));
 
         // Dose second booster
         setTotalePersoneSecondBooster(format(data?.totalDoses?.dose_second_booster));
@@ -95,8 +95,8 @@ export const Databox = ({ data }) => {
         setPercentualeGuaritiDopoDoseBooster(format(data?.totalGuaritiBoosterNotBaby / data?.totalPlateaDoseSecondBooster * 100, true));
 
         // Totale booster
-        setTotaleBooster(format(data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby));
-        setPercentualeTotaleBooster(format((data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby) / data?.totalPlateaDoseSecondBooster * 100, true));
+        setTotaleBooster(format(data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby + data?.totalDoses?.dose_immunocompromessi_fragili)); 
+        setPercentualeTotaleBooster(format((data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby + data?.totalDoses?.dose_immunocompromessi_fragili) / (data?.totalPlateaDoseSecondBooster + data?.totalPlateaDoseImmunocompromessiFragili) * 100, true));
 
         // Prima Dose Baby
         let primaBaby = (data?.totalDoses?.prima_dose_baby + data?.totalDoses?.pregressa_infezione_baby);
@@ -242,9 +242,9 @@ export const Databox = ({ data }) => {
                         <div className="p-1">
                             <div className="text-white">
                                 <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-2">Booster immunocompromessi</h5>
-                                    <div className="box-numbers">{totaleDoseImmunocompromessi}</div>
-                                    <div className="box-text">{percentualeDoseImmunocompromessi} % della popolazione immunocompromessa potenzialmente oggetto di dose booster che ha ultimato il ciclo vaccinale con richiamo<br />da almeno 4 mesi</div>
+                                    <h5 className="mt-2">Booster immunocompromessi/fragili</h5>
+                                    <div className="box-numbers">{totaleDoseImmunocompromessiFragili}</div>
+                                    <div className="box-text">{percentualeDoseImmunocompromessiFragili} % della popolazione immunocompromessa/fragile potenzialmente oggetto di dose booster/2ª booster che ha ultimato il ciclo vaccinale con richiamo<br />da almeno 4 mesi</div>
                                 </div>
                             </div>
                         </div>
@@ -341,6 +341,6 @@ export const Databox = ({ data }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
     );
 };

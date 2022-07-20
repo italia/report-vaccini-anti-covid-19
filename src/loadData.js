@@ -13,7 +13,6 @@ const lastUpdateURL                         = `${baseURL}/last-update-dataset.js
 const supplierDoses                         = `${baseURL}/consegne-vaccini-latest.json`;
 const plateaURL                             = `${baseURL}/platea.json`;
 const plateaDoseAddizionaleBoosterURL       = `${baseURL}/platea-dose-addizionale-booster.json`;
-const plateaDoseImmunocompromessiURL        = `${baseURL}/platea-booster-immunocompromessi.json`;
 const plateaDoseSecondBoosterURL            = `${baseURL}/platea-second-booster.json`;
 const guaritiURL                            = `${baseURL}/soggetti-guariti.json`;
 
@@ -39,7 +38,7 @@ const elaborate = (data) => {
         pregressa_infezione_baby:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.dpi : 0)),
         dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db1)),
         dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.db1 : 0)),
-        dose_immunocompromessi:         _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.dbi)),
+        dose_immunocompromessi_fragili: _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.dbi)),
         dose_second_booster:            _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db2)),
         prima_dose_janssen:         _.sum(
                                         dataVaxSomLatest
@@ -180,7 +179,7 @@ const elaborate = (data) => {
     /* ages stack bar chart */
     let keyValueDoses = {
         "second_booster": "2ª dose Booster",
-        "immunocompromessi": "Booster Immunocompromessi",
+        "immunocompromessi": "Booster Fragili/Immunocompromessi",
         "addizionale": "Dose addizionale/booster",
         "seconda": "2ª dose/unica dose",
         "prima": "1ª dose",
@@ -511,8 +510,6 @@ const elaborate = (data) => {
         healedData.push(entry);
     }
 
-    console.log("Totali", healedTotal);
-
     for (let region of Object.keys(regionsHealed)) {
         let arrayTmp = [];
 
@@ -668,14 +665,15 @@ const elaborate = (data) => {
         totalPlateaDoseAddizionaleBooster += parseInt(platea.totale_popolazione);
     }
 
-    let totalPlateaDoseImmunocompromessi = 0;
-    for (let platea of data.dataPlateaDoseImmunocompromessi.data) {
-        totalPlateaDoseImmunocompromessi += parseInt(platea.totale_popolazione);
-    }
-
+    let totalPlateaDoseImmunocompromessiFragili = 0;
     let totalPlateaDoseSecondBooster = 0;
     for (let platea of data.dataPlateaSecondBooster.data) {
-        totalPlateaDoseSecondBooster += parseInt(platea.totale_popolazione);
+        if (platea.categoria_prevalente === 'fragili_immunocompromessi') {
+            totalPlateaDoseImmunocompromessiFragili += parseInt(platea.totale_popolazione);
+        }
+        else {
+            totalPlateaDoseSecondBooster += parseInt(platea.totale_popolazione);
+        }
     }
 
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
@@ -716,7 +714,7 @@ const elaborate = (data) => {
         totalPlatea,
         totalPlateaBaby,
         totalPlateaDoseAddizionaleBooster,
-        totalPlateaDoseImmunocompromessi,
+        totalPlateaDoseImmunocompromessiFragili,
         totalPlateaDoseSecondBooster,
         totalGuariti,
         totalGuaritiDoppia,
@@ -738,7 +736,6 @@ const elaborate = (data) => {
         resSupplierDoses,
         resPlatea,
         resPlateaDoseAddizionaleBooster,
-        resPlateaDoseImmunocompromessi,
         resPlateaDoseSecondBooster,
         resGuariti
     ] = await Promise.all([
@@ -751,7 +748,6 @@ const elaborate = (data) => {
         fetch(supplierDoses),
         fetch(plateaURL),
         fetch(plateaDoseAddizionaleBoosterURL),
-        fetch(plateaDoseImmunocompromessiURL),
         fetch(plateaDoseSecondBoosterURL),
         fetch(guaritiURL)
     ]);
@@ -766,7 +762,6 @@ const elaborate = (data) => {
         dataSupplierDoses,
         dataPlatea,
         dataPlateaDoseAddizionaleBooster,
-        dataPlateaDoseImmunocompromessi,
         dataPlateaSecondBooster,
         dataGuariti
     ] = await Promise.all([
@@ -779,7 +774,6 @@ const elaborate = (data) => {
         resSupplierDoses.json(),
         resPlatea.json(),
         resPlateaDoseAddizionaleBooster.json(),
-        resPlateaDoseImmunocompromessi.json(),
         resPlateaDoseSecondBooster.json(),
         resGuariti.json()
     ]);
@@ -795,7 +789,6 @@ const elaborate = (data) => {
             dataSupplierDoses,
             dataPlatea,
             dataPlateaDoseAddizionaleBooster,
-            dataPlateaDoseImmunocompromessi,
             dataPlateaSecondBooster,
             dataGuariti
         })

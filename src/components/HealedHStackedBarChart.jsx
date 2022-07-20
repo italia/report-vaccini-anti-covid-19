@@ -67,7 +67,7 @@ export const HealedHStackedBarChart = ({
     const margin = { y: 30, x: 60 };
 
     // axis
-    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['post'] + d['senza']; })]);
+    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['post'] + d['senza'] + d['booster']; })]);
     const yScale = d3.scaleBand().padding(0.2);
     xScale.range([0, width]);
     yScale.range([0, height]).domain(data.map((d) => d.label));
