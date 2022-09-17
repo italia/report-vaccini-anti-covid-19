@@ -10,9 +10,6 @@ export const Databox = ({ data }) => {
     const [totaleDoseAddizionaleBooster, setTotaleDoseAddizionaleBooster] = useState(''); // Dose aggiuntiva/booster
     const [percentualeDoseAddizionaleBooster, setPercentualeDoseAddizionaleBooster] = useState(''); // Percentuale Dose aggiuntiva/booster
 
-    const [totaleDoseImmunocompromessiFragili, setTotaleDoseImmunocompromessiFragili] = useState(''); // Dose immunocompromessi
-    const [percentualeDoseImmunocompromessiFragili, setPercentualeDoseImmunocompromessiFragili] = useState(''); // Percentuale Dose immunocompromessi
-
     const [totalePersoneSecondBooster, setTotalePersoneSecondBooster] = useState(''); // Dose seconda booster
     const [percentualePersoneSecondBooster, setPercentualePersoneSecondBooster] = useState(''); // Percentuale Dose seconda booster
 
@@ -70,10 +67,6 @@ export const Databox = ({ data }) => {
         setTotaleDoseAddizionaleBooster(data?.totalDoses?.dose_addizionale_booster);
         setPercentualeDoseAddizionaleBooster(format(data?.totalDoses?.dose_addizionale_booster / data?.totalPlateaDoseAddizionaleBooster * 100, true));
 
-        // Dose fragili/immunocompromessi
-        setTotaleDoseImmunocompromessiFragili(format(data?.totalDoses?.dose_immunocompromessi_fragili));
-        setPercentualeDoseImmunocompromessiFragili(format(data?.totalDoses?.dose_immunocompromessi_fragili / data?.totalPlateaDoseImmunocompromessiFragili * 100, true));
-
         // Dose second booster
         setTotalePersoneSecondBooster(format(data?.totalDoses?.dose_second_booster));
         setPercentualePersoneSecondBooster(format(data?.totalDoses?.dose_second_booster / data?.totalPlateaDoseSecondBooster * 100, true));
@@ -95,8 +88,9 @@ export const Databox = ({ data }) => {
         setPercentualeGuaritiDopoDoseBooster(format(data?.totalGuaritiBoosterNotBaby / data?.totalPlateaDoseSecondBooster * 100, true));
 
         // Totale booster
-        setTotaleBooster(format(data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby + data?.totalDoses?.dose_immunocompromessi_fragili)); 
-        setPercentualeTotaleBooster(format((data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby + data?.totalDoses?.dose_immunocompromessi_fragili) / (data?.totalPlateaDoseSecondBooster + data?.totalPlateaDoseImmunocompromessiFragili) * 100, true));
+        setTotaleBooster(format(data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby)); 
+        setPercentualeTotaleBooster(format((data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby) / (data?.totalPlateaDoseSecondBooster) * 100, true));
+        // setPercentualeTotaleBooster(format((data?.totalDoses?.dose_second_booster + data?.totalGuaritiBoosterNotBaby + data?.totalDoses?.dose_immunocompromessi_fragili) / (data?.totalPlateaDoseSecondBooster + data?.totalPlateaDoseImmunocompromessiFragili) * 100, true));
 
         // Prima Dose Baby
         let primaBaby = (data?.totalDoses?.prima_dose_baby + data?.totalDoses?.pregressa_infezione_baby);
@@ -199,7 +193,7 @@ export const Databox = ({ data }) => {
                     <div className="box-card p-2">
                         <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-2">Dose addizionale/richiamo (booster)</h5>
+                                <h5 className="mt-2 mb-3">Dose addizionale/richiamo (booster)</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleBooster?.toLocaleString('it')}</div>
                                 <div className="box-text">{percentualeDoseAddizionaleBooster} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
                             </div>
@@ -210,7 +204,7 @@ export const Databox = ({ data }) => {
                     <div className="box-card p-2">
                         <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-2">Guariti post 2ª dose/unica dose</h5>
+                                <h5 className="mt-2 mb-3">Guariti post 2ª dose/unica dose</h5>
                                 <div className="box-numbers">{totalePersoneGuariteDoppiaDose?.toLocaleString('it')}</div>
                                 <div className="box-text">{totalePersoneGuaritePopolazioneDoppiaDose} % della popolazione potenzialmente oggetto di<br />dose addizionale o booster guarita post 2ª dose/unica dose<br />da al massimo 4 mesi</div>
                             </div>
@@ -221,7 +215,7 @@ export const Databox = ({ data }) => {
                     <div className="box-card p-2">
                         <div className="p-1">
                             <div className="align-items-center justify-content-center text-center mb-4">
-                                <h5 className="mt-2">Totale</h5>
+                                <h5 className="mt-2 mb-3">Totale</h5>
                                 <div className="box-numbers">{totaleDoseAddizionaleGuaritiDoppiaDose}</div>
                                 <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDose} % della platea dose booster</div>
                             </div>
@@ -237,51 +231,39 @@ export const Databox = ({ data }) => {
             </div>
 
             <div className="row bg-box p-2 mb-4">
-                <div className="col-md-4 col-sm-12">
-                    <div className="box-card p-2">
-                        <div className="p-1">
-                            <div className="text-white">
-                                <div className="align-items-center justify-content-center text-center">
-                                    <h5 className="mt-2">Booster immunocompromessi/fragili</h5>
-                                    <div className="box-numbers">{totaleDoseImmunocompromessiFragili}</div>
-                                    <div className="box-text">{percentualeDoseImmunocompromessiFragili} % della popolazione immunocompromessa/fragile potenzialmente oggetto di dose booster/2ª booster che ha ultimato il ciclo vaccinale con richiamo<br />da almeno 4 mesi</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-4 col-sm-12">
+                <div className="col-md-6 col-sm-12">
                     <div className="box-card p-2">
                         <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-2">2ª dose booster<br /><br></br></h5>
+                                <h5 className="mt-2 mb-3">Booster immuno / 2ª dose booster</h5>
                                 <div className="box-numbers">{totalePersoneSecondBooster?.toLocaleString('it')}</div>
-                                <div className="box-text">{percentualePersoneSecondBooster} % della popolazione oggetto di seconda dose booster cha ha ricevuto la dose booster<br />da almeno 4 mesi</div>
+                                <div className="box-text">{percentualePersoneSecondBooster} % della popolazione potenzialmente oggetto di <br />dose booster/2ª booster cha ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="col-md-4 col-sm-12">
+                <div className="col-md-6 col-sm-12">
                     <div className="box-card p-2">
                         <div className="p-1">
                             <div className="align-items-center justify-content-center text-center">
-                                <h5 className="mt-2">Guariti post<br />1ª dose booster</h5>
+                                <h5 className="mt-2 mb-3">Guariti post 1ª dose booster</h5>
                                 <div className="box-numbers">{totaleGuaritiDopoDoseBooster?.toLocaleString('it')}</div>
-                                <div className="box-text">{percentualeGuaritiDopoDoseBooster} % della popolazione potenzialmente oggetto di 2ª dose booster guarita post 1ª dose booster da<br />al massimo 6 mesi</div>
+                                <div className="box-text">{percentualeGuaritiDopoDoseBooster} % della popolazione potenzialmente oggetto di <br />2ª dose booster guarita post 1ª dose booster da<br />al massimo 6 mesi</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-12 col-sm-12">
-                    <div className="box-card">
+                    <div className="box-card mb-3">
                         <div className="p-1">
                             <div className="align-items-center justify-content-center text-center mb-4">
-                                <h5 className="mt-2">Totale</h5>
+                                <h5 className="mt-2 mb-3">Totale</h5>
                                 <div className="box-numbers">{totaleBooster}</div>
                                 <div className="box-text">{percentualeTotaleBooster} % della platea 2ª dose booster</div>
                             </div>
                         </div>
                     </div>
+                <small className="box-text legend">*Dati relativi alla popolazione appartenente alle categorie prevalenti oggetto prioritariamente di 2ª dose booster</small>
                 </div>
             </div>
 

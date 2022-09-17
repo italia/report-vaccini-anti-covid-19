@@ -38,7 +38,6 @@ const elaborate = (data) => {
         pregressa_infezione_baby:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.dpi : 0)),
         dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db1)),
         dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.db1 : 0)),
-        dose_immunocompromessi_fragili: _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.dbi)),
         dose_second_booster:            _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db2)),
         prima_dose_janssen:         _.sum(
                                         dataVaxSomLatest
@@ -178,8 +177,7 @@ const elaborate = (data) => {
 
     /* ages stack bar chart */
     let keyValueDoses = {
-        "second_booster": "2ª dose Booster",
-        "immunocompromessi": "Booster Fragili/Immunocompromessi",
+        "second_booster": "Booster Immuno/2ª dose Booster ",
         "addizionale": "Dose addizionale/booster",
         "seconda": "2ª dose/unica dose",
         "prima": "1ª dose",
@@ -225,12 +223,7 @@ const elaborate = (data) => {
         agesTmp[key]['seconda'] += row.dpi;
 
         agesTmp[key]['addizionale'] += row.db1;
-        if (row.hasOwnProperty('dbi')) {
-            agesTmp[key]['immunocompromessi'] += row.dbi;
-        }
-        if (row.hasOwnProperty('db2')) {
-            agesTmp[key]['second_booster'] += row.db2;
-        }
+        agesTmp[key]['second_booster'] += row.db2;
 
         /* regions data */
         if (!regionsDoses.hasOwnProperty(row.area)) {
@@ -259,13 +252,7 @@ const elaborate = (data) => {
         }
         regionsDoses[row.area][key]['seconda'] += row.dpi;
         regionsDoses[row.area][key]['addizionale'] += row.db1;
-
-        if (row.hasOwnProperty('dbi')) {
-            regionsDoses[row.area][key]['immunocompromessi'] += row.dbi;
-        }
-        if (row.hasOwnProperty('db2')) {
-            regionsDoses[row.area][key]['second_booster'] += row.db2;
-        }
+        regionsDoses[row.area][key]['second_booster'] += row.db2;
     }
 
     let ageDosesTotal = {};
@@ -276,8 +263,7 @@ const elaborate = (data) => {
         };
 
         entry['second_booster'] = agesTmp[row]['second_booster'];
-        entry['immunocompromessi'] = agesTmp[row]['immunocompromessi']  - agesTmp[row]['second_booster'];
-        entry['addizionale'] = agesTmp[row]['addizionale'] - agesTmp[row]['immunocompromessi'];
+        entry['addizionale'] = agesTmp[row]['addizionale'] - agesTmp[row]['second_booster'];
         entry['seconda'] = agesTmp[row]['seconda'] - agesTmp[row]['addizionale'];
         entry['prima'] = agesTmp[row]['prima'] - agesTmp[row]['seconda'];
 
@@ -290,7 +276,7 @@ const elaborate = (data) => {
 
         entry['totale'] = entry["Totale platea"] - agesTmp[row]['prima'];
 
-        ageDosesTotal[entry['label']] = agesTmp[row]['prima'] + agesTmp[row]['seconda'] + agesTmp[row]['addizionale'] + agesTmp[row]['immunocompromessi'] + agesTmp[row]['second_booster'];
+        ageDosesTotal[entry['label']] = agesTmp[row]['prima'] + agesTmp[row]['seconda'] + agesTmp[row]['addizionale'] + agesTmp[row]['second_booster'];
 
         dosesAgesData.push(entry);
     }
@@ -414,8 +400,7 @@ const elaborate = (data) => {
             };
 
             entry['second_booster'] = regionsDoses[region][row]['second_booster'];
-            entry['immunocompromessi'] = regionsDoses[region][row]['immunocompromessi'] - regionsDoses[region][row]['second_booster'];
-            entry['addizionale'] = regionsDoses[region][row]['addizionale'] - regionsDoses[region][row]['immunocompromessi'];
+            entry['addizionale'] = regionsDoses[region][row]['addizionale'] - regionsDoses[region][row]['second_booster'];
             entry['seconda'] = regionsDoses[region][row]['seconda'] - regionsDoses[region][row]['addizionale'];
             entry['prima'] = regionsDoses[region][row]['prima'] - regionsDoses[region][row]['seconda'];
 
@@ -426,7 +411,7 @@ const elaborate = (data) => {
                 }
             }
 
-            entry['totale'] = entry["Totale platea"] - entry['prima'] - entry['seconda'] - entry['addizionale'] - entry['immunocompromessi'] - entry['second_booster'];
+            entry['totale'] = entry["Totale platea"] - entry['prima'] - entry['seconda'] - entry['addizionale'] - entry['second_booster'];
 
             arrayTmp.push(entry);
         }
@@ -665,15 +650,10 @@ const elaborate = (data) => {
         totalPlateaDoseAddizionaleBooster += parseInt(platea.totale_popolazione);
     }
 
-    let totalPlateaDoseImmunocompromessiFragili = 0;
+    // let totalPlateaDoseImmunocompromessiFragili = 0;
     let totalPlateaDoseSecondBooster = 0;
     for (let platea of data.dataPlateaSecondBooster.data) {
-        if (platea.categoria_prevalente === 'fragili_immunocompromessi') {
-            totalPlateaDoseImmunocompromessiFragili += parseInt(platea.totale_popolazione);
-        }
-        else {
-            totalPlateaDoseSecondBooster += parseInt(platea.totale_popolazione);
-        }
+        totalPlateaDoseSecondBooster += parseInt(platea.totale_popolazione);
     }
 
     const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
@@ -714,7 +694,6 @@ const elaborate = (data) => {
         totalPlatea,
         totalPlateaBaby,
         totalPlateaDoseAddizionaleBooster,
-        totalPlateaDoseImmunocompromessiFragili,
         totalPlateaDoseSecondBooster,
         totalGuariti,
         totalGuaritiDoppia,
