@@ -168,21 +168,21 @@ export const AgeHStackedBarChart = ({
         else {
           var perc = 0;
           if (d3.select(this.parentNode).attr("dose") === 'prima') {
-            let sum = d.data["prima"] + d.data["seconda"] + d.data["addizionale"] + d.data["immunocompromessi"];
+            let sum = d.data["prima"] + d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"];
             perc = (sum / d.data["Totale platea"]) * 100;
           }
           else {
             if (d3.select(this.parentNode).attr("dose") === 'seconda') {
-              let sum = d.data["seconda"] + d.data["addizionale"] + d.data["immunocompromessi"];
+              let sum = d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"];
               perc = (sum / d.data["Totale platea"]) * 100;
             }
             else {
               if (d3.select(this.parentNode).attr("dose") === 'addizionale') {
-                let sum = d.data["addizionale"] + d.data["immunocompromessi"];
+                let sum = d.data["addizionale"] + d.data["second_booster"];
                 perc = (sum / d.data["Totale platea"]) * 100;
               }
               else {
-                perc = (d.data["immunocompromessi"] / d.data["Totale platea"]) * 100;
+                perc = (d.data["second_booster"] / d.data["Totale platea"]) * 100;
               }
             }
           }
