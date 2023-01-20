@@ -168,21 +168,27 @@ export const AgeHStackedBarChart = ({
         else {
           var perc = 0;
           if (d3.select(this.parentNode).attr("dose") === 'prima') {
-            let sum = d.data["prima"] + d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"];
+            let sum = d.data["prima"] + d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"] + d.data["third_booster"];
             perc = (sum / d.data["Totale platea"]) * 100;
           }
           else {
             if (d3.select(this.parentNode).attr("dose") === 'seconda') {
-              let sum = d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"];
+              let sum = d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"] + d.data["third_booster"];
               perc = (sum / d.data["Totale platea"]) * 100;
             }
             else {
               if (d3.select(this.parentNode).attr("dose") === 'addizionale') {
-                let sum = d.data["addizionale"] + d.data["second_booster"];
+                let sum = d.data["addizionale"] + d.data["second_booster"] + d.data["third_booster"];
                 perc = (sum / d.data["Totale platea"]) * 100;
               }
               else {
-                perc = (d.data["second_booster"] / d.data["Totale platea"]) * 100;
+                if (d3.select(this.parentNode).attr("dose") === 'second_booster') {
+                  let sum = d.data["second_booster"] + d.data["third_booster"];
+                  perc = (sum / d.data["Totale platea"]) * 100;
+                }
+                else {
+                  perc = (d.data["third_booster"] / d.data["Totale platea"]) * 100;
+                }
               }
             }
           }

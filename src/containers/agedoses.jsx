@@ -11,7 +11,6 @@ export const AgeDoses = ({ data }) => {
     const [dosesAgesData, setDosesAgesData] = useState([]);
 
     const [categoryMapData, setCategoryMapData] = useState([]);
-    const [dosesMapData, setDosesMapData] = useState([]);
     const [categoryMapField, setCategoryMapField] = useState("somministrazioni");
 
     const [categorySelectedRegion, setCategorySelectedRegion] = useState(null);
@@ -22,15 +21,14 @@ export const AgeDoses = ({ data }) => {
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setdosesAgesColor(data.dosesAgesColor);
-            setdosesAges(data.dosesAges);
-            setDosesAgesKeys(data.keysDosesAges);
-            setKeyValueDoses(data.keyValueDoses);
-            setDosesAgesData(data.dosesAgesData);
+            setdosesAgesColor(data.agedosesContent.dosesAgesColor);
+            setdosesAges(data.agedosesContent.dosesAges);
+            setDosesAgesKeys(data.agedosesContent.keysDosesAges);
+            setKeyValueDoses(data.agedosesContent.keyValueDoses);
+            setDosesAgesData(data.agedosesContent.dosesAgesData);
 
             setTotalByCategory(data.tot);
-            setCategoryMapData(data.secondDosesPlateaData);
-            setDosesMapData(data.secondDosesData);
+            setCategoryMapData(data.agedosesContent.secondDosesMapData);
         }
     }, [data]);
 
@@ -39,9 +37,9 @@ export const AgeDoses = ({ data }) => {
         setCategorySelectedRegion(null);
         setCategorySelectedRegionDescr(null);
         setTotalByCategory(data.tot);
-        setDosesAgesData(data.dosesAgesData);
+        setDosesAgesData(data.agedosesContent.dosesAgesData);
         setCategoryMapField("somministrazioni");
-        setCategoryMapData(data.secondDosesPlateaData);
+        setCategoryMapData(data.agedosesContent.secondDosesMapData);
     };
 
     const fillMapCategoryArea = ({ region, maxValue, field }) => {
@@ -67,7 +65,7 @@ export const AgeDoses = ({ data }) => {
         } else {
           setCategorySelectedRegion(region.code);
           setCategorySelectedRegionDescr(region.area);
-          setDosesAgesData(data.dosesAgesRegionData[region.code])
+          setDosesAgesData(data.agedosesContent.dosesAgesRegionData[region.code])
 
           for(let row of data?.totalDeliverySummary) {
             if (row.code === region.code) {
@@ -89,7 +87,13 @@ export const AgeDoses = ({ data }) => {
         } else {
           setSelectedCodeAge(ageCode);
           setCategoryMapField(ageCode);
-          setTotalByCategory(data.ageDosesTotal[cat.data.label]);
+
+          for(let row of data.agedosesContent.dosesAgesData) {
+            if (row.label === cat.data.label) {
+                setTotalByCategory(row.totale);
+                break;
+            }
+          }
         }
     };
 
@@ -194,7 +198,7 @@ export const AgeDoses = ({ data }) => {
                     percentage={true}
                     tooltip={(r) => {
                             var region = null;
-                            for(let row of dosesMapData) {
+                            for(let row of categoryMapData) {
                                 if (row.code === r.code) {
                                     region = row;
                                 }
