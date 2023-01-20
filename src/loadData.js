@@ -1,4 +1,4 @@
-import { sumDoseX, replaceArea, areaMapping } from "./utils";
+import { sumDoseX, replaceArea } from "./utils";
 import _ from "lodash";
 import Moment from 'moment';
 
@@ -8,578 +8,333 @@ const sommVaxSummaryURL                     = `${baseURL}/somministrazioni-vacci
 const sommVaxDetailURL                      = `${baseURL}/somministrazioni-vaccini-latest.json`;
 const vaxSummaryURL                         = `${baseURL}/vaccini-summary-latest.json`;
 const vaxLocationsURL                       = `${baseURL}/punti-somministrazione-tipologia.json`;
-const anagraficaSummaryURL                  = `${baseURL}/anagrafica-vaccini-summary-latest.json`;
 const lastUpdateURL                         = `${baseURL}/last-update-dataset.json`;
 const supplierDoses                         = `${baseURL}/consegne-vaccini-latest.json`;
 const plateaURL                             = `${baseURL}/platea.json`;
 const plateaDoseAddizionaleBoosterURL       = `${baseURL}/platea-dose-addizionale-booster.json`;
 const plateaDoseSecondBoosterURL            = `${baseURL}/platea-second-booster.json`;
+const plateaDoseThirdBoosterURL             = `${baseURL}/platea-3a-booster.json`;
 const guaritiURL                            = `${baseURL}/soggetti-guariti.json`;
+const coperturaURL                          = `${baseURL}/copertura-vaccinale.json`;
 
 const elaborate = (data) => {
-    const tot = data.dataSommVaxSummary.data
-        .filter((d) => d.area !== "ITA")
-        .reduce(sumDoseX("totale"), 0);
+    /* creazioni delle costanti relative alle sorgenti dei file */
+    const dataSommVaxSummary                = data?.dataSommVaxSummary?.data;
+    const dataSommVaxDetail                 = data?.dataSommVaxDetail?.data;
+    const dataVaxSummary                    = data?.dataVaxSummary?.data;
+    const dataCopertura                     = data?.dataCopertura?.data;
+    const dataPlatea                        = data?.dataPlatea?.data;
+    const dataGuariti                       = data?.dataGuariti?.data;
+    const dataSupplierDoses                 = data?.dataSupplierDoses?.data;
+    const dataVaxLocations                  = data?.dataVaxLocations?.data;
+    const dataPlateaDoseAddizionaleBooster  = data?.dataPlateaDoseAddizionaleBooster?.data;
+    const dataPlateaSecondBooster           = data?.dataPlateaSecondBooster?.data;
+    const dataPlateaThirdBooster            = data?.dataPlateaThirdBooster?.data;
 
-    // datatable and map
-    const dataSupplier      = data.dataSupplierDoses.data;
-    const dataSomeVaxDetail = data.dataSommVaxDetail.data.map(replaceArea);
-    const deliverySummary   = data.dataVaxSummary.data.map(replaceArea);
+    /* array statico contenente le fasce d'età relative agli over 60 */
+    const fasciaOver60 = ['60-69', '70-79', '80+'];
 
-    // categories and ages summary
-    const dataVaxSomLatest  = data?.dataSommVaxDetail?.data;
+    /* array statico contenente tutte le fasce d'età */
+    const fasciaEta = ['05-11', '12-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+'];
 
+    /********************************************************************************
+     * ----------------------- DATA AGGIORNAMENTO REPORT ----------------------------
+     *******************************************************************************/
+
+    const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
+
+
+    /********************************************************************************
+     * ------------------------- TOTALE SOMMINISTRAZIONI ----------------------------
+     *******************************************************************************/
+
+    const tot = dataSommVaxSummary?.filter((d) => d.area !== "ITA").reduce(sumDoseX("totale"), 0);   
+
+    /********************************************************************************
+     * --------------------------- BOX DI RIEPILOGO DATI ----------------------------
+     *******************************************************************************/
+
+    /* creazione totalDoses, oggetto contenente la somma delle principali statistiche presenti in Databox.jsx */
     let totalDoses = {
-        prima_dose:                     _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.d1)),
-        prima_dose_baby:                _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.d1 : 0)),
-        seconda_dose:                   _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.d2)),
-        seconda_dose_baby:              _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.d2 : 0)),
-        pregressa_infezione:            _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.dpi)),
-        pregressa_infezione_baby:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.dpi : 0)),
-        dose_addizionale_booster:       _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db1)),
-        dose_addizionale_booster_baby:  _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? e?.db1 : 0)),
-        dose_second_booster:            _.sum(dataVaxSomLatest?.map((e) => e?.eta === '05-11' ? 0 : e?.db2)),
-        prima_dose_janssen:         _.sum(
-                                        dataVaxSomLatest
-                                        ?.filter((e) => e.forn === "Janssen" && e?.eta !== '05-11')
-                                        .map((e) => e?.d1)
-                                    ),
-        prima_dose_janssen_baby:         _.sum(
-                                        dataVaxSomLatest
-                                        ?.filter((e) => e.forn === "Janssen" && e?.eta === '05-11')
-                                        .map((e) => e?.d1)
-                                    ),
-        vax_somministrati:          _.sum(
-                                        dataSupplier
-                                        ?.filter((e) => e?.data_consegna?.substr(0, 10) !== "2020-12-27")
-                                        ?.map((_e) => _e?.numero_dosi)
-                                        )?.toLocaleString("it"),
+        /* Copertura vaccinale covid-19 over 60 */
+        somministrazioni_over60:        _.sum(dataCopertura?.map((e) => fasciaOver60.includes(e?.fascia_anagrafica) ? e?.vaccinati : 0)), // totale somministrazioni
+        guarigioni_over60:              _.sum(dataCopertura?.map((e) => fasciaOver60.includes(e?.fascia_anagrafica) ? e?.guariti : 0)), // totale guarigioni
+        /* Ciclo Vaccinale Primario */
+        prima_dose:                     _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.d1)), // somma delle prime dosi esclusa la fascia anagrafica 05-11
+        pregressa_infezione:            _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.dpi)), // somma delle pregresse infezioni esclusa la fascia anagrafica 05-11
+        seconda_dose:                   _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.d2)), // somma delle seconde dosi esclusa la fascia anagrafica 05-11
+        prima_dose_janssen:             _.sum(dataSommVaxDetail?.filter((e) => e.forn === "Janssen" && e?.eta !== '05-11').map((e) => e?.d1)), // somma delle somministrazioni a dose unica esclusa la fascia anagrafica 05-11
+        /* Somministrazione platea 5-11 anni */
+        prima_dose_baby:                _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.d1 : 0)), // somma delle prime dosi per fascia anagrafica 05-11
+        seconda_dose_baby:              _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.d2 : 0)), // somma delle seconde dosi per fascia anagrafica 05-11
+        pregressa_infezione_baby:       _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.dpi : 0)), // somma delle pregresse infezioni per la fascia anagrafica 05-11
+        prima_dose_janssen_baby:        _.sum(dataSommVaxDetail?.filter((e) => e.forn === "Janssen" && e?.eta === '05-11').map((e) => e?.d1)), // somma delle somministrazioni a dose unica per la fascia anagrafica 05-11
+        /* Dose Addizionale/Booster */
+        dose_addizionale_booster:       _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.db1)), // somma delle prime dosi booster per la fascia over 12
+        /* Seconda dose booster */
+        dose_second_booster:            _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.db2)), // somma delle seconde dosi booster per la fascia over 12
+        /* Terza dose booster */
+        dose_third_booster:             _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.db3)), // somma delle terze dosi booster per la fascia over 12
+        
     };
 
-    if (!totalDoses.pregressa_infezione) {
-        totalDoses.pregressa_infezione = 0;
+    /* calcolo delle platee */
+    let totalPlatea                         = _.sum(dataPlatea?.map((e) => (e?.eta !== '05-11') ? e?.totale_popolazione : 0)); // totale platea della popolazione over 12
+    let totalPlateaBaby                     = _.sum(dataPlatea?.map((e) => (e?.eta === '05-11') ? e?.totale_popolazione : 0)); // totale platea della popolazione 05-11
+    let totalPlateaOver60                   = _.sum(dataPlatea?.map((e) => fasciaOver60.includes(e?.eta) ? e?.totale_popolazione : 0)); // platea della popolazione over 60
+    let totalPlateaDoseAddizionaleBooster   = _.sum(dataPlateaDoseAddizionaleBooster?.map((e) => e?.totale_popolazione)); // totale platea dose booster
+    let totalPlateaDoseSecondBooster        = _.sum(dataPlateaSecondBooster?.map((e) => e?.totale_popolazione)); // totale platea seconda dose booster
+    let totalPlateaDoseThirdBooster         = _.sum(dataPlateaThirdBooster?.map((e) => e?.totale_popolazione)); // totale platea terza dose booster
+
+    /* calcolo dei guariti usato nei box iniziali di riepilogo e in Platea Guariti. Si tratta esclusivamente dei guariti per età superiore a 11 anni */
+    let totalGuaritiNotBaby                 = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_senza_somm : 0)); // totale dei guariti della popolazione over 12
+    let totalGuaritiDoppiaNotBaby           = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_post_somm : 0)); // totale dei guariti dopo che hanno completato il ciclo vaccinale primario della popolazione over 12
+    let totalGuaritiBoosterNotBaby          = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_post_1booster : 0)); // totale dei guariti dopo che hanno eseguito la dose booster della popolazione over 12
+    let totalGuaritiSecondBoosterNotBaby    = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_post_2booster : 0)); // totale dei guariti dopo che hanno eseguito la seconda dose booster della popolazione over 12
+    
+    /* calcolo dei guariti senza somministrazioni della fascia 05-11 previsto nel box Somministrazione platea 5-11 anni */
+    let totalGuaritiBaby                    = _.sum(dataGuariti?.map((e) => (e?.eta === '05-11') ? e?.guariti_senza_somm : 0)); // guariti senza somministrazioni per la fascia 05-11
+
+    let databoxContent = { // insieme di dati da passare al container
+        totalGuaritiNotBaby,
+        totalGuaritiDoppiaNotBaby,
+        totalGuaritiBoosterNotBaby,
+        totalGuaritiSecondBoosterNotBaby,
+        totalGuaritiBaby,
+        totalPlatea,
+        totalPlateaBaby,
+        totalPlateaDoseAddizionaleBooster,
+        totalPlateaDoseSecondBooster,
+        totalPlateaDoseThirdBooster,
+        totalPlateaOver60,
     }
 
-    if (!totalDoses.dose_addizionale_booster) {
-        totalDoses.dose_addizionale_booster = 0;
+     /********************************************************************************
+     * ----------------------- COPERTURA VACCINALE OVER 60 ---------------------------
+     * Istogramma + Mappa Italia
+     * Possibilità di click sulla regione (Mappa) o sulla fascia anagrafica (Istogramma)
+     *******************************************************************************/
+    let keyValueOver60 = { // oggetto contenente le label delle serie (la legenda)
+        "guariti"           : "Guarigioni 120 gg",
+        "somministrazioni"  : "Somministrazioni 120 gg",
+        "totale"            : "Totale fascia"
     }
+    let keysOver60      = Object.keys(keyValueOver60); // array delle chiavi della serie
+    let over60          = Object.values(keyValueOver60); // array del nome delle serie (legenda)
+    let over60Color     = ["#090d4d", "#244bb3", "#b6d5f4" ]; // colori associati alle serie
 
-    if (!totalDoses.pregressa_infezione_baby) {
-        totalDoses.pregressa_infezione_baby = 0;
-    }
 
-    if (!totalDoses.dose_addizionale_booster_baby) {
-        totalDoses.dose_addizionale_booster_baby = 0;
-    }
+    // array con i valori da visualizzare nell'istogramma senza filtri.
+    let over60Data = _(dataCopertura).filter(e => fasciaOver60.includes(e.fascia_anagrafica)).groupBy("fascia_anagrafica").map((items, rowAge) => { // raggruppo i valori in base alla fascia anagrafica
+        let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
 
-    const groups = _.groupBy(dataSupplier, "forn");
-    let allDosesSupplier = Object.keys(groups).map((k) => {
-        let groupByKey = groups[k].map((group) => group.numero_dosi);
-        let sumTotalDoses = _.sum(groupByKey);
-        return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] };
-    }).sort((a, b) => a.totale < b.totale ? 1 : -1);
+        let entryTmp = {
+            'guariti'           : _.sum(items.map(e => e.guariti)), // sommo i guariti per la fascia anagrafica corrente
+            'somministrazioni'  : _.sum(items.map(e => e.vaccinati)), // sommo le somministrazioni per la fascia anagrafica corrente
+            'totale'            : _.sum(dataPlatea.filter(e => e.eta === rowAge).map(e => e.totale_popolazione)) // totale platea per la fascia anagrafica
+        }
 
-    let totalSuplier = _.sum(allDosesSupplier.map((e) => e?.totale));
+        // siccome si tratta di un grafico a pile, devo calcolare lo scostamento con la serie precedente
+        return {
+            'label'             : keyAge,
+            'guariti'           : entryTmp['guariti'],
+            'somministrazioni'  : entryTmp['somministrazioni'] > entryTmp['guariti'] ? entryTmp['somministrazioni'] - entryTmp['guariti'] : 0,
+            'totale'            : entryTmp['totale'] > entryTmp['somministrazioni'] ? entryTmp['totale'] - entryTmp['somministrazioni'] : 0,
+        };
+    }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista dei guariti secondo la fascia anagrafica;
 
-    let allDosesMapByArea = _.groupBy(dataSupplier, "area");
-    let doesesByArea = Object.keys(allDosesMapByArea).map((area) => {
-        let groupByArea = allDosesMapByArea[area].map((dose) => dose.numero_dosi);
-        let totalDosesByArea = _.sum(groupByArea);
-        return { area: areaMapping[area], dosi_somministrate: totalDosesByArea };
-    });
+    // array con i valori da visualizzare nella mappa (regione, totale percentuale) con e senza filtri
+    const over60MapData  = _(dataCopertura?.map(replaceArea)).filter(e => fasciaOver60.includes(e.fascia_anagrafica)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        let entry = {
+            code        : code, // codice regione
+            area        : _.head(items)?.area, // nome esteso regione
+            totale      : _.sum(items.map(e => e.guariti + e.vaccinati))
+        }
 
-    const deliveredByArea = _.groupBy(deliverySummary, "code");
+        let popolazione = _.sum(dataPlatea.filter(e => e.area === code && fasciaOver60.includes(e.eta)).map(e => e.totale_popolazione)) // totale platea per la fascia anagrafica over 60 nella regione corrente
+        entry['totale'] = entry['totale'] / popolazione * 100; // calcolo la percentuale del totale sulla platea
 
-    const locations = data.dataVaxLocations.data.map(replaceArea);
+        for (let rowAge of fasciaEta.filter(e => fasciaOver60.includes(e))) { // per tutte le fasce d'età over 60
+            let keyAge = rowAge === '80+' ? 'fascia_over_80' : 'fascia_' + rowAge;
+            entry[keyAge] = _.sum(items.filter(e => rowAge === e.fascia_anagrafica).map(e => e.guariti + e.vaccinati)); // sommo i guariti e i vaccinati della fascia anagrafica corrente in quella determinata regione
+            let popolazioneFascia = _.sum(dataPlatea.filter(e => e.area === code && e.eta === rowAge).map(e => e.totale_popolazione)); // calcolo la platea della fascia anagrafica corrente in quella determinata regione
+            entry[keyAge] = entry[keyAge] / popolazioneFascia * 100; // calcolo la percentuale
+        }
+        
+        return entry;
+    }).value();
 
-    let maxNumberOfLocations = 0;
+    // array con i valori da visualizzare nell'istogramma con il filtro regione attivo
+    const over60RegionData  = {};
+    _(dataCopertura?.map(replaceArea)).filter(e => fasciaOver60.includes(e.fascia_anagrafica)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        over60RegionData[code] = _(items?.map(replaceArea)).groupBy("fascia_anagrafica").map((subItems, rowAge) => { // raggruppo i valori in base all'età
+            let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
 
-    const locationsByRegion = _(data.dataVaxLocations.data.map(replaceArea))
-        .groupBy("area")
-        .map((items, area) => {
-            maxNumberOfLocations =
-                maxNumberOfLocations > items.length
-                    ? maxNumberOfLocations
-                    : items.length;
-            return { area: area, locations: items.length };
-        })
-        .value();
+            let entryTmp = {
+                'guariti'           : _.sum(subItems.map(e => e.guariti)), // sommo i guariti
+                'somministrazioni'  : _.sum(subItems.map(e => e.vaccinati)), // sommo le somministrazioni
+                'totale'            : _.sum(dataPlatea.filter(e => e.eta === rowAge && e.area === code).map(e => e.totale_popolazione)) // totale platea per la fascia anagrafica corrente e la regione corrente
+            }
 
-    const totalDeliverySummary = _(data.dataSommVaxDetail.data.map(replaceArea))
-        .groupBy("code")
-        .map((items, code) => {
-            const details = _.head(deliveredByArea[code]);
+            // siccome si tratta di un grafico a pile, devo calcolare lo scostamento con la serie precedente
             return {
-                code: code,
-                area: _.head(items)?.area,
-                byAge: _(items)
-                    .groupBy("eta")
-                    .map((rows, age) => {
-                        const dosi_somministrate = _.sumBy(
-                            rows,
-                            (r) => r.m + r.f
-                        );
-                        const percentage = dosi_somministrate / (details.dosi_consegnate || 1);
-                        return {
-                            age: age,
-                            fascia_anagrafica: age,
-                            dosi_somministrate,
-                            dosi_consegnate: details.dosi_consegnate || 0,
-                            percentuale_somministrazione: +(percentage * 100).toFixed(1),
-                            area: _.head(items)?.area,
-                            totale: dosi_somministrate,
-                        };
-                    })
-                    .value(),
-                sesso_femminile: _.sumBy(items, "f"),
-                sesso_maschile: _.sumBy(items, "m"),
-                dosi_consegnate: details.dosi_consegnate || 0,
-                dosi_somministrate: details.dosi_somministrate || 0,
-                percentuale_somministrazione: details.percentuale_somministrazione || 0,
+                'label'             : keyAge,
+                'guariti'           : entryTmp['guariti'],
+                'somministrazioni'  : entryTmp['somministrazioni'] > entryTmp['guariti'] ? entryTmp['somministrazioni'] - entryTmp['guariti'] : 0,
+                'totale'            : entryTmp['totale'] > entryTmp['somministrazioni'] ? entryTmp['totale'] - entryTmp['somministrazioni'] : 0
             };
-        })
-        .value();
+        }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista secondo la fascia anagrafica;
+        return items;
+    }).value();
 
-    const totalDeliverySummaryByAge = _(data.dataSommVaxDetail.data.map(replaceArea))
-        .groupBy((i) => i["eta"].toString().trim())
-        .map((rows, age) => {
-            const details = _(rows)
-            .groupBy("code")
-            .map((rowsData, code) => {
-                const dosi_somministrate = _.sumBy(
-                    rowsData,
-                    (r) => r.m + r.f
-                );
-                const percentage =
-                    dosi_somministrate /
-                    (_.head(deliveredByArea[code]).dosi_consegnate || 1);
-                return {
-                    age: age,
-                    dosi_somministrate,
-                    sesso_maschile: _.sumBy(rowsData, "m"),
-                    sesso_femminile: _.sumBy(rowsData, "f"),
-                    code: code,
-                    dosi_consegnate: _.head(deliveredByArea[code]).dosi_consegnate || 0,
-                    percentuale_somministrazione: +(percentage * 100).toFixed(1),
-                    area: _.head(rowsData).area,
-                    //details: rows
-                };
-            })
-            .value();
+    let over60Content = { // insieme di dati da passare al container
+        over60,
+        keyValueOver60,
+        keysOver60,
+        over60Color,
+        over60Data,
+        over60RegionData,
+        over60MapData,
+    }
 
+    /********************************************************************************
+     * ---------- DISTRIBUZIONE SOMMINISTRAZIONI RISPETTO ALLE CONSEGNE -------------
+     * Tabella + Mappa Italia
+     * Possibilità di click sulla regione (Mappa)
+     *******************************************************************************/
+
+    const deliverySummary       = dataVaxSummary?.map(replaceArea);
+    const deliveredByArea       = _.groupBy(deliverySummary, "code");
+    /* Array di oggetti JSON aventi code, area, dosi_consegnate, dosi_somministrate e percentuale_somministrazione */
+    const totalDeliverySummary  = _(dataSommVaxDetail?.map(replaceArea)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        const details = _.head(deliveredByArea[code]);
+        return {
+            code                            : code, // codice regione
+            area                            : _.head(items)?.area, // nome esteso regione
+            dosi_consegnate                 : details.dosi_consegnate || 0, // dosi consegnate
+            dosi_somministrate              : details.dosi_somministrate || 0, // dosi somministrate
+            percentuale_somministrazione    : details.percentuale_somministrazione || 0, // percentuale somministrazioni rispetto alle consegnate
+        };
+    }).value();
+
+    /********************************************************************************
+     * --------------------------- GRAFICO PLATEA GUARITI ---------------------------
+     * Istogramma a pile + Mappa Italia
+     * Possibilità di click sulla regione (Mappa) o sulla fascia anagrafica (Istogramma)
+     *******************************************************************************/ 
+
+    /* totale di tutti i guariti, usato nel box del totale nella sezione Platea Guariti */
+    let totalGuaritiHealedSection           = _.sum(dataGuariti?.map((e) => e?.guariti_senza_somm + e?.guariti_post_somm + e?.guariti_post_1booster + e?.guariti_post_2booster));
+
+    let keyValueHealed  = { // oggetto contenente le label delle serie (la legenda)
+        "senza"     : "Guariti senza somministrazione da al massimo 6 mesi",
+        "post"      : "Guariti post 2ª dose/unica dose da al massimo 4 mesi",
+        "booster"   : "Guariti post 1ª dose booster da al massimo 6 mesi",
+        "2booster"  : "Guariti post 2ª dose booster da al massimo 6 mesi"
+    }
+    let keysHealed      = Object.keys(keyValueHealed); // array delle chiavi della serie
+    let healed          = Object.values(keyValueHealed); // array del nome delle serie (legenda)
+    let healedColor     = ["#b6d5f4", "#0a5dbb", "#244bb3", "#090d4d" ]; // colori associati alle serie
+
+    // array con i valori da visualizzare nell'istogramma senza filtri.
+    let healedData = _(dataGuariti).groupBy("eta").map((items, rowAge) => { // raggruppo i valori in base alla fascia anagrafica
+        let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
+
+        let entryTmp = {
+            'senza'         : _.sum(items.map(e => e.guariti_senza_somm)), // sommo i guariti senza somministrazioni per la fascia anagrafica corrente
+            'post'          : _.sum(items.map(e => e.guariti_post_somm)), // sommo i guariti dopo aver completato il ciclo vaccinale per la fascia anagrafica corrent
+            'booster'       : _.sum(items.map(e => e.guariti_post_1booster)), // sommo i guariti dopo la prima dose booster per la fascia anagrafica corrent
+            '2booster'      : _.sum(items.map(e => e.guariti_post_2booster)) // sommo i guariti dopo la seconda dose booster per la fascia anagrafica corrente
+        }
+
+        // siccome si tratta di un grafico a pile, devo calcolare lo scostamento con la serie precedente
+        return {
+            'label'         : keyAge,
+            'senza'         : entryTmp['senza'],
+            'post'          : entryTmp['post'] > entryTmp['senza'] ? entryTmp['post'] - entryTmp['senza'] : 0,
+            'booster'       : entryTmp['booster'] > entryTmp['post'] ? entryTmp['booster'] - entryTmp['post'] : 0,
+            '2booster'      : entryTmp['2booster'] > entryTmp['booster'] ? entryTmp['2booster'] - entryTmp['booster'] : 0,
+            'Totale'        : entryTmp['senza'] + entryTmp['post'] + entryTmp['booster'] + entryTmp['2booster'] // somma di tutti i guariti
+        };
+    }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista dei guariti secondo la fascia anagrafica;
+
+    // array con i valori da visualizzare nella mappa (regione, totole guariti e totale guariti per fascia anagrafica) con e senza filtri
+    const healedMapData  = _(dataGuariti?.map(replaceArea)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        let entry = {
+            code        : code, // codice regione
+            area        : _.head(items)?.area, // nome esteso regione
+            guariti     : _.sum(items.map(e => e.guariti_senza_somm + e.guariti_post_somm + e.guariti_post_1booster + e.guariti_post_2booster)) // sommo tutti i guariti della regione
+        }
+
+        for (let rowAge of fasciaEta) { // per tutte le fasce d'età over 60
+            let keyAge      = rowAge === '80+' ? 'fascia_over_80' : 'fascia_' + rowAge;
+            entry[keyAge]   = _.sum(items.filter(e => rowAge === e.eta).map(e => e.guariti_senza_somm + e.guariti_post_somm + e.guariti_post_1booster + e.guariti_post_2booster)); // sommo i guariti di ogni fascia anagrafica in quella determinata regione
+        }
+        
+        return entry;
+    }).value();
+
+    // array con i valori da visualizzare nell'istogramma con il filtro regione attivo
+    const healedRegionData  = {};
+    _(dataGuariti?.map(replaceArea)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        healedRegionData[code] = _(items?.map(replaceArea)).groupBy("eta").map((subItems, rowAge) => { // raggruppo i valori in base all'età
+            let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
+
+            let entryTmp = {
+                'senza'         : _.sum(subItems.map(e => e.guariti_senza_somm)), // sommo i guariti senza somministrazioni per la fascia anagrafica corrente
+                'post'          : _.sum(subItems.map(e => e.guariti_post_somm)), // sommo i guariti dopo aver completato il ciclo vaccinale per la fascia anagrafica corrent
+                'booster'       : _.sum(subItems.map(e => e.guariti_post_1booster)), // sommo i guariti dopo la prima dose booster per la fascia anagrafica corrent
+                '2booster'      : _.sum(subItems.map(e => e.guariti_post_2booster)) // sommo i guariti dopo la seconda dose booster per la fascia anagrafica corrente
+            }
+
+            // siccome si tratta di un grafico a pile, devo calcolare lo scostamento con la serie precedente
             return {
-                age: age,
-                details: details,
+                'label'         : keyAge,
+                'senza'         : entryTmp['senza'],
+                'post'          : entryTmp['post'] > entryTmp['senza'] ? entryTmp['post'] - entryTmp['senza'] : 0,
+                'booster'       : entryTmp['booster'] > entryTmp['post'] ? entryTmp['booster'] - entryTmp['post'] : 0,
+                '2booster'      : entryTmp['2booster'] > entryTmp['booster'] ? entryTmp['2booster'] - entryTmp['booster'] : 0,
+                'Totale'        : entryTmp['senza'] + entryTmp['post'] + entryTmp['booster'] + entryTmp['2booster'] // somma di tutti i guariti
             };
-        })
-        .groupBy("age")
-        .value();
+        }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista dei guariti secondo la fascia anagrafica;
+        return items;
+    }).value();
 
-    /* ages stack bar chart */
-    let keyValueDoses = {
-        "second_booster": "Booster Immuno/2ª dose Booster ",
-        "addizionale": "Dose addizionale/booster",
-        "seconda": "2ª dose/unica dose",
-        "prima": "1ª dose",
-        "totale": "Totale fascia"
-    }
-    let keysDosesAges = Object.keys(keyValueDoses);
-
-    let dosesAges = []; //legend
-    for(let keyOfKeyValues of Object.keys(keyValueDoses)) {
-        dosesAges.push(keyValueDoses[keyOfKeyValues]);
-    }
-    let dosesAgesColor = ["#061b56", "#0d2d85", "#0a5dbb", "#3073cf", "#548bd6", "#b6d5f4"]; // color
-
-    let regionsDoses = {};
-    let dosesAgesData = [];
-    let dosesAgesRegionData = {};
-
-    let agesTmp = {};
-    for (let row of data.dataSommVaxDetail.data) {
-        var key = row.eta;
-
-        if (key === '80-89' || key === '90+') {
-            key = 'over 80'
-        }
-        if (key === '5-11') {
-            key = '05-11'
-        }
-
-        if (!agesTmp.hasOwnProperty(key)) {
-            agesTmp[key] = {};
-            for(let doseKey of Object.keys(keyValueDoses)) {
-                agesTmp[key][doseKey] = 0;
-            }
-        }
-
-        if (row.forn === 'Janssen') {
-            agesTmp[key]['seconda'] += row.d1;
-        }
-        else {
-            agesTmp[key]['prima'] += row.d1;
-            agesTmp[key]['seconda'] += row.d2;
-        }
-        agesTmp[key]['seconda'] += row.dpi;
-
-        agesTmp[key]['addizionale'] += row.db1;
-        agesTmp[key]['second_booster'] += row.db2;
-
-        /* regions data */
-        if (!regionsDoses.hasOwnProperty(row.area)) {
-            regionsDoses[row.area] = {};
-            regionsDoses[row.area][key] = {}
-
-            for(let doseKey of Object.keys(keyValueDoses)) {
-                regionsDoses[row.area][key][doseKey] = 0;
-            }
-        }
-        else {
-            if (!regionsDoses[row.area].hasOwnProperty(key)) {
-                regionsDoses[row.area][key] = {}
-
-                for(let doseKey of Object.keys(keyValueDoses)) {
-                    regionsDoses[row.area][key][doseKey] = 0;
-                }
-            }
-        }
-        if (row.forn === 'Janssen') {
-            regionsDoses[row.area][key]['seconda'] += row.d1;
-        }
-        else {
-            regionsDoses[row.area][key]['prima'] += row.d1;
-            regionsDoses[row.area][key]['seconda'] += row.d2;
-        }
-        regionsDoses[row.area][key]['seconda'] += row.dpi;
-        regionsDoses[row.area][key]['addizionale'] += row.db1;
-        regionsDoses[row.area][key]['second_booster'] += row.db2;
+    let healedContent = { // insieme di dati da passare al container
+        totalGuaritiHealedSection,
+        healed,
+        keyValueHealed,
+        keysHealed,
+        healedColor,
+        healedData,
+        healedRegionData,
+        healedMapData
     }
 
-    let ageDosesTotal = {};
 
-    for (let row of Object.keys(agesTmp).sort().reverse()) {
-        var entry = {
-            label: "Fascia " + row
-        };
+    /********************************************************************************
+     * ----------- GRAFICO ANDAMENTO SETTIMANALE DELLE SOMMINISTRAZIONI -------------
+     * Istogramma a pile
+     *******************************************************************************/ 
 
-        entry['second_booster'] = agesTmp[row]['second_booster'];
-        entry['addizionale'] = agesTmp[row]['addizionale'] - agesTmp[row]['second_booster'];
-        entry['seconda'] = agesTmp[row]['seconda'] - agesTmp[row]['addizionale'];
-        entry['prima'] = agesTmp[row]['prima'] - agesTmp[row]['seconda'];
+    let spectrum = ["#0f69c9", "#4d99eb", "#77b2f2", "#b5d4f5", "#d1e0f0", "#edf2f7", "#ffffff"]; // sono presenti più colori del necessario per gestire eventuali nuovi fornitori
+    let suppliersColor = {}; // colori associati alle serie
+    let suppliers = []; // lista dinamica dei fornitori di vaccini
 
-        entry["Totale platea"] = 0;
-        for (let platea of data.dataPlatea.data) {
-            if (platea.eta === row || (row === 'over 80' && platea.eta === '80+')) {
-                entry["Totale platea"] += parseInt(platea.totale_popolazione);
-            }
-        }
-
-        entry['totale'] = entry["Totale platea"] - agesTmp[row]['prima'];
-
-        ageDosesTotal[entry['label']] = agesTmp[row]['prima'] + agesTmp[row]['seconda'] + agesTmp[row]['addizionale'] + agesTmp[row]['second_booster'];
-
-        dosesAgesData.push(entry);
-    }
-
-    let totalGuariti = 0;
-    let totalGuaritiDoppia = 0;
-    let totalGuaritiBooster = 0;
-    let totalGuaritiBoosterNotBaby = 0;
-    let totalGuaritiBaby = 0;
-    for (let row of data.dataGuariti.data) {
-        if (row.eta === '05-11') {
-            totalGuaritiBaby += parseInt(row.guariti_senza_somm);
-        }
-        else {
-            totalGuaritiBoosterNotBaby += parseInt(row.guariti_post_1booster);
-        }
-        totalGuariti += parseInt(row.guariti_senza_somm);
-        totalGuaritiDoppia += parseInt(row.guariti_post_somm);
-        totalGuaritiBooster += parseInt(row.guariti_post_1booster);
-    }
-
-    let totalPlatea = 0;
-    let totalPlateaBaby = 0;
-    for (let platea of data.dataPlatea.data) {
-        if (platea.eta === '05-11') {
-            totalPlateaBaby += parseInt(platea.totale_popolazione);
-        }
-        else {
-            totalPlatea += parseInt(platea.totale_popolazione);
-        }
-    }
-
-    let secondDoses = {}
-    for (let row of data.dataSommVaxDetail.data) {
-        entry = {};
-        if (secondDoses.hasOwnProperty(row.area)) {
-            entry = secondDoses[row.area];
-        }
-
-        var secondDoseTmp = row.d2;
-        if (row.forn === 'Janssen') {
-            secondDoseTmp = row.d1;
-        }
-        if (row.hasOwnProperty('dpi')) {
-            secondDoseTmp += row.dpi;
-        }
-
-        if (!secondDoses.hasOwnProperty(row.area)) {
-            entry = {
-                'code': row.area,
-                'area': areaMapping[row.area],
-                'somministrazioni': secondDoseTmp
-            };
-        }
-        else {
-            entry['somministrazioni'] += secondDoseTmp;
-        }
-
-        for (let rowAge of Object.keys(agesTmp)) {
-            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
-            if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '90+' || row.eta === '80-89'))) ? secondDoseTmp : 0;
-            }
-            else {
-                entry[keyAge] = (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '90+' || row.eta === '80-89'))) ? secondDoseTmp : 0;
-            }
-        }
-        secondDoses[row.area] = entry;
-    }
-
-    // Array delle regioni avente numero somministrazioni seconde dosi globale e per fasce d'età
-    let secondDosesData = [];
-    for (let region of Object.keys(secondDoses)) {
-        secondDosesData.push(secondDoses[region]);
-    }
-
-    // Oggetto che contiene i dati della Platea aggregati
-    let plateaRegionAges = {};
-    for (let platea of data.dataPlatea.data) {
-        if (!plateaRegionAges.hasOwnProperty(platea.area)) {
-            plateaRegionAges[platea.area] = {
-                'popolazione': 0
-            };
-        }
-
-        let keyAge = platea.eta === '80+' ? 'fascia_over_80' : (platea.eta === '05-11' ? 'fascia_05-11' : 'fascia_' + platea.eta);
-        let popolazione = parseInt(platea.totale_popolazione);
-
-        plateaRegionAges[platea.area][keyAge] = {
-            'popolazione': 0
-        };
-
-        plateaRegionAges[platea.area][keyAge]['popolazione'] = popolazione; // per singola fascia
-        plateaRegionAges[platea.area]['popolazione'] += popolazione; // totale per regione
-    }
-
-    let secondDosesPlateaData = [];
-    for (let region of Object.keys(secondDoses)) {
-        let tmpElem = secondDoses[region];
-
-        let entry = {};
-        for (let subItem of Object.keys(tmpElem)) {
-            if (subItem.includes("fascia")) {
-                entry[subItem] = tmpElem[subItem] / plateaRegionAges[region][subItem]['popolazione'] * 100;
-            }
-            else {
-                entry[subItem] = tmpElem[subItem];
-            }
-        }
-        entry['somministrazioni'] = entry['somministrazioni'] / plateaRegionAges[region]['popolazione'] * 100;
-
-        secondDosesPlateaData.push(entry);
-    }
-
-    for (let region of Object.keys(regionsDoses)) {
-        let arrayTmp = [];
-
-        for (let row of Object.keys(regionsDoses[region]).sort().reverse()) {
-            entry = {
-                label: "Fascia " + row
-            };
-
-            entry['second_booster'] = regionsDoses[region][row]['second_booster'];
-            entry['addizionale'] = regionsDoses[region][row]['addizionale'] - regionsDoses[region][row]['second_booster'];
-            entry['seconda'] = regionsDoses[region][row]['seconda'] - regionsDoses[region][row]['addizionale'];
-            entry['prima'] = regionsDoses[region][row]['prima'] - regionsDoses[region][row]['seconda'];
-
-            entry["Totale platea"] = 0;
-            for (let platea of data.dataPlatea.data) {
-                if (platea.area === region && (platea.eta === row || (row === 'over 80' && platea.eta === '80+'))) {
-                    entry["Totale platea"] += parseInt(platea.totale_popolazione);
-                }
-            }
-
-            entry['totale'] = entry["Totale platea"] - entry['prima'] - entry['seconda'] - entry['addizionale'] - entry['second_booster'];
-
-            arrayTmp.push(entry);
-        }
-
-        dosesAgesRegionData[region] = arrayTmp;
-    }
-
-    /* healed stack bar chart */
-    let keyValueHealed = {
-        "senza": "Guariti senza somministrazione da al massimo 6 mesi",
-        "post": "Guariti post 2ª dose/unica dose da al massimo 4 mesi",
-        "booster": "Guariti post 1ª dose booster da al massimo 6 mesi"
-    }
-    let keysHealed = Object.keys(keyValueHealed);
-
-    let healedColor = ["#b6d5f4", "#0a5dbb", "#012675" ];
-
-    let regionsHealed = {};
-    let healed = [];
-    for(let keyOfKeyValues of Object.keys(keyValueHealed)) {
-        healed.push(keyValueHealed[keyOfKeyValues]);
-    }
-
-    let healedData = [];
-    let healedRegionData = {};
-
-    let healedTmp = {};
-    for (let row of data.dataGuariti.data) {
-        key = row.eta;
-
-        if (key === '80+') {
-            key = 'over 80'
-        }
-
-        if (!healedTmp.hasOwnProperty(key)) {
-            healedTmp[key] = {}
-            for(let healedKey of Object.keys(keyValueHealed)) {
-                healedTmp[key][healedKey] = 0;
-            }
-        }
-
-        healedTmp[key]["senza"] += row.guariti_senza_somm;
-        healedTmp[key]["post"] += row.guariti_post_somm;
-        healedTmp[key]["booster"] += row.guariti_post_1booster;
-
-
-        /* regions data */
-        if (!regionsHealed.hasOwnProperty(row.area)) {
-            regionsHealed[row.area] = {};
-            regionsHealed[row.area][key] = {}
-            for(let healedKey of Object.keys(keyValueHealed)) {
-                regionsHealed[row.area][key][healedKey] = 0;
-            }
-        }
-        else {
-            if (!regionsHealed[row.area].hasOwnProperty(key)) {
-                regionsHealed[row.area][key] = {}
-                for(let healedKey of Object.keys(keyValueHealed)) {
-                    regionsHealed[row.area][key][healedKey] = 0;
-                }
-            }
-        }
-
-        regionsHealed[row.area][key]["senza"] += row.guariti_senza_somm;
-        regionsHealed[row.area][key]["post"] += row.guariti_post_somm;
-        regionsHealed[row.area][key]["booster"] += row.guariti_post_1booster;
-    }
-
-    let healedTotal = {};
-
-    for (let row of Object.keys(healedTmp).sort().reverse()) {
-        entry = {
-            label: "Fascia " + row
-        };
-        entry["senza"] = healedTmp[row]["senza"];                           // 318K boo
-        entry["post"] = healedTmp[row]["post"] - healedTmp[row]["senza"];   // 40K  senza
-        entry["booster"] = healedTmp[row]["booster"] - healedTmp[row]["post"];       // 100K post
-
-        healedTotal[entry['label']] = healedTmp[row]["booster"] + healedTmp[row]["post"] + healedTmp[row]["senza"];
-
-        healedData.push(entry);
-    }
-
-    for (let region of Object.keys(regionsHealed)) {
-        let arrayTmp = [];
-
-        for (let row of Object.keys(regionsHealed[region]).sort().reverse()) {
-            entry = {
-                label: "Fascia " + row
-            };
-            entry["senza"] = regionsHealed[region][row]["senza"];
-            entry["post"] = regionsHealed[region][row]["post"] - regionsHealed[region][row]["senza"];
-            entry["booster"] = regionsHealed[region][row]["booster"] - regionsHealed[region][row]["post"];
-
-            entry["Totale"] = regionsHealed[region][row]["booster"] + regionsHealed[region][row]["post"] + regionsHealed[region][row]["senza"];
-
-            arrayTmp.push(entry);
-        }
-
-        healedRegionData[region] = arrayTmp;
-    }
-
-    let regionsHealedTmp = {}
-    for (let row of data.dataGuariti.data) {
-        entry = {};
-        if (regionsHealedTmp.hasOwnProperty(row.area)) {
-            entry = regionsHealedTmp[row.area];
-        }
-
-        let valueSum = row.guariti_senza_somm + row.guariti_post_somm;
-        if (!regionsHealedTmp.hasOwnProperty(row.area)) {
-            entry = {
-                'code': row.area,
-                'area': areaMapping[row.area],
-                'guariti': valueSum
-            };
-        }
-        else {
-            entry['guariti'] += valueSum;
-        }
-
-        for (let rowAge of Object.keys(healedTmp)) {
-            let keyAge = rowAge === 'over 80' ? 'fascia_over_80' : 'fascia_' + rowAge;
-            if (entry.hasOwnProperty(keyAge)) {
-                entry[keyAge] += (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '80+'))) ? valueSum : 0;
-            }
-            else {
-                entry[keyAge] = (rowAge === row.eta || (rowAge === 'over 80' && (row.eta === '80+'))) ? valueSum : 0;
-            }
-        }
-
-        regionsHealedTmp[row.area] = entry;
-    }
-
-    let healedMapData = [];
-    for (let region of Object.keys(regionsHealedTmp)) {
-        let tmpElem = regionsHealedTmp[region];
-
-        let entry = {};
-        for (let subItem of Object.keys(tmpElem)) {
-            if (subItem.includes("fascia")) {
-                entry[subItem] = tmpElem[subItem];
-            }
-            else {
-                entry[subItem] = tmpElem[subItem];
-            }
-        }
-
-        healedMapData.push(entry);
-    }
-
-    // suppliers
-    let spectrum = ["#0f69c9", "#4d99eb", "#77b2f2", "#b5d4f5", "#d1e0f0", "#edf2f7", "#ffffff"];
-    let suppliersColor = {};
-    let suppliers = [];
-
-    for (let row of data.dataSommVaxDetail.data) {
+    for (let row of data.dataSommVaxDetail.data) { // aggiungo i fornitori evitando duplicazioni
         if (!suppliers.includes(row.forn)) {
             suppliers.push(row.forn);
         }
     }
 
+    // sposto Pfizer Pediatrico in ultima posizione, rimuovendono dalla lista ed inserendolo in coda
     var indexOfPediatrico = suppliers.indexOf('Pfizer Pediatrico');
     if (indexOfPediatrico !== -1) {
         suppliers.splice(indexOfPediatrico, 1);
         suppliers.push('Pfizer Pediatrico');
     }
 
+    // assegno i colori ai fornitori
     for (let rowFornitore of suppliers) {
         if ((Object.keys(suppliersColor).length - 1) < spectrum.length) {
             suppliersColor[rowFornitore] = spectrum[Object.keys(suppliersColor).length];
@@ -589,26 +344,27 @@ const elaborate = (data) => {
         }
     }
 
-    // all weeks
+    // calcolo le diverse settimane partire dal 21/12/2020
     let weeksMappingOptimation = {};
-    var index = 0;
+    var index = 0; // indice della settimana a partire dal 21/12/2020
 
     let suppliersWeek = [];
-    var date = new Date('2020-12-21'); // start date
-    while(true) {
+    var date = new Date('2020-12-21'); // data di partenza delle somministrazioni che cambierò ad ogni iterazione
+    do {
         let entry = {
-            label: Moment(date).format('DD/MM'),
-            from: Moment(date).format('YYYY-MM-DD'),
-            labelfrom: Moment(date).format('DD/MM'),
-            to: Moment(new Date(date.getTime() + 6 * 86400000)).format('YYYY-MM-DD'),
-            labelto: Moment(new Date(date.getTime() + 6 * 86400000)).format('DD/MM'),
-            total: 0
+            label: Moment(date).format('DD/MM'), // giorno e mese del lunedi della settimana
+            from: Moment(date).format('YYYY-MM-DD'), // data di inizio settimana
+            labelfrom: Moment(date).format('DD/MM'), // etichetta inizio settimana
+            to: Moment(new Date(date.getTime() + 6 * 86400000)).format('YYYY-MM-DD'), // data fine settimana
+            labelto: Moment(new Date(date.getTime() + 6 * 86400000)).format('DD/MM'), // etichetta fine settimana
+            total: 0 // somministrazioni nella settimana
         };
 
         for (let supplier of suppliers) {
-            entry[supplier] = 0;
+            entry[supplier] = 0; // somministrazioni del fornitore nella settimana inizializzato a zero
         }
 
+        // definisco ogni giorno in quale settimana si trova
         weeksMappingOptimation[Moment(date).format('YYYY-MM-DD')] = index;
         weeksMappingOptimation[Moment(new Date(date.getTime() + 1 * 86400000)).format('YYYY-MM-DD')] = index;
         weeksMappingOptimation[Moment(new Date(date.getTime() + 2 * 86400000)).format('YYYY-MM-DD')] = index;
@@ -620,141 +376,260 @@ const elaborate = (data) => {
 
         suppliersWeek.push(entry);
 
-        date = new Date(date.getTime() + 7 * 86400000);
+        date = new Date(date.getTime() + 7 * 86400000); // aggiungo 7 gorni
+    } while(date <= new Date());
 
-        if (date > new Date()) {
-            break;
-        }
-    }
-
-    // weeks data
-    for (let row of data.dataSommVaxDetail.data) {
-        let index = weeksMappingOptimation[Moment(new Date(row.data)).format('YYYY-MM-DD')];
+    // aggiorno i totali per ogni fornitore e per l'intera settimana
+    for (let row of data.dataSommVaxDetail.data) { // per ogni valore presente nel JSON
+        let index = weeksMappingOptimation[Moment(new Date(row.data)).format('YYYY-MM-DD')]; // ottengo l'indice di quale settimana fa parte il giorno corrente
         let week = suppliersWeek[index];
 
-        // Totale Somministrazioni Settimanale
-        week.total += (
-            row.f +
-            row.m 
-        );
+        // Totale Somministrazioni Settimanale ottenuto sommando le somministrazioni di maschi e femmine
+        week.total += (row.f + row.m );
 
-        // Totale Somministrazioni Settimanale per fornitore
-        week[row.forn] += (
-            row.f +
-            row.m 
-        );
+        // Totale Somministrazioni Settimanale per fornitore sommando le somministrazioni di maschi e femmine
+        week[row.forn] += (row.f + row.m );
     }
 
-    let totalPlateaDoseAddizionaleBooster = 0;
-    for (let platea of data.dataPlateaDoseAddizionaleBooster.data) {
-        totalPlateaDoseAddizionaleBooster += parseInt(platea.totale_popolazione);
-    }
-
-    // let totalPlateaDoseImmunocompromessiFragili = 0;
-    let totalPlateaDoseSecondBooster = 0;
-    for (let platea of data.dataPlateaSecondBooster.data) {
-        totalPlateaDoseSecondBooster += parseInt(platea.totale_popolazione);
-    }
-
-    const timestamp = data.dataLastUpdate.ultimo_aggiornamento;
-    const aggr = {
-        timestamp,
-        tot,
-        deliverySummary,
-        locations,
-        dataSomeVaxDetail,
-        locationsByRegion,
-        maxNumberOfLocations,
-        allDosesSupplier,
-        doesesByArea,
-        totalSuplier,
-        totalDoses,
-        totalDeliverySummaryByAge,
-        totalDeliverySummary,
+    let weekContent = { // insieme di dati da passare al container
         suppliersColor,
         suppliers,
-        suppliersWeek,
+        suppliersWeek
+    }
+
+    /********************************************************************************
+     * --------------- SOMMINISTRAZIONI PER FASCIA D'ETA' - DOSE --------------------
+     * Istogramma + Mappa Italia
+     * Possibilità di click sulla regione (Mappa) o sulla fascia anagrafica (Istogramma)
+     *******************************************************************************/
+    let keyValueDoses = { // oggetto contenente le label delle serie (la legenda)
+        "third_booster": "3ª dose Booster ",
+        "second_booster": "2ª dose Booster ",
+        "addizionale": "1ª dose Booster",
+        "seconda": "2ª dose/unica dose",
+        "prima": "1ª dose",
+        "totale": "Totale fascia"
+    }
+    let keysDosesAges      = Object.keys(keyValueDoses); // array delle chiavi della serie
+    let dosesAges          = Object.values(keyValueDoses); // array del nome delle serie (legenda)
+    let dosesAgesColor     = ["#090d4d", "#0b34a3", "#244bb3", "#0a5dbb", "#3073cf", "#548bd6", "#b6d5f4"]; // colori associati alle serie
+
+
+    // array con i valori da visualizzare nell'istogramma senza filtri.
+    let dosesAgesData = _(dataSommVaxDetail).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
+            if (e.eta === '90+' || e.eta === '80-89') {
+                e.eta = '80+';
+            }
+            return e;
+        }).groupBy("eta").map((items, rowAge) => { // raggruppo i valori in base alla fascia anagrafica
+        let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
+
+        let entryTmp = {
+            'prima'                 : _.sum(items.filter(e => e.forn !== 'Janssen').map(e => e.d1)), // sommo tutte le prime dosi per vaccini diversi da Janssen
+            'seconda'               : _.sum(items.filter(e => e.forn !== 'Janssen').map(e => e.d2)) + _.sum(items.filter(e => e.forn === 'Janssen').map(e => e.d1)) + _.sum(items.map(e => e.dpi)), // sommo le prime dosi Janssen, le seconde dosi non Janssen e le pregresse infezioni
+            'addizionale'           : _.sum(items.map(e => e.db1)), // sommo le dosi addizionali
+            'second_booster'        : _.sum(items.map(e => e.db2)), // sommo le seconde dosi booster
+            'third_booster'         : _.sum(items.map(e => e.db3)), // sommo le terze dosi booster,
+            'Totale platea'         : _.sum(dataPlatea.filter(e => e.eta === rowAge).map(e => e.totale_popolazione)) // totale platea per la fascia anagrafica corrente
+        }
+
+        // siccome si tratta di un grafico a pile, devo calcolare lo scostamento con la serie precedente
+        return {
+            'label'                 : keyAge,
+            'third_booster'         : entryTmp['third_booster'],
+            'second_booster'        : entryTmp['second_booster'] > entryTmp['third_booster'] ? entryTmp['second_booster'] - entryTmp['third_booster'] : 0,
+            'addizionale'           : entryTmp['addizionale'] > entryTmp['second_booster'] ? entryTmp['addizionale'] - entryTmp['second_booster'] : 0,
+            'seconda'               : entryTmp['seconda'] > entryTmp['addizionale'] ? entryTmp['seconda'] - entryTmp['addizionale'] : 0,
+            'prima'                 : entryTmp['prima'] > entryTmp['seconda'] ? entryTmp['prima'] - entryTmp['seconda'] : 0,
+            'totale'                : entryTmp['Totale platea'] > entryTmp['prima'] ? entryTmp['Totale platea'] - entryTmp['prima'] : 0,
+            'Totale platea'         : entryTmp['Totale platea'],
+        };
+    }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista dei guariti secondo la fascia anagrafica;
+
+
+    // array con i valori da visualizzare nella mappa (regione, totale percentuale) con e senza filtri
+    const secondDosesMapData  = _(dataSommVaxDetail?.map(replaceArea)).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
+            if (e.eta === '90+' || e.eta === '80-89') {
+                e.eta = '80+';
+            }
+            return e;
+        }).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        let entry = {
+            code                : code, // codice regione
+            area                : _.head(items)?.area, // nome esteso regione
+            somministrazioni    : _.sum(items.filter(e => e.forn !== 'Janssen').map(e => e.d2)) + _.sum(items.filter(e => e.forn === 'Janssen').map(e => e.d1)) + _.sum(items.map(e => e.dpi)) // sommo solo chi ha completato il ciclo vaccinale
+        }
+
+        let popolazione = _.sum(dataPlatea.filter(e => e.area === code).map(e => e.totale_popolazione)) // totale platea nella regione corrente        
+        entry['somministrazioni'] = entry['somministrazioni'] / popolazione * 100; // calcolo la percentuale del totale sulla platea
+
+        for (let rowAge of fasciaEta) { // per tutte le fasce d'età
+            let keyAge = rowAge === '80+' ? 'fascia_over_80' : 'fascia_' + rowAge;
+            entry[keyAge]   = _.sum(items.filter(e => rowAge === e.eta && e.forn !== 'Janssen').map(e => e.d2)) + _.sum(items.filter(e => rowAge === e.eta && e.forn === 'Janssen').map(e => e.d1)) + _.sum(items.filter(e => rowAge === e.eta).map(e => e.dpi)); // sommo chi ha completato il ciclo vaccinale di quella fascia anagrafica
+            let popolazioneFascia = _.sum(dataPlatea.filter(e => e.area === code && e.eta === rowAge).map(e => e.totale_popolazione)); // calcolo la platea della fascia anagrafica corrente in quella determinata regione
+            entry[keyAge] = entry[keyAge] / popolazioneFascia * 100; // calcolo la percentuale
+        }
+        
+        return entry;
+    }).value();
+
+    // array con i valori da visualizzare nell'istogramma con il filtro regione attivo
+    const dosesAgesRegionData  = {};
+    _(dataSommVaxDetail?.map(replaceArea)).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
+        if (e.eta === '90+' || e.eta === '80-89') {
+            e.eta = '80+';
+        }
+        return e;
+    }).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        dosesAgesRegionData[code] = _(items?.map(replaceArea)).groupBy("eta").map((subItems, rowAge) => { // raggruppo i valori in base all'età
+            let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
+
+            let entryTmp = {
+                'prima'                 : _.sum(subItems.filter(e => e.forn !== 'Janssen').map(e => e.d1)), // sommo tutte le prime dosi per vaccini diversi da Janssen
+                'seconda'               : _.sum(subItems.filter(e => e.forn !== 'Janssen').map(e => e.d2)) + _.sum(subItems.filter(e => e.forn === 'Janssen' && e.area === code).map(e => e.d1)) + _.sum(subItems.filter(e => e.area === code).map(e => e.dpi)), // sommo le prime dosi Janssen, le seconde dosi non Janssen e le pregresse infezioni
+                'addizionale'           : _.sum(subItems.map(e => e.db1)), // sommo le dosi addizionali
+                'second_booster'        : _.sum(subItems.map(e => e.db2)), // sommo le seconde dosi booster
+                'third_booster'         : _.sum(subItems.map(e => e.db3)), // sommo le terze dosi booster,
+                'Totale platea'         : _.sum(dataPlatea.filter(e => e.eta === rowAge && e.area === code).map(e => e.totale_popolazione)) // totale platea per la fascia anagrafica corrente
+            }
+
+            // siccome si tratta di un grafico a pile, devo calcolare lo scostamento con la serie precedente
+            return {
+                'label'                 : keyAge,
+                'third_booster'         : entryTmp['third_booster'],
+                'second_booster'        : entryTmp['second_booster'] > entryTmp['third_booster'] ? entryTmp['second_booster'] - entryTmp['third_booster'] : 0,
+                'addizionale'           : entryTmp['addizionale'] > entryTmp['second_booster'] ? entryTmp['addizionale'] - entryTmp['second_booster'] : 0,
+                'seconda'               : entryTmp['seconda'] > entryTmp['addizionale'] ? entryTmp['seconda'] - entryTmp['addizionale'] : 0,
+                'prima'                 : entryTmp['prima'] > entryTmp['seconda'] ? entryTmp['prima'] - entryTmp['seconda'] : 0,
+                'totale'                : entryTmp['Totale platea'] > entryTmp['prima'] ? entryTmp['Totale platea'] - entryTmp['prima'] : 0,
+                'Totale platea'         : entryTmp['Totale platea'],
+            };
+        }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista secondo la fascia anagrafica;
+        return items;
+    }).value();
+
+    let agedosesContent = { // insieme di dati da passare al container
         keyValueDoses,
         keysDosesAges,
         dosesAges,
         dosesAgesColor,
         dosesAgesData,
         dosesAgesRegionData,
-        ageDosesTotal,
-        healed,
-        keyValueHealed,
-        keysHealed,
-        healedColor,
-        healedData,
-        healedRegionData,
-        healedTotal,
-        healedMapData,
-        secondDosesData,
-        secondDosesPlateaData,
-        totalPlatea,
-        totalPlateaBaby,
-        totalPlateaDoseAddizionaleBooster,
-        totalPlateaDoseSecondBooster,
-        totalGuariti,
-        totalGuaritiDoppia,
-        totalGuaritiBooster,
-        totalGuaritiBoosterNotBaby,
-        totalGuaritiBaby
+        secondDosesMapData  
+    }
+
+    /********************************************************************************
+     * ------------------- DISTRIBUZIONE VACCINI PER FORNITORE ----------------------
+     * Istogramma
+     * Possibilità di click sulle barre
+     *******************************************************************************/ 
+
+    let totalSuplier        = _.sum(dataSupplierDoses.map((e) => e?.numero_dosi)); // calcolo numero totale di vaccini distribuiti
+    const groups            = _.groupBy(dataSupplierDoses, "forn"); // raggruppo la distribuzione dei vaccini per fornitore
+    let allDosesSupplier    = Object.keys(groups).map((k) => { // per ogni fornitore raggruppato effettuo la somma dei vaccini distribuiti
+        let groupByKey      = groups[k].map((group) => group.numero_dosi);
+        let sumTotalDoses   = _.sum(groupByKey);
+        return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] };
+    }).sort((a, b) => a.totale < b.totale ? 1 : -1); // ordino la lista dei fornitori secondo le quantità fornite in ordine decrescente
+
+    /********************************************************************************
+     * ---------- PRINCIPALI PUNTI DI SOMMINISTRAZIONE PER REGIONE ------------------
+     * Tabella + Mappa Italia
+     * Possibilità di click sulla tabella
+     *******************************************************************************/ 
+
+    const locations         = dataVaxLocations?.map(replaceArea); // dati per la tabella .map(replaceArea) sostituisce la sigla della regione con il nome completo
+    // array con i valori da visualizzare nella mappa
+    const locationsByRegion = _(dataVaxLocations?.map(replaceArea)).groupBy("area").map((items, area) => { // raggruppo i valori in base alla regione
+        return { area: area, locations: items.length }; // locations è il numero di punti di somministrazione per quella regione (numero che appare al click sulla regione)
+    }).value();
+
+    /********************************************************************************
+     * ------------------------------ FINE CALCOLI ----------------------------------
+     * Restituzione dei dati da rendere disponibili all'esterno
+     *******************************************************************************/
+
+    const aggr = {
+        timestamp,
+        tot,
+        databoxContent,
+        over60Content,
+        healedContent,
+        weekContent,
+        agedosesContent,
+        deliverySummary,
+        locations,
+        locationsByRegion,
+        totalDeliverySummary,
+        totalDoses,
+        allDosesSupplier,
+        totalSuplier,  
     };
     return aggr;
-  };
+};
 
-  export const loadData = async () => {
+
+/********************************************************************************
+ * ---------------------- LETTURA DATI DA SORGENTI JSON -------------------------
+ * Istogramma
+ * Possibilità di click sulle barre
+ *******************************************************************************/ 
+
+export const loadData = async () => {
     const [
         resSommVaxSummary,
         resSommVaxDetail,
         resVaxSummary,
-        resProfileSummaryURL,
         resVaxLocations,
         resLastUpdate,
         resSupplierDoses,
         resPlatea,
         resPlateaDoseAddizionaleBooster,
         resPlateaDoseSecondBooster,
-        resGuariti
+        resPlateaDoseThirdBooster,
+        resGuariti,
+        resCopertura
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
         fetch(sommVaxDetailURL),
         fetch(vaxSummaryURL),
-        fetch(anagraficaSummaryURL),
         fetch(vaxLocationsURL),
         fetch(lastUpdateURL),
         fetch(supplierDoses),
         fetch(plateaURL),
         fetch(plateaDoseAddizionaleBoosterURL),
         fetch(plateaDoseSecondBoosterURL),
-        fetch(guaritiURL)
+        fetch(plateaDoseThirdBoosterURL),
+        fetch(guaritiURL),
+        fetch(coperturaURL)
     ]);
 
     const [
         dataSommVaxSummary,
         dataSommVaxDetail,
         dataVaxSummary,
-        dataProfileSummary,
         dataVaxLocations,
         dataLastUpdate,
         dataSupplierDoses,
         dataPlatea,
         dataPlateaDoseAddizionaleBooster,
         dataPlateaSecondBooster,
-        dataGuariti
+        dataPlateaThirdBooster,
+        dataGuariti,
+        dataCopertura
     ] = await Promise.all([
         resSommVaxSummary.json(),
         resSommVaxDetail.json(),
         resVaxSummary.json(),
-        resProfileSummaryURL.json(),
         resVaxLocations.json(),
         resLastUpdate.json(),
         resSupplierDoses.json(),
         resPlatea.json(),
         resPlateaDoseAddizionaleBooster.json(),
         resPlateaDoseSecondBooster.json(),
-        resGuariti.json()
+        resPlateaDoseThirdBooster.json(),
+        resGuariti.json(),
+        resCopertura.json()
     ]);
 
     return {
@@ -762,14 +637,15 @@ const elaborate = (data) => {
             dataSommVaxSummary,
             dataSommVaxDetail,
             dataVaxSummary,
-            dataProfileSummary,
             dataLastUpdate,
             dataVaxLocations,
             dataSupplierDoses,
             dataPlatea,
             dataPlateaDoseAddizionaleBooster,
             dataPlateaSecondBooster,
-            dataGuariti
+            dataPlateaThirdBooster,
+            dataGuariti,
+            dataCopertura
         })
     };
 };

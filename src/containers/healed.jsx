@@ -21,15 +21,15 @@ export const Healed = ({ data }) => {
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setHealedColor(data.healedColor);
-            setHealed(data.healed);
-            setHealedData(data.healedData);
-            setHealedKeys(data.keysHealed);
+            setHealedColor(data.healedContent.healedColor);
+            setHealed(data.healedContent.healed);
+            setHealedData(data.healedContent.healedData);
+            setHealedKeys(data.healedContent.keysHealed);
 
-            setTotalByCategory(data.totalGuariti + data.totalGuaritiDoppia + data.totalGuaritiBooster);
-            setCategoryMapData(data.healedMapData);
+            setTotalByCategory(data.healedContent.totalGuaritiHealedSection);
+            setCategoryMapData(data.healedContent.healedMapData);
 
-            setKeyValueHealed(data.keyValueHealed);
+            setKeyValueHealed(data.healedContent.keyValueHealed);
         }
     }, [data]);
 
@@ -37,10 +37,10 @@ export const Healed = ({ data }) => {
         setSelectedCodeAge(null);
         setCategorySelectedRegion(null);
         setCategorySelectedRegionDescr(null);
-        setTotalByCategory(data.totalGuariti + data.totalGuaritiDoppia + data.totalGuaritiBooster);
-        setHealedData(data.healedData);
+        setTotalByCategory(data.healedContent.totalGuaritiHealedSection);
+        setHealedData(data.healedContent.healedData);
         setCategoryMapField("guariti");
-        setCategoryMapData(data.healedMapData);
+        setCategoryMapData(data.healedContent.healedMapData);
     };
 
     const fillMapCategoryArea = ({ region, maxValue, field }) => {
@@ -66,10 +66,10 @@ export const Healed = ({ data }) => {
         } else {
           setCategorySelectedRegion(region.code);
           setCategorySelectedRegionDescr(region.area);
-          setHealedData(data.healedRegionData[region.code]);
+          setHealedData(data.healedContent.healedRegionData[region.code]);
 
           var val = 0;
-          for(let row of data.healedRegionData[region.code]) {
+          for(let row of data.healedContent.healedRegionData[region.code]) {
             val += row.Totale;
           }
           setTotalByCategory(val);
@@ -88,7 +88,13 @@ export const Healed = ({ data }) => {
         } else {
           setSelectedCodeAge(ageCode);
           setCategoryMapField(ageCode);
-          setTotalByCategory(data.healedTotal[cat.data.label]);
+
+          for(let row of data.healedContent.healedData) {
+            if (row.label === cat.data.label) {
+                setTotalByCategory(row.Totale);
+                break;
+            }
+          }
         }
     };
 
@@ -97,7 +103,7 @@ export const Healed = ({ data }) => {
             {/* Box Title */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
                 <div className="text-center">
-                    <h3 class="mb-0">Platea guariti</h3>
+                    <h3 className="mb-0">Platea guariti</h3>
                 </div>
             </div>
             {/* // Box Title */}

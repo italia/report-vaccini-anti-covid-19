@@ -1,7 +1,7 @@
 import { React, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-export const HealedHStackedBarChart = ({
+export const Over60HStackedBarChart = ({
   handleRectClick,
   height,
   width,
@@ -67,7 +67,7 @@ export const HealedHStackedBarChart = ({
     const margin = { y: 30, x: 60 };
 
     // axis
-    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['post'] + d['senza'] + d['booster'] + d['2booster']; })]);
+    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['somministrazioni'] + d['guariti'] + d['totale']; })]);
     const yScale = d3.scaleBand().padding(0.2);
     xScale.range([0, width]);
     yScale.range([0, height]).domain(data.map((d) => d.label));
@@ -153,14 +153,34 @@ export const HealedHStackedBarChart = ({
         tooltip
           .style('top', event.pageY - 10 + 'px')
           .style('left', event.pageX + 10 + 'px');
-        tooltip
-          .html(
-              `<div style="text-align: center; line-height: 1.15rem;">
-              <div style="font-size: 12px;">${regione} ${d.data.label}</div>
-              <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
-              <div style="font-size: 14px;">${(d[1]).toLocaleString('it')}</div>`
-          )
-          .style('display', null);
+
+          if (d3.select(this.parentNode).attr("dose") === 'totale') {
+            let sum = d.data["somministrazioni"] + d.data["guariti"] + d.data["totale"];
+
+            tooltip
+              .style('top', event.pageY - 10 + 'px')
+              .style('left', event.pageX + 10 + 'px');
+            tooltip
+              .html(
+                  `<div style="text-align: center; line-height: 1.15rem;">
+                  <div style="font-size: 12px;">${regione}</div>
+                  <div><b>${d.data.label}</b></div>
+                  <div style="font-size: 14px;">Platea</div>
+                  <div>${sum.toLocaleString('it')}</div>
+                  </div>`
+                  )
+              .style('display', null);
+          }
+          else {
+            tooltip
+              .html(
+                  `<div style="text-align: center; line-height: 1.15rem;">
+                  <div style="font-size: 12px;">${regione} ${d.data.label}</div>
+                  <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
+                  <div style="font-size: 14px;">${(d[1]).toLocaleString('it')}</div>`
+              )
+              .style('display', null);
+          }
       })
       .on('mouseout', function (d) {
           tooltip.html(``).style('display', 'none');

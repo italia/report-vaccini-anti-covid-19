@@ -12,13 +12,13 @@ export const Weeks = ({ data }) => {
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setSuppliersColor(data.suppliersColor);
-            setSuppliers(data.suppliers);
-            setSuppliersWeek(data.suppliersWeek);
+            setSuppliersColor(data.weekContent.suppliersColor);
+            setSuppliers(data.weekContent.suppliers);
+            setSuppliersWeek(data.weekContent.suppliersWeek);
 
-            setTo(data.suppliersWeek.length);
-            if (data.suppliersWeek.length >= 9) {
-                setFrom(data.suppliersWeek.length - 9);
+            setTo(data.weekContent.suppliersWeek.length);
+            if (data.weekContent.suppliersWeek.length >= 9) {
+                setFrom(data.weekContent.suppliersWeek.length - 9);
             }
         }
       }, [data]);
