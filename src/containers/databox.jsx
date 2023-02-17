@@ -63,6 +63,27 @@ export const Databox = ({ data }) => {
     const [totalePrimaDoseConGuaritiBaby, setTotalePrimaDoseConGuaritiBaby] = useState(''); // Prima Dose Baby + Guariti Baby
     const [percentualeTotalePrimaDoseConGuaritiBaby, setPercentualeTotalePrimaDoseConGuaritiBaby] = useState(''); // Percentuale Prima Dose Baby + Guariti Baby
 
+    const [totaleDoseAddizionaleBoosterBaby, setTotaleDoseAddizionaleBoosterBaby] = useState(''); // Dose aggiuntiva/booster 5-11
+    const [percentualeDoseAddizionaleBoosterBaby, setPercentualeDoseAddizionaleBoosterBaby] = useState(''); // Percentuale Dose aggiuntiva/booster 5-11
+
+    const [totalePersoneGuariteDoppiaDoseBaby, setTotalePersoneGuariteDoppiaDoseBaby] = useState(''); // Guariti con doppia dose 5-11
+    const [totalePersoneGuaritePopolazioneDoppiaDoseBaby, setTotalePersoneGuaritePopolazioneDoppiaDoseBaby] = useState(''); // Percentuale Guariti con doppia dose 5-11
+
+    const [totaleDoseAddizionaleGuaritiDoppiaDoseBaby, setTotaleDoseAddizionaleGuaritiDoppiaDoseBaby] = useState(''); // Booster + Guariti doppia dose 5-11
+    const [percentualeDoseAddizionaleGuaritiDoppiaDoseBaby, setPercentualeDoseAddizionaleGuaritiDoppiaDoseBaby] = useState(''); // Percentuale Booster + Guariti doppia dose 5-11
+
+    const [totalePrimaDoseInfant, setTotalePrimaDoseInfant] = useState(''); // Prima Dose Neonati
+    const [percentualePrimaDosePopolazioneInfant, setPercentualePrimaDosePopolazioneInfant] = useState(''); // Percentuale Prima Dose Neonati
+
+    const [totalePersoneVaccinateInfant, setTotalePersoneVaccinateInfant] = useState(''); // Completamento ciclo vaccinale neonati
+    const [totalePersoneVaccinatePopolazioneInfant, setTotalePersoneVaccinatePopolazioneInfant] = useState(''); // Percentuale Completamento ciclo vaccinale neonati
+
+    const [totalePersoneGuariteInfant, setTotalePersoneGuariteInfant] = useState(''); // Guariti Neonati
+    const [totalePersoneGuaritePopolazioneInfant, setTotalePersoneGuaritePopolazioneInfant] = useState(''); // Percentuale Guariti neonati
+
+    const [totalePrimaDoseConGuaritiInfant, setTotalePrimaDoseConGuaritiInfant] = useState(''); // Prima Dose neonati + Guariti neonati
+    const [percentualeTotalePrimaDoseConGuaritiInfant, setPercentualeTotalePrimaDoseConGuaritiInfant] = useState(''); // Percentuale Prima Dose neonati + Guariti naonati
+
     useEffect(() => {
 
         // Somministrazioni over 60
@@ -158,6 +179,40 @@ export const Databox = ({ data }) => {
         // Prima Dose + Guariti Baby
         setTotalePrimaDoseConGuaritiBaby(format(primaBaby + data?.databoxContent?.totalGuaritiBaby));
         setPercentualeTotalePrimaDoseConGuaritiBaby(format((primaBaby + data?.databoxContent?.totalGuaritiBaby) / data?.databoxContent?.totalPlateaBaby* 100, true));
+
+        // Dose aggiuntiva/booster baby
+        setTotaleDoseAddizionaleBoosterBaby(data?.totalDoses?.dose_addizionale_booster_baby);
+        setPercentualeDoseAddizionaleBoosterBaby(format(data?.totalDoses?.dose_addizionale_booster_baby / data?.databoxContent?.totalPlateaDoseAddizionaleBoosterBaby * 100, true));
+
+        // Guariti con doppia dose baby
+        setTotalePersoneGuariteDoppiaDoseBaby(data?.databoxContent?.totalGuaritiDoppiaBaby);
+        setTotalePersoneGuaritePopolazioneDoppiaDoseBaby(format(data?.databoxContent?.totalGuaritiDoppiaBaby/ data?.databoxContent?.totalPlateaDoseAddizionaleBoosterBaby * 100, true));
+
+        // Dose aggiuntiva/booster + Guariti con doppia dose
+        setTotaleDoseAddizionaleGuaritiDoppiaDoseBaby(format(data?.databoxContent?.totalGuaritiDoppiaBaby + data?.totalDoses?.dose_addizionale_booster_baby));
+        setPercentualeDoseAddizionaleGuaritiDoppiaDoseBaby(format((data?.databoxContent?.totalGuaritiDoppiaBaby + data?.totalDoses?.dose_addizionale_booster_baby) / data?.databoxContent?.totalPlateaDoseAddizionaleBoosterBaby* 100, true));
+  
+         // Prima Dose neonati
+         let primaInfant = (data?.totalDoses?.prima_dose_infant + data?.totalDoses?.pregressa_infezione_infant);
+         if (!isNaN(primaInfant)) {
+             setTotalePrimaDoseInfant(format(primaInfant));
+             setPercentualePrimaDosePopolazioneInfant(format(primaInfant / data?.databoxContent?.totalPlateaInfant* 100, true));
+         }
+ 
+         // Completamento ciclo vaccinale neonati
+         let totInfant = (data?.totalDoses?.seconda_dose_infant + data?.totalDoses?.prima_dose_janssen_infant + data?.totalDoses?.pregressa_infezione_infant);
+         if (!isNaN(totInfant)) {
+             setTotalePersoneVaccinateInfant(format(totInfant));
+             setTotalePersoneVaccinatePopolazioneInfant(format(totInfant / data?.databoxContent?.totalPlateaInfant* 100, true));
+         }
+ 
+         // Guariti neonati
+         setTotalePersoneGuariteInfant(format(data?.databoxContent?.totalGuaritiInfant));
+         setTotalePersoneGuaritePopolazioneInfant(format(data?.databoxContent?.totalGuaritiInfant / data?.databoxContent?.totalPlateaInfant* 100, true));
+ 
+         // Prima Dose + Guariti neonati
+         setTotalePrimaDoseConGuaritiInfant(format(primaInfant + data?.databoxContent?.totalGuaritiInfant));
+         setPercentualeTotalePrimaDoseConGuaritiInfant(format((primaInfant + data?.databoxContent?.totalGuaritiInfant) / data?.databoxContent?.totalPlateaInfant* 100, true));
     }, [data]);
 
     function format(data, digit = false) {
@@ -400,7 +455,7 @@ export const Databox = ({ data }) => {
 
             <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
                 <div className="mb-2" >
-                    <h3 className="text-center">Somministrazione platea 5-11 anni</h3>
+                    <h3 className="text-center">Ciclo Vaccinale Primario 5-11 anni</h3>
                 </div>
             </div>
 
@@ -448,6 +503,104 @@ export const Databox = ({ data }) => {
                                 <h5 className="mt-2">Totale</h5>
                                 <div className="box-numbers">{totalePrimaDoseConGuaritiBaby}</div>
                                 <div className="box-text">{percentualeTotalePrimaDoseConGuaritiBaby} % della popolazione 5-11</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
+                <div className="mb-2" >
+                    <h3 className="text-center">Prima Dose Booster 5-11 anni</h3>
+                </div>
+            </div>
+
+            <div className="row bg-box p-2 mb-4">
+                <div className="col-md-6 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center">
+                                <h5 className="mt-2 mb-3">Dose addizionale/richiamo (booster)</h5>
+                                <div className="box-numbers">{totaleDoseAddizionaleBoosterBaby?.toLocaleString('it')}</div>
+                                <div className="box-text">{percentualeDoseAddizionaleBoosterBaby} % della popolazione 5-11 potenzialmente oggetto di<br />dose addizionale o booster che ha ultimato il ciclo vaccinale<br />da almeno 4 mesi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center">
+                                <h5 className="mt-2 mb-3">Guariti post 2ª dose/unica dose</h5>
+                                <div className="box-numbers">{totalePersoneGuariteDoppiaDoseBaby?.toLocaleString('it')}</div>
+                                <div className="box-text">{totalePersoneGuaritePopolazioneDoppiaDoseBaby} % della popolazione 5-11 potenzialmente oggetto di<br />dose addizionale o booster guarita post 2ª dose/unica dose<br />da al massimo 4 mesi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-12 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2 mb-3">Totale</h5>
+                                <div className="box-numbers">{totaleDoseAddizionaleGuaritiDoppiaDoseBaby}</div>
+                                <div className="box-text">{percentualeDoseAddizionaleGuaritiDoppiaDoseBaby} % della platea dose booster 5-11</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="col-12 d-flex justify-content-center align-items-center p-3 section-title small">
+                <div className="mb-2" >
+                    <h3 className="text-center">Ciclo Vaccinale Primario 0-4 anni</h3>
+                </div>
+            </div>
+
+            <div className="row bg-box mb-4">
+                <div className="col-md-4 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Con almeno una dose</h5>
+                                <div className="box-numbers">{totalePrimaDoseInfant}</div>
+                                <div className="box-text">{percentualePrimaDosePopolazioneInfant} % della popolazione 0-4</div>
+                                <div className="box-label" >(persone con almeno una somministrazione)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Ciclo vaccinale</h5>
+                                <div className="box-numbers">{totalePersoneVaccinateInfant}</div>
+                                <div className="box-text">{totalePersoneVaccinatePopolazioneInfant} % della popolazione 0-4</div>
+                                <div className="box-label" >(persone che hanno completato il ciclo vaccinale)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4 col-sm-12">
+                    <div className="box-card p-2">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Guariti</h5>
+                                <div className="box-numbers">{totalePersoneGuariteInfant}</div>
+                                <div className="box-text">{totalePersoneGuaritePopolazioneInfant} % della popolazione 0-4</div>
+                                <div className="box-label" >guarita da al massimo 6 mesi senza alcuna somministrazione</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-12 col-sm-12">
+                    <div className="box-card">
+                        <div className="p-1">
+                            <div className="align-items-center justify-content-center text-center mb-4">
+                                <h5 className="mt-2">Totale</h5>
+                                <div className="box-numbers">{totalePrimaDoseConGuaritiInfant}</div>
+                                <div className="box-text">{percentualeTotalePrimaDoseConGuaritiInfant} % della popolazione 0-4</div>
                             </div>
                         </div>
                     </div>

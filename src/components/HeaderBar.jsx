@@ -40,8 +40,8 @@ export const HeaderBar = () => {
         <div className="col-12 d-flex flex-column justify-content-center mainBanner">
           <div className="d-flex justify-content-center">
             <img src="Coccarda.svg" alt="Logo" height="150px" className="main-logo" />
-            <h1 className="large-title pl-2 pt-4 d-lg-none d-md-none d-xs-block">Report Vaccini Anti COVID-19</h1> {/* Title Desktop*/}
-            <h1 className="large-title pl-2 pt-5 d-none d-md-block">Report Vaccini Anti COVID-19</h1>  {/* Title Desktop*/}
+            <h1 className="large-title pl-2 pt-4 d-lg-none d-md-none d-xs-block">Report Vaccini Anti COVID-19</h1> {/* Title Mobile*/}
+            <h1 className="page-title large-title pl-2 pt-5 d-none d-md-block">Report Vaccini Anti COVID-19</h1>  {/* Title Desktop*/}
           </div>
         </div>
       </div>

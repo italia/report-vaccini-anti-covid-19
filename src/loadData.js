@@ -35,7 +35,7 @@ const elaborate = (data) => {
     const fasciaOver60 = ['60-69', '70-79', '80+'];
 
     /* array statico contenente tutte le fasce d'età */
-    const fasciaEta = ['05-11', '12-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+'];
+    const fasciaEta = ['0-4 ', '05-11', '12-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+'];
 
     /********************************************************************************
      * ----------------------- DATA AGGIORNAMENTO REPORT ----------------------------
@@ -60,49 +60,65 @@ const elaborate = (data) => {
         somministrazioni_over60:        _.sum(dataCopertura?.map((e) => fasciaOver60.includes(e?.fascia_anagrafica) ? e?.vaccinati : 0)), // totale somministrazioni
         guarigioni_over60:              _.sum(dataCopertura?.map((e) => fasciaOver60.includes(e?.fascia_anagrafica) ? e?.guariti : 0)), // totale guarigioni
         /* Ciclo Vaccinale Primario */
-        prima_dose:                     _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.d1)), // somma delle prime dosi esclusa la fascia anagrafica 05-11
-        pregressa_infezione:            _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.dpi)), // somma delle pregresse infezioni esclusa la fascia anagrafica 05-11
-        seconda_dose:                   _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.d2)), // somma delle seconde dosi esclusa la fascia anagrafica 05-11
-        prima_dose_janssen:             _.sum(dataSommVaxDetail?.filter((e) => e.forn === "Janssen" && e?.eta !== '05-11').map((e) => e?.d1)), // somma delle somministrazioni a dose unica esclusa la fascia anagrafica 05-11
+        prima_dose:                     _.sum(dataSommVaxDetail?.map((e) => (e?.eta === '05-11' || e?.eta === '00-04') ? 0 : e?.d1)), // somma delle prime dosi esclusa la fascia anagrafica 05-11
+        pregressa_infezione:            _.sum(dataSommVaxDetail?.map((e) => (e?.eta === '05-11' || e?.eta === '00-04') ? 0 : e?.dpi)), // somma delle pregresse infezioni esclusa la fascia anagrafica 05-11
+        seconda_dose:                   _.sum(dataSommVaxDetail?.map((e) => (e?.eta === '05-11' || e?.eta === '00-04') ? 0 : e?.d2)), // somma delle seconde dosi esclusa la fascia anagrafica 05-11
+        prima_dose_janssen:             _.sum(dataSommVaxDetail?.filter((e) => e.forn === "Janssen" && e?.eta !== '05-11' && e?.eta !== '00-04').map((e) => e?.d1)), // somma delle somministrazioni a dose unica escluse le fasce anagrafiche 00-04 05-11
+        /* Somministrazione platea 00-04 anni */
+        prima_dose_infant:              _.sum(dataSommVaxDetail?.map((e) => e?.eta === '00-04' ? e?.d1 : 0)), // somma delle prime dosi per fascia anagrafica 00-04
+        seconda_dose_infant:            _.sum(dataSommVaxDetail?.map((e) => e?.eta === '00-04' ? e?.d2 : 0)), // somma delle seconde dosi per fascia anagrafica 00-04
+        pregressa_infezione_infant:     _.sum(dataSommVaxDetail?.map((e) => e?.eta === '00-04' ? e?.dpi : 0)), // somma delle pregresse infezioni per la fascia anagrafica 00-04
+        prima_dose_janssen_infant:      _.sum(dataSommVaxDetail?.filter((e) => e.forn === "Janssen" && e?.eta === '00-04').map((e) => e?.d1)), // somma delle somministrazioni a dose unica per la fascia anagrafica 00-04
         /* Somministrazione platea 5-11 anni */
         prima_dose_baby:                _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.d1 : 0)), // somma delle prime dosi per fascia anagrafica 05-11
         seconda_dose_baby:              _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.d2 : 0)), // somma delle seconde dosi per fascia anagrafica 05-11
         pregressa_infezione_baby:       _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.dpi : 0)), // somma delle pregresse infezioni per la fascia anagrafica 05-11
         prima_dose_janssen_baby:        _.sum(dataSommVaxDetail?.filter((e) => e.forn === "Janssen" && e?.eta === '05-11').map((e) => e?.d1)), // somma delle somministrazioni a dose unica per la fascia anagrafica 05-11
         /* Dose Addizionale/Booster */
-        dose_addizionale_booster:       _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.db1)), // somma delle prime dosi booster per la fascia over 12
+        dose_addizionale_booster:       _.sum(dataSommVaxDetail?.map((e) => (e?.eta === '05-11' || e?.eta === '00-04') ? 0 : e?.db1)), // somma delle prime dosi booster per la fascia over 12
         /* Seconda dose booster */
-        dose_second_booster:            _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.db2)), // somma delle seconde dosi booster per la fascia over 12
+        dose_second_booster:            _.sum(dataSommVaxDetail?.map((e) => (e?.eta === '05-11' || e?.eta === '00-04') ? 0 : e?.db2)), // somma delle seconde dosi booster per la fascia over 12
         /* Terza dose booster */
-        dose_third_booster:             _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? 0 : e?.db3)), // somma delle terze dosi booster per la fascia over 12
-        
+        dose_third_booster:             _.sum(dataSommVaxDetail?.map((e) => (e?.eta === '05-11' || e?.eta === '00-04') ? 0 : e?.db3)), // somma delle terze dosi booster per la fascia over 12
+        /* Dose Addizionale/Booster 05-15 */
+        dose_addizionale_booster_baby:  _.sum(dataSommVaxDetail?.map((e) => e?.eta === '05-11' ? e?.db1 : 0)), // somma delle prime dosi booster per la fascia 5-11
     };
 
     /* calcolo delle platee */
-    let totalPlatea                         = _.sum(dataPlatea?.map((e) => (e?.eta !== '05-11') ? e?.totale_popolazione : 0)); // totale platea della popolazione over 12
-    let totalPlateaBaby                     = _.sum(dataPlatea?.map((e) => (e?.eta === '05-11') ? e?.totale_popolazione : 0)); // totale platea della popolazione 05-11
-    let totalPlateaOver60                   = _.sum(dataPlatea?.map((e) => fasciaOver60.includes(e?.eta) ? e?.totale_popolazione : 0)); // platea della popolazione over 60
-    let totalPlateaDoseAddizionaleBooster   = _.sum(dataPlateaDoseAddizionaleBooster?.map((e) => e?.totale_popolazione)); // totale platea dose booster
-    let totalPlateaDoseSecondBooster        = _.sum(dataPlateaSecondBooster?.map((e) => e?.totale_popolazione)); // totale platea seconda dose booster
-    let totalPlateaDoseThirdBooster         = _.sum(dataPlateaThirdBooster?.map((e) => e?.totale_popolazione)); // totale platea terza dose booster
+    let totalPlatea                             = _.sum(dataPlatea?.map((e) => (e?.eta !== '05-11' && e?.eta !== '00-04') ? e?.totale_popolazione : 0)); // totale platea della popolazione over 12
+    let totalPlateaBaby                         = _.sum(dataPlatea?.map((e) => (e?.eta === '05-11') ? e?.totale_popolazione : 0)); // totale platea della popolazione 05-11
+    let totalPlateaInfant                       = _.sum(dataPlatea?.map((e) => (e?.eta === '00-04') ? e?.totale_popolazione : 0)); // totale platea della popolazione 00-04
+    let totalPlateaOver60                       = _.sum(dataPlatea?.map((e) => fasciaOver60.includes(e?.eta) ? e?.totale_popolazione : 0)); // platea della popolazione over 60
+    let totalPlateaDoseAddizionaleBooster       = _.sum(dataPlateaDoseAddizionaleBooster?.map((e) => (e?.categoria_prevalente !== '05-11' && e?.categoria_prevalente !== '00-04') ? e?.totale_popolazione : 0)); // totale platea dose booster
+    let totalPlateaDoseAddizionaleBoosterBaby   = _.sum(dataPlateaDoseAddizionaleBooster?.map((e) => e?.categoria_prevalente === '05-11' ? e?.totale_popolazione : 0)); // totale platea dose booster
+    let totalPlateaDoseSecondBooster            = _.sum(dataPlateaSecondBooster?.map((e) => e?.totale_popolazione)); // totale platea seconda dose booster
+    let totalPlateaDoseThirdBooster             = _.sum(dataPlateaThirdBooster?.map((e) => e?.totale_popolazione)); // totale platea terza dose booster
 
     /* calcolo dei guariti usato nei box iniziali di riepilogo e in Platea Guariti. Si tratta esclusivamente dei guariti per età superiore a 11 anni */
-    let totalGuaritiNotBaby                 = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_senza_somm : 0)); // totale dei guariti della popolazione over 12
-    let totalGuaritiDoppiaNotBaby           = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_post_somm : 0)); // totale dei guariti dopo che hanno completato il ciclo vaccinale primario della popolazione over 12
-    let totalGuaritiBoosterNotBaby          = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_post_1booster : 0)); // totale dei guariti dopo che hanno eseguito la dose booster della popolazione over 12
-    let totalGuaritiSecondBoosterNotBaby    = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11') ? e?.guariti_post_2booster : 0)); // totale dei guariti dopo che hanno eseguito la seconda dose booster della popolazione over 12
+    let totalGuaritiNotBaby                 = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11' && e?.eta !== '00-04') ? e?.guariti_senza_somm : 0)); // totale dei guariti della popolazione over 12
+    let totalGuaritiDoppiaNotBaby           = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11' && e?.eta !== '00-04') ? e?.guariti_post_somm : 0)); // totale dei guariti dopo che hanno completato il ciclo vaccinale primario della popolazione over 12
+    let totalGuaritiBoosterNotBaby          = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11' && e?.eta !== '00-04') ? e?.guariti_post_1booster : 0)); // totale dei guariti dopo che hanno eseguito la dose booster della popolazione over 12
+    let totalGuaritiSecondBoosterNotBaby    = _.sum(dataGuariti?.map((e) => (e?.eta !== '05-11' && e?.eta !== '00-04') ? e?.guariti_post_2booster : 0)); // totale dei guariti dopo che hanno eseguito la seconda dose booster della popolazione over 12
     
     /* calcolo dei guariti senza somministrazioni della fascia 05-11 previsto nel box Somministrazione platea 5-11 anni */
-    let totalGuaritiBaby                    = _.sum(dataGuariti?.map((e) => (e?.eta === '05-11') ? e?.guariti_senza_somm : 0)); // guariti senza somministrazioni per la fascia 05-11
+    let totalGuaritiBaby                    = _.sum(dataGuariti?.map((e) => e?.eta === '05-11' ? e?.guariti_senza_somm : 0)); // guariti senza somministrazioni per la fascia 05-11
+    let totalGuaritiDoppiaBaby              = _.sum(dataGuariti?.map((e) => e?.eta === '05-11' ? e?.guariti_post_somm : 0)); // totale dei guariti dopo che hanno completato il ciclo vaccinale primario della popolazione 05-11
+
+    /* calcolo dei guariti senza somministrazioni della fascia 00-04 previsto nel box Somministrazione platea 0-04 anni */
+    let totalGuaritiInfant                  = _.sum(dataGuariti?.map((e) => (e?.eta === '00-04') ? e?.guariti_senza_somm : 0)); // guariti senza somministrazioni per la fascia 00-04
 
     let databoxContent = { // insieme di dati da passare al container
         totalGuaritiNotBaby,
         totalGuaritiDoppiaNotBaby,
         totalGuaritiBoosterNotBaby,
         totalGuaritiSecondBoosterNotBaby,
+        totalPlateaDoseAddizionaleBoosterBaby,
+        totalGuaritiDoppiaBaby,
         totalGuaritiBaby,
+        totalGuaritiInfant,
         totalPlatea,
         totalPlateaBaby,
+        totalPlateaInfant,
         totalPlateaDoseAddizionaleBooster,
         totalPlateaDoseSecondBooster,
         totalPlateaDoseThirdBooster,
@@ -238,8 +254,14 @@ const elaborate = (data) => {
 
     // array con i valori da visualizzare nell'istogramma senza filtri.
     let healedData = _(dataGuariti).groupBy("eta").map((items, rowAge) => { // raggruppo i valori in base alla fascia anagrafica
-        let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
-
+        let keyAge = 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80, nel caso 00-04 0-4
+        if (rowAge === '80+') {
+            keyAge = 'Fascia over 80';
+        }
+        if (rowAge === '00-04') {
+            keyAge = 'Fascia 0-4';
+        }
+         
         let entryTmp = {
             'senza'         : _.sum(items.map(e => e.guariti_senza_somm)), // sommo i guariti senza somministrazioni per la fascia anagrafica corrente
             'post'          : _.sum(items.map(e => e.guariti_post_somm)), // sommo i guariti dopo aver completato il ciclo vaccinale per la fascia anagrafica corrent
@@ -278,7 +300,13 @@ const elaborate = (data) => {
     const healedRegionData  = {};
     _(dataGuariti?.map(replaceArea)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
         healedRegionData[code] = _(items?.map(replaceArea)).groupBy("eta").map((subItems, rowAge) => { // raggruppo i valori in base all'età
-            let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
+            let keyAge = 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80, nel caso 00-04 0-4
+            if (rowAge === '80+') {
+                keyAge = 'Fascia over 80';
+            }
+            if (rowAge === '00-04') {
+                keyAge = 'Fascia 0-4';
+            }
 
             let entryTmp = {
                 'senza'         : _.sum(subItems.map(e => e.guariti_senza_somm)), // sommo i guariti senza somministrazioni per la fascia anagrafica corrente
@@ -422,7 +450,14 @@ const elaborate = (data) => {
             }
             return e;
         }).groupBy("eta").map((items, rowAge) => { // raggruppo i valori in base alla fascia anagrafica
-        let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
+
+        let keyAge = 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80, nel caso 00-04 0-4
+        if (rowAge === '80+') {
+            keyAge = 'Fascia over 80';
+        }
+        if (rowAge === '00-04') {
+            keyAge = 'Fascia 0-4';
+        }
 
         let entryTmp = {
             'prima'                 : _.sum(items.filter(e => e.forn !== 'Janssen').map(e => e.d1)), // sommo tutte le prime dosi per vaccini diversi da Janssen
@@ -482,8 +517,14 @@ const elaborate = (data) => {
         return e;
     }).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
         dosesAgesRegionData[code] = _(items?.map(replaceArea)).groupBy("eta").map((subItems, rowAge) => { // raggruppo i valori in base all'età
-            let keyAge = rowAge === '80+' ? 'Fascia over 80' : 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80
-
+            let keyAge = 'Fascia ' + rowAge; // keyAge è la fascia anagrafica, nel caso di 80+ non deve apparire 80+ ma over 80, nel caso 00-04 0-4
+            if (rowAge === '80+') {
+                keyAge = 'Fascia over 80';
+            }
+            if (rowAge === '00-04') {
+                keyAge = 'Fascia 0-4';
+            }
+            
             let entryTmp = {
                 'prima'                 : _.sum(subItems.filter(e => e.forn !== 'Janssen').map(e => e.d1)), // sommo tutte le prime dosi per vaccini diversi da Janssen
                 'seconda'               : _.sum(subItems.filter(e => e.forn !== 'Janssen').map(e => e.d2)) + _.sum(subItems.filter(e => e.forn === 'Janssen' && e.area === code).map(e => e.d1)) + _.sum(subItems.filter(e => e.area === code).map(e => e.dpi)), // sommo le prime dosi Janssen, le seconde dosi non Janssen e le pregresse infezioni
