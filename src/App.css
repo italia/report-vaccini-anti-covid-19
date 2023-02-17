@@ -38,6 +38,7 @@ h5 { font-size: 28px; font-weight: 600; }
 h6 { font-size: 24px; font-weight: 400; }
 
 .large-title, .numbers { font-size: 56px;}
+.page-title{ min-width: 750px;}
 }
 
 /* Box */
