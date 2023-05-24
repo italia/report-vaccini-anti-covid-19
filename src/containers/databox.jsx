@@ -406,7 +406,6 @@ export const Databox = ({ data }) => {
                             </div>
                         </div>
                     </div>
-                    <small className="box-text legend">*Dati relativi alla popolazione appartenente alle categorie prevalenti oggetto prioritariamente di 2ª dose booster</small>
                 </div>
             </div>
 
@@ -449,7 +448,6 @@ export const Databox = ({ data }) => {
                             </div>
                         </div>
                     </div>
-                    <small className="box-text legend">*Dati relativi alla popolazione appartenente alle categorie prevalenti oggetto prioritariamente di 3ª dose booster</small>
                 </div>
             </div>
 

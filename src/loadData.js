@@ -4,8 +4,9 @@ import Moment from 'moment';
 
 const baseURL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
+const years                                 = [2020, 2021, 2022, 2023];
 const sommVaxSummaryURL                     = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
-const sommVaxDetailURL                      = `${baseURL}/somministrazioni-vaccini-latest.json`;
+const sommVaxDetailBaseURL                  = `${baseURL}/somministrazioni-vaccini-latest-`;
 const vaxSummaryURL                         = `${baseURL}/vaccini-summary-latest.json`;
 const vaxLocationsURL                       = `${baseURL}/punti-somministrazione-tipologia.json`;
 const lastUpdateURL                         = `${baseURL}/last-update-dataset.json`;
@@ -125,12 +126,32 @@ const elaborate = (data) => {
         totalPlateaOver60,
     }
 
+    /********************************************************************************
+     * ---------- DISTRIBUZIONE SOMMINISTRAZIONI RISPETTO ALLE CONSEGNE -------------
+     * Tabella + Mappa Italia
+     * Possibilità di click sulla regione (Mappa)
+     *******************************************************************************/
+
+    const deliverySummary       = dataVaxSummary?.map(replaceArea);
+    const deliveredByArea       = _.groupBy(deliverySummary, "code");
+    /* Array di oggetti JSON aventi code, area, dosi_consegnate, dosi_somministrate e percentuale_somministrazione */
+    const totalDeliverySummary  = _(dataSommVaxDetail?.map(replaceArea)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
+        const details = _.head(deliveredByArea[code]);
+        return {
+            code                            : code, // codice regione
+            area                            : _.head(items)?.area, // nome esteso regione
+            dosi_consegnate                 : details.dosi_consegnate || 0, // dosi consegnate
+            dosi_somministrate              : details.dosi_somministrate || 0, // dosi somministrate
+            percentuale_somministrazione    : details.percentuale_somministrazione || 0, // percentuale somministrazioni rispetto alle consegnate
+        };
+    }).value();
+
      /********************************************************************************
      * ----------------------- COPERTURA VACCINALE OVER 60 ---------------------------
      * Istogramma + Mappa Italia
      * Possibilità di click sulla regione (Mappa) o sulla fascia anagrafica (Istogramma)
      *******************************************************************************/
-    let keyValueOver60 = { // oggetto contenente le label delle serie (la legenda)
+     let keyValueOver60 = { // oggetto contenente le label delle serie (la legenda)
         "guariti"           : "Guarigioni 120 gg",
         "somministrazioni"  : "Somministrazioni 120 gg",
         "totale"            : "Totale fascia"
@@ -212,26 +233,6 @@ const elaborate = (data) => {
         over60RegionData,
         over60MapData,
     }
-
-    /********************************************************************************
-     * ---------- DISTRIBUZIONE SOMMINISTRAZIONI RISPETTO ALLE CONSEGNE -------------
-     * Tabella + Mappa Italia
-     * Possibilità di click sulla regione (Mappa)
-     *******************************************************************************/
-
-    const deliverySummary       = dataVaxSummary?.map(replaceArea);
-    const deliveredByArea       = _.groupBy(deliverySummary, "code");
-    /* Array di oggetti JSON aventi code, area, dosi_consegnate, dosi_somministrate e percentuale_somministrazione */
-    const totalDeliverySummary  = _(dataSommVaxDetail?.map(replaceArea)).groupBy("code").map((items, code) => { // raggruppo i valori in base alla regione
-        const details = _.head(deliveredByArea[code]);
-        return {
-            code                            : code, // codice regione
-            area                            : _.head(items)?.area, // nome esteso regione
-            dosi_consegnate                 : details.dosi_consegnate || 0, // dosi consegnate
-            dosi_somministrate              : details.dosi_somministrate || 0, // dosi somministrate
-            percentuale_somministrazione    : details.percentuale_somministrazione || 0, // percentuale somministrazioni rispetto alle consegnate
-        };
-    }).value();
 
     /********************************************************************************
      * --------------------------- GRAFICO PLATEA GUARITI ---------------------------
@@ -560,6 +561,18 @@ const elaborate = (data) => {
     }
 
     /********************************************************************************
+     * ---------- PRINCIPALI PUNTI DI SOMMINISTRAZIONE PER REGIONE ------------------
+     * Tabella + Mappa Italia
+     * Possibilità di click sulla tabella
+     *******************************************************************************/ 
+
+    const locations         = dataVaxLocations?.map(replaceArea); // dati per la tabella .map(replaceArea) sostituisce la sigla della regione con il nome completo
+    // array con i valori da visualizzare nella mappa
+    const locationsByRegion = _(dataVaxLocations?.map(replaceArea)).groupBy("area").map((items, area) => { // raggruppo i valori in base alla regione
+        return { area: area, locations: items.length }; // locations è il numero di punti di somministrazione per quella regione (numero che appare al click sulla regione)
+    }).value();
+
+    /********************************************************************************
      * ------------------- DISTRIBUZIONE VACCINI PER FORNITORE ----------------------
      * Istogramma
      * Possibilità di click sulle barre
@@ -572,18 +585,6 @@ const elaborate = (data) => {
         let sumTotalDoses   = _.sum(groupByKey);
         return { totale: sumTotalDoses, fornitore: k, allDoses: groups[k] };
     }).sort((a, b) => a.totale < b.totale ? 1 : -1); // ordino la lista dei fornitori secondo le quantità fornite in ordine decrescente
-
-    /********************************************************************************
-     * ---------- PRINCIPALI PUNTI DI SOMMINISTRAZIONE PER REGIONE ------------------
-     * Tabella + Mappa Italia
-     * Possibilità di click sulla tabella
-     *******************************************************************************/ 
-
-    const locations         = dataVaxLocations?.map(replaceArea); // dati per la tabella .map(replaceArea) sostituisce la sigla della regione con il nome completo
-    // array con i valori da visualizzare nella mappa
-    const locationsByRegion = _(dataVaxLocations?.map(replaceArea)).groupBy("area").map((items, area) => { // raggruppo i valori in base alla regione
-        return { area: area, locations: items.length }; // locations è il numero di punti di somministrazione per quella regione (numero che appare al click sulla regione)
-    }).value();
 
     /********************************************************************************
      * ------------------------------ FINE CALCOLI ----------------------------------
@@ -619,7 +620,6 @@ const elaborate = (data) => {
 export const loadData = async () => {
     const [
         resSommVaxSummary,
-        resSommVaxDetail,
         resVaxSummary,
         resVaxLocations,
         resLastUpdate,
@@ -632,7 +632,6 @@ export const loadData = async () => {
         resCopertura
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
-        fetch(sommVaxDetailURL),
         fetch(vaxSummaryURL),
         fetch(vaxLocationsURL),
         fetch(lastUpdateURL),
@@ -645,9 +644,14 @@ export const loadData = async () => {
         fetch(coperturaURL)
     ]);
 
+    const arrayLatestURL = [];
+    years.map((year) => {
+        arrayLatestURL.push(fetch(sommVaxDetailBaseURL + year + '.json'));
+    });
+    const arrayLatestRes = await Promise.all(arrayLatestURL);
+
     const [
         dataSommVaxSummary,
-        dataSommVaxDetail,
         dataVaxSummary,
         dataVaxLocations,
         dataLastUpdate,
@@ -660,7 +664,6 @@ export const loadData = async () => {
         dataCopertura
     ] = await Promise.all([
         resSommVaxSummary.json(),
-        resSommVaxDetail.json(),
         resVaxSummary.json(),
         resVaxLocations.json(),
         resLastUpdate.json(),
@@ -672,6 +675,17 @@ export const loadData = async () => {
         resGuariti.json(),
         resCopertura.json()
     ]);
+
+    const arrayLatestJson = [];
+    arrayLatestRes.map((itemLatestRes) => {
+        arrayLatestJson.push(itemLatestRes.json());
+    });
+    const arrayLatestData = await Promise.all(arrayLatestJson);
+
+    const dataSommVaxDetail = arrayLatestData[0];
+    for(var i = 1; i < arrayLatestData.length; i++) {
+        dataSommVaxDetail.data = [...dataSommVaxDetail.data, ...arrayLatestData[i].data];
+    }
 
     return {
         ...elaborate({
