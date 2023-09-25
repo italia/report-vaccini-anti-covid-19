@@ -21,6 +21,7 @@ export const Total = (props) => {
                     {" "}
                     <h3>Totale somministrazioni</h3>
                 </div>
+                    <div className="d-flex justify-content-center">Il dato può subire variazioni negative a seguito di rettifiche da parte delle regioni</div>
             </div>
         </div>
     );
