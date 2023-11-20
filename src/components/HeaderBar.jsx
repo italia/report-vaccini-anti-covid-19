@@ -7,44 +7,36 @@ import "typeface-lora";
 
 export const HeaderBar = () => {
   return (
-    <>
-      {/* <Header small={false} theme="" type="slim">
-
-      </Header> */}
-    <div className="row m-0 bg-tertiary" >
-        <div className="col-12 col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2">
+    <div>
+      <div className="row m-0 bg-tertiary justify-content-md-center">
+        <div className="col-12 d-flex justify-content-md-center justify-content-sm-start logo-section pr-sm-0 pt-2 pb-2">
             <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
-            <p className="pt-2">
-                <a href="http://www.governo.it" aria-label="Presidenza del Consiglio dei Ministri" className="text-decoration-none" rel="noreferrer" alt="Presidenza del Consiglio dei Ministri">
-                Presidenza del Consiglio dei Ministri
-                </a>
-            </p>
-        </div>
-        <div className="col-12 col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pr-sm-0 pt-2 pb-2">
-            <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
-            <p className="pt-2">
-                <a className="text-decoration-none" href="https://www.governo.it/it/dipartimenti/unit-il-completamento-della-campagna-vaccinale-e-ladozione-di-altre-misure-di-contrasto" aria-label ="Unità Completamento Campagna Vaccinale" rel="noreferrer" alt="Unità Completamento Campagna Vaccinale">
-                Unità Completamento Campagna Vaccinale
-                </a>
-            </p>
-        </div>
-        <div className="col-12 col-md-4 d-flex justify-content-md-center justify-content-sm-start logo-section pt-2 pb-2 pr-sm-3">
-            <img src="logo.svg" height="4px" alt="Logo" className="logo pl-5 pr-2" />
-            <p className="pt-2">
-                <a href="http://www.salute.gov.it/portale/home.html" className="text-decoration-none" aria-label="Ministero della Salute" rel="noreferrer" alt="Ministero della Salute">
+            <p className="h5">
+                <a className="text-decoration-none" href="https://www.salute.gov.it/" aria-label ="Collegamento al sito www.salute.gov.it. Apre una nuova pagina." rel="noreferrer" alt="Collegamento al sito www.salute.gov.it. Apre una nuova pagina.">
                 Ministero della Salute
                 </a>
             </p>
         </div>
+      </div>
+      <div className="flag_container clearfix">
+        <div className="green clearfix"></div>
+        <div className="white clearfix"></div>
+        <div className="red clearfix"></div>
+      </div>
+      <div>
         {/** TITLE + LOGO*/}
         <div className="col-12 d-flex flex-column justify-content-center mainBanner">
-          <div className="d-flex justify-content-center">
-            <img src="Coccarda.svg" alt="Logo" height="150px" className="main-logo" />
-            <h1 className="large-title pl-2 pt-4 d-lg-none d-md-none d-xs-block">Report Vaccini Anti COVID-19</h1> {/* Title Mobile*/}
-            <h1 className="page-title large-title pl-2 pt-5 d-none d-md-block">Report Vaccini Anti COVID-19</h1>  {/* Title Desktop*/}
+          <div className="row pt-5 row-header-div">
+            <div className="col-md-9">
+              <h1 className="large-title pl-2 d-lg-none d-md-none d-xs-block">Report Vaccini Anti COVID-19</h1> {/* Title Mobile*/}
+              <h1 className="page-title large-title pl-2 d-none d-md-block">Report Vaccini Anti COVID-19</h1>  {/* Title Desktop*/}
+            </div>
+            <div className="col-md-3 vertical-align">
+              <a className="button-header" href="https://www.salute.gov.it/portale/nuovocoronavirus/homeNuovoCoronavirus.jsp" aria-label="vai all'area Covid-19" rel="noreferrer" alt="vai all'area Covid-19">vai all'area <b>Covid-19 <span className="fa-solid fa-chevron-right"></span></b></a>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

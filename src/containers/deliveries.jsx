@@ -102,7 +102,6 @@ export const Deliveries = ({ data }) => {
                     </div>
                 </div>
             </div>
-            <div>Il dato delle somministrazioni delle singole regioni può subire variazioni negative a seguito di rettifiche da parte delle stesse</div>
         </div>
     );
 };

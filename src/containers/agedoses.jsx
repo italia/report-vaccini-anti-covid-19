@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { isEmpty, max } from "lodash";
-import { AgeHStackedBarChart } from "./../components/AgeHStackedBarChart";
-import { MapArea } from "./../components/MapArea";
+import { AgeHStackedBarChart } from "../components/AgeHStackedBarChart";
+import { MapArea } from "../components/MapArea";
 
 export const AgeDoses = ({ data }) => {
     const [dosesAgesColor, setdosesAgesColor] = useState([]);
-    const [dosesAges, setdosesAges] = useState([]);
     const [dosesAgesKeys, setDosesAgesKeys] = useState([]);
     const [keyValueDoses, setKeyValueDoses] = useState({});
     const [dosesAgesData, setDosesAgesData] = useState([]);
 
     const [categoryMapData, setCategoryMapData] = useState([]);
-    const [categoryMapField, setCategoryMapField] = useState("somministrazioni");
+    const [categoryMapField, setCategoryMapField] = useState("totale");
 
     const [categorySelectedRegion, setCategorySelectedRegion] = useState(null);
     const [categorySelectedRegionDescr, setCategorySelectedRegionDescr] = useState(null);
@@ -22,12 +21,10 @@ export const AgeDoses = ({ data }) => {
     useEffect(() => {
         if (!isEmpty(data)) {
             setdosesAgesColor(data.agedosesContent.dosesAgesColor);
-            setdosesAges(data.agedosesContent.dosesAges);
             setDosesAgesKeys(data.agedosesContent.keysDosesAges);
             setKeyValueDoses(data.agedosesContent.keyValueDoses);
             setDosesAgesData(data.agedosesContent.dosesAgesData);
-
-            setTotalByCategory(data.tot);
+            setTotalByCategory(data.totCampagna);
             setCategoryMapData(data.agedosesContent.secondDosesMapData);
         }
     }, [data]);
@@ -36,9 +33,9 @@ export const AgeDoses = ({ data }) => {
         setSelectedCodeAge(null);
         setCategorySelectedRegion(null);
         setCategorySelectedRegionDescr(null);
-        setTotalByCategory(data.tot);
+        setTotalByCategory(data.totCampagna);
         setDosesAgesData(data.agedosesContent.dosesAgesData);
-        setCategoryMapField("somministrazioni");
+        setCategoryMapField("totale");
         setCategoryMapData(data.agedosesContent.secondDosesMapData);
     };
 
@@ -57,21 +54,21 @@ export const AgeDoses = ({ data }) => {
 
     const handleMapCategoryClick = (region) => {
         if (selectedCodeAge) {
-          resetFilter();
+            resetFilter();
         }
 
         if (categorySelectedRegion === region.code) {
-          resetFilter();
+            resetFilter();
         } else {
-          setCategorySelectedRegion(region.code);
-          setCategorySelectedRegionDescr(region.area);
-          setDosesAgesData(data.agedosesContent.dosesAgesRegionData[region.code])
+            setCategorySelectedRegion(region.code);
+            setCategorySelectedRegionDescr(region.area);
+            setDosesAgesData(data.agedosesContent.dosesAgesRegionData[region.code])
 
-          for(let row of data?.totalDeliverySummary) {
-            if (row.code === region.code) {
-                setTotalByCategory(row.dosi_somministrate);
+            var totale = 0;
+            for(let row of data.agedosesContent.dosesAgesRegionData[region.code]) {
+                totale += row.totale;
             }
-          }
+            setTotalByCategory(totale);
         }
     };
 
@@ -79,7 +76,6 @@ export const AgeDoses = ({ data }) => {
         if (categorySelectedRegion) {
           resetFilter();
         }
-
         const ageCode = cat.data.label.toLowerCase().replaceAll(' ', '_');
 
         if (selectedCodeAge === ageCode) {
@@ -102,7 +98,7 @@ export const AgeDoses = ({ data }) => {
             {/* Box Title */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
                 <div>
-                    <h3>Somministrazioni per fascia d'età - dose</h3>
+                    <h3>Somministrazioni di XBB 1.5 per fascia d'età</h3>
                 </div>
             </div>
             {/* // Box Title */}
@@ -163,19 +159,6 @@ export const AgeDoses = ({ data }) => {
                 />
                 {/* // Graph */}
 
-                {/* Legend */}
-                <div className="row mb-4 ml-4">
-                    {dosesAges.map((dose, index) => {
-                        return (
-                            <div className="row" key={dose}>
-                                <div className="circle" style={{ backgroundColor: dosesAgesColor[index] }}></div>
-                                <div className="legend-dark mr-4">{dose}</div>
-                            </div>
-                        )
-                    })}
-                </div>
-                {/* // Legend */}
-
                 <p className="d-block d-sm-none text-center">*Tieni premuto sulle barre del grafico per visualizzare i dati sulle dosi somministrate</p>
                 <p className="d-none d-sm-block text-center">*Passa con il mouse sulle barre del grafico per visualizzare i dati sulle dosi somministrate</p>
             </div>
@@ -184,7 +167,7 @@ export const AgeDoses = ({ data }) => {
                 {/* Map Title - Mobile View*/}
                 <div className="p-4 d-lg-none">
                     <div className="text-center">
-                        <h5>Percentuale vaccinati per regione</h5>
+                        <h5>Totale somministrazioni per regione</h5>
                     </div>
                 </div>
                 {/* // Map Title - Mobile View*/}
@@ -195,7 +178,6 @@ export const AgeDoses = ({ data }) => {
                     summary={categoryMapData}
                     handleMapDeliveryClick={handleMapCategoryClick}
                     fillBy={categoryMapField}
-                    percentage={true}
                     tooltip={(r) => {
                             var region = null;
                             for(let row of categoryMapData) {
@@ -206,8 +188,6 @@ export const AgeDoses = ({ data }) => {
 
                             return (
                                 r.area +
-                                " " +
-                                (r[categoryMapField] && r[categoryMapField].toFixed(2).toLocaleString("it") + "%") +
                                 " " +
                                 (region && region[categoryMapField] && "(" + region[categoryMapField].toLocaleString("it") + ")")
                             )
@@ -220,9 +200,9 @@ export const AgeDoses = ({ data }) => {
                 {/* Map Title - Desktop View*/}
                 {/* <div className="p-4 position-relative d-none d-lg-block" style={{ left: "300px", top: "-390px" }}> */}
                 <div className="p-4 d-none d-lg-block map-legend">
-                    <div className="d-flex justify-content-start pr-5">
-                        <h5 className="pl-3 pl-sm-1">
-                            Percentuale vaccinati
+                    <div className="d-flex justify-content-end">
+                        <h5 className="ml-5 pl-sm-1">
+                            Totale somministrazioni
                             <br /> per regione
                         </h5>
                     </div>

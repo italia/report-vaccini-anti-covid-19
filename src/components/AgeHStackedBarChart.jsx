@@ -67,7 +67,7 @@ export const AgeHStackedBarChart = ({
     const margin = { y: 30, x: 60 };
 
     // axis
-    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['Totale platea']; })]);
+    const xScale = d3.scaleLinear().domain([0, d3.max(data, function(d) { return d['totale']; })]);
     const yScale = d3.scaleBand().padding(0.2);
     xScale.range([0, width]);
     yScale.range([0, height]).domain(data.map((d) => d.label));
@@ -159,14 +159,15 @@ export const AgeHStackedBarChart = ({
                 `<div style="text-align: center; line-height: 1.15rem;">
                 <div style="font-size: 12px;">${regione}</div>
                 <div><b>${d.data.label}</b></div>
-                <div style="font-size: 14px;">Platea</div>
-                <div>${d.data["Totale platea"].toLocaleString('it')}</div>
+                <div style="font-size: 14px;">Somministrazioni</div>
+                <div>${d.data["totale"].toLocaleString('it')}</div>
                 </div>`
                 )
             .style('display', null);
         }
         else {
-          var perc = 0;
+          var perc = 99999;
+          /*
           if (d3.select(this.parentNode).attr("dose") === 'prima') {
             let sum = d.data["prima"] + d.data["seconda"] + d.data["addizionale"] + d.data["second_booster"] + d.data["third_booster"];
             perc = (sum / d.data["Totale platea"]) * 100;
@@ -192,7 +193,8 @@ export const AgeHStackedBarChart = ({
               }
             }
           }
-
+          */
+         /*
           tooltip
             .style('top', event.pageY - 10 + 'px')
             .style('left', event.pageX + 10 + 'px');
@@ -204,22 +206,22 @@ export const AgeHStackedBarChart = ({
                         `<div style="text-align: center; line-height: 1.15rem;">
                         <div style="font-size: 12px;">${regione} ${d.data.label}</div>
                         <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
-                        <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
+                        <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["totale"].toLocaleString('it')}</div>`
                     )
                     .style('display', null);
 
             } else {
-
+              */
                 tooltip
                     .html(
                         `<div style="text-align: center; line-height: 1.15rem;">
                         <div style="font-size: 12px;">${regione} ${d.data.label}</div>
                         <div style="text-align: center"><b>${labels[d3.select(this.parentNode).attr("dose")]} </b></div>
                         <div style="font-size: 14px;"><b>(${perc.toFixed(2).toLocaleString("it")} %)</b></div>
-                        <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["Totale platea"].toLocaleString('it')}</div>`
+                        <div style="font-size: 14px;">Somministrate ${(d[1]).toLocaleString('it')} su ${d.data["totale"].toLocaleString('it')}</div>`
                     )
                     .style('display', null);
-            }
+        //    }
         }
       })
       .on('mouseout', function (d) {
