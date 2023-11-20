@@ -9,6 +9,9 @@ export const Weeks = ({ data }) => {
     const [suppliersWeek, setSuppliersWeek] = useState([]);
     const [from, setFrom] = useState(0);
     const [to, setTo] = useState(0);
+    const [totalLastWeek, setTotalLastWeek] = useState(0);
+    const [fromLastWeek, setFromLastWeek] = useState("");
+    const [toLastWeek, setToLastWeek] = useState("");
 
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -20,6 +23,13 @@ export const Weeks = ({ data }) => {
             if (data.weekContent.suppliersWeek.length >= 9) {
                 setFrom(data.weekContent.suppliersWeek.length - 9);
             }
+
+            if (data.weekContent.suppliersWeek.length > 0) {
+                let lastWeek = data.weekContent.suppliersWeek[data.weekContent.suppliersWeek.length-1];
+                setFromLastWeek(lastWeek.labelfrom + "/" + lastWeek.from.substring(0, 4));
+                setToLastWeek(lastWeek.labelto + "/" + lastWeek.to.substring(0, 4));
+                setTotalLastWeek(lastWeek.total);
+            }
         }
       }, [data]);
 
@@ -27,7 +37,9 @@ export const Weeks = ({ data }) => {
         <div className="row">
             {/* Title Box - Desktop View */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title px-5 mx-2">
-                <h3>Andamento settimanale delle somministrazioni</h3>
+                <span><h3>Somministrazioni su base settimanale<br />del richiamo con XBB 1.5<br/></h3>
+                <h6>Vaccinazioni dal <b>{fromLastWeek}</b> al <b>{toLastWeek}</b>: {totalLastWeek?.toLocaleString('it')}</h6>
+                </span>
             </div>
             {/* // Title Box - Desktop View */}
             <div className="row col-12 m-2 p-2 ">
@@ -75,7 +87,7 @@ export const Weeks = ({ data }) => {
                     <RangeWeek min={0} max={suppliersWeek.length} from={from} to={to} changeFrom={(value) => setFrom(value)} changeTo={(value) => setTo(value)}  />
                 )}
             </div>
-                <div>*Fai scorrere i selettori per aumentare o diminuire le settimane da visualizzare</div>
+                <div>*Fai scorrere i selettori per aumentare o diminuire le settimane da visualizzare<br />La voce "Pfizer Pediatrico" include le formulazioni per le fasce di età 0-4 anni e 5-11 anni</div>
         </div>
     )
 };

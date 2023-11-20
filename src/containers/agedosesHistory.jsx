@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { isEmpty, max } from "lodash";
-import { HealedHStackedBarChart } from "../components/HealedHStackedBarChart";
+import { AgeHStackedBarChart } from "../components/AgeHStackedBarChartHistory";
 import { MapArea } from "../components/MapArea";
 
-export const Healed = ({ data }) => {
-    const [healedColor, setHealedColor] = useState([]);
-    const [healed, setHealed] = useState([]);
-    const [healedKeys, setHealedKeys] = useState([]);
-    const [healedData, setHealedData] = useState([]);
-    const [keyValueHealed, setKeyValueHealed] = useState({});
+export const AgeDosesHistory = ({ data }) => {
+    const [dosesAgesColor, setdosesAgesColor] = useState([]);
+    const [dosesAges, setdosesAges] = useState([]);
+    const [dosesAgesKeys, setDosesAgesKeys] = useState([]);
+    const [keyValueDoses, setKeyValueDoses] = useState({});
+    const [dosesAgesData, setDosesAgesData] = useState([]);
 
     const [categoryMapData, setCategoryMapData] = useState([]);
-    const [categoryMapField, setCategoryMapField] = useState("guariti");
+    const [categoryMapField, setCategoryMapField] = useState("somministrazioni");
 
     const [categorySelectedRegion, setCategorySelectedRegion] = useState(null);
     const [categorySelectedRegionDescr, setCategorySelectedRegionDescr] = useState(null);
@@ -21,15 +21,14 @@ export const Healed = ({ data }) => {
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setHealedColor(data.healedContent.healedColor);
-            setHealed(data.healedContent.healed);
-            setHealedData(data.healedContent.healedData);
-            setHealedKeys(data.healedContent.keysHealed);
+            setdosesAgesColor(data.agedosesContentHistory.dosesAgesColorHistory);
+            setdosesAges(data.agedosesContentHistory.dosesAgesHistory);
+            setDosesAgesKeys(data.agedosesContentHistory.keysDosesAgesHistory);
+            setKeyValueDoses(data.agedosesContentHistory.keyValueDosesHistory);
+            setDosesAgesData(data.agedosesContentHistory.dosesAgesDataHistory);
 
-            setTotalByCategory(data.healedContent.totalGuaritiHealedSection);
-            setCategoryMapData(data.healedContent.healedMapData);
-
-            setKeyValueHealed(data.healedContent.keyValueHealed);
+            setTotalByCategory(data.tot);
+            setCategoryMapData(data.agedosesContentHistory.secondDosesMapDataHistory);
         }
     }, [data]);
 
@@ -37,10 +36,10 @@ export const Healed = ({ data }) => {
         setSelectedCodeAge(null);
         setCategorySelectedRegion(null);
         setCategorySelectedRegionDescr(null);
-        setTotalByCategory(data.healedContent.totalGuaritiHealedSection);
-        setHealedData(data.healedContent.healedData);
-        setCategoryMapField("guariti");
-        setCategoryMapData(data.healedContent.healedMapData);
+        setTotalByCategory(data.tot);
+        setDosesAgesData(data.agedosesContentHistory.dosesAgesDataHistory);
+        setCategoryMapField("somministrazioni");
+        setCategoryMapData(data.agedosesContentHistory.secondDosesMapDataHistory);
     };
 
     const fillMapCategoryArea = ({ region, maxValue, field }) => {
@@ -66,13 +65,13 @@ export const Healed = ({ data }) => {
         } else {
           setCategorySelectedRegion(region.code);
           setCategorySelectedRegionDescr(region.area);
-          setHealedData(data.healedContent.healedRegionData[region.code]);
+          setDosesAgesData(data.agedosesContentHistory.dosesAgesRegionDataHistory[region.code])
 
-          var val = 0;
-          for(let row of data.healedContent.healedRegionData[region.code]) {
-            val += row.Totale;
+          for(let row of data?.totalDeliverySummary) {
+            if (row.code === region.code) {
+                setTotalByCategory(row.dosi_somministrate);
+            }
           }
-          setTotalByCategory(val);
         }
     };
 
@@ -89,9 +88,11 @@ export const Healed = ({ data }) => {
           setSelectedCodeAge(ageCode);
           setCategoryMapField(ageCode);
 
-          for(let row of data.healedContent.healedData) {
+          console.log(ageCode)
+
+          for(let row of data.agedosesContentHistory.dosesAgesDataHistory) {
             if (row.label === cat.data.label) {
-                setTotalByCategory(row.Totale);
+                setTotalByCategory(row.totale_somministrazioni);
                 break;
             }
           }
@@ -102,8 +103,8 @@ export const Healed = ({ data }) => {
         <div className="row">
             {/* Box Title */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
-                <div className="text-center">
-                    <h3 className="mb-0">Platea guariti</h3>
+                <div>
+                    <h3>Somministrazioni per fascia d'età - dose fino al 24/09/2023</h3>
                 </div>
             </div>
             {/* // Box Title */}
@@ -113,7 +114,7 @@ export const Healed = ({ data }) => {
                 <div className="d-lg-none bg-box box-mobile m-3">
                     <div className="text-white">
                         <div className="d-flex justify-content-center pt-5">
-                            <h5>Totale guariti</h5>
+                            <h5>Totale somministrazioni</h5>
                         </div>
                         <div className="d-flex justify-content-center">
                             <p className="box-numbers">
@@ -132,7 +133,7 @@ export const Healed = ({ data }) => {
                     <div className="bg-box box-card box-left">
                         <div className="text-white">
                             <div className="d-flex justify-content-start pt-3 pl-5">
-                                <h5>Totale guariti</h5>
+                                <h5>Totale somministrazioni</h5>
                             </div>
                             <div className="d-flex justify-content-start pl-5">
                                 <p className="box-numbers">
@@ -150,42 +151,53 @@ export const Healed = ({ data }) => {
             <div className="col-12 col-md-6">
 
                 {/* Graph */}
-                <HealedHStackedBarChart
+                <AgeHStackedBarChart
                     width={+350}
                     height={+300}
                     property={{ xprop: "label", yprop: "total" }}
                     handleRectClick={handleCategoryBarChartClick}
                     regionSelected={categorySelectedRegionDescr}
                     selectedCodeAge={selectedCodeAge}
-                    colors={healedColor}
-                    keys={healedKeys}
-                    labels={keyValueHealed}
-                    data={healedData}
+                    colors={dosesAgesColor}
+                    keys={dosesAgesKeys}
+                    labels={keyValueDoses}
+                    data={dosesAgesData}
                 />
                 {/* // Graph */}
 
-                 {/* Legend */}
-                 <div className="row mb-4 ml-4">
-                    {healed.map((itemVal, index) => {
+                {/* Legend */}
+                <div className="row mb-4 ml-4">
+                    {dosesAges.map((dose, index) => {
                         return (
-                            <div className="row" key={itemVal}>
-                                <div className="circle" style={{ backgroundColor: healedColor[index] }}></div>
-                                <div className="legend-dark mr-4">{itemVal}</div>
+                            <div className="row" key={dose}>
+                                <div className="circle" style={{ backgroundColor: dosesAgesColor[index] }}></div>
+                                <div className="legend-dark mr-4">{dose}</div>
                             </div>
                         )
                     })}
                 </div>
                 {/* // Legend */}
 
+                <p className="d-block d-sm-none text-center">*Tieni premuto sulle barre del grafico per visualizzare i dati sulle dosi somministrate</p>
+                <p className="d-none d-sm-block text-center">*Passa con il mouse sulle barre del grafico per visualizzare i dati sulle dosi somministrate</p>
             </div>
-            <div className="col-12 col-md-6 my-0 py-0">
+            <div className="col-12 col-md-6">
+
+                {/* Map Title - Mobile View*/}
+                <div className="p-4 d-lg-none">
+                    <div className="text-center">
+                        <h5>Percentuale vaccinati per regione</h5>
+                    </div>
+                </div>
+                {/* // Map Title - Mobile View*/}
+
                 {/* Map Graph */}
                 <MapArea
                     fillMapDeliveryArea={fillMapCategoryArea}
                     summary={categoryMapData}
                     handleMapDeliveryClick={handleMapCategoryClick}
                     fillBy={categoryMapField}
-                    percentage={false}
+                    percentage={true}
                     tooltip={(r) => {
                             var region = null;
                             for(let row of categoryMapData) {
@@ -193,11 +205,13 @@ export const Healed = ({ data }) => {
                                     region = row;
                                 }
                             }
-
+                            let totalKey = categoryMapField === 'somministrazioni' ? 'vaccinati' : 'vaccinati_' + categoryMapField;
                             return (
                                 r.area +
                                 " " +
-                                (region && region[categoryMapField] && "(" + region[categoryMapField].toLocaleString("it") + ")")
+                                (r[categoryMapField] && r[categoryMapField].toFixed(2).toLocaleString("it") + "%") +
+                                " " +
+                                (region && region[totalKey] && "(" + region[totalKey].toLocaleString("it") + ")")
                             )
                         }
                     }
@@ -205,7 +219,17 @@ export const Healed = ({ data }) => {
                 />
                 {/* // Map Graph */}
 
-                <p className="text-center">*Seleziona la Regione/Provincia Autonoma per visualizzare il dettaglio.</p>
+                {/* Map Title - Desktop View*/}
+                {/* <div className="p-4 position-relative d-none d-lg-block" style={{ left: "300px", top: "-390px" }}> */}
+                <div className="p-4 d-none d-lg-block map-legend">
+                    <div className="d-flex justify-content-start pr-5">
+                        <h5 className="pl-3 pl-sm-1">
+                            Percentuale vaccinati
+                            <br /> per regione
+                        </h5>
+                    </div>
+                </div>
+                {/* // Map Title - Desktop View*/}
             </div>
         </div>
     )
