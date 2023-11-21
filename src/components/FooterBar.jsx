@@ -22,7 +22,7 @@ export const FooterBar = () => {
                                         </span>
                                     </a>
                                     <a title="Collegamento alla pagina Twitter del Ministero della Salute. Apre una nuova pagina." href="https://twitter.com/ministerosalute">
-                                        <span className="fab fa-twitter">
+                                        <span className="fa-brands fa-x-twitter">
                                         </span>
                                     </a>
                                     <a title="Collegamento al canale Youtube del Ministero della Salute. Apre una nuova pagina." href="https://www.youtube.com/user/MinisteroSalute">
