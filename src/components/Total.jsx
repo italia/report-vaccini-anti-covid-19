@@ -28,7 +28,7 @@ export const Total = (props) => {
                     {" "}
                     <h3>Totale somministrazioni con vaccino adattato XBB 1.5</h3>
                 </div>
-                <div className="d-flex justify-content-center">Il dato può subire variazioni negative a seguito di rettifiche da parte delle regioni. Il dato relativo alla regione Abruzzo è aggiornato alla data del 15/09/2023</div>
+                <div className="d-flex justify-content-center">Il dato può subire variazioni negative a seguito di rettifiche da parte delle regioni.</div>
             </div>
         </div>
     );
