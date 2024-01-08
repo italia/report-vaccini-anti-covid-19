@@ -42,7 +42,7 @@ export const FooterBar = () => {
                                         </span>
                                     </a>
                                 </span>
-                                <a className="button-open-data" href="https://www.governo.it/it/dipartimenti/unit-il-completamento-della-campagna-vaccinale-e-ladozione-di-altre-misure-di-contrasto" aria-label="vai all'area Covid-19" rel="noreferrer" alt="vai all'area Covid-19"><b>Open Data <span className="fa-solid fa-chevron-right"></span></b></a>
+                                <a className="button-open-data" href="https://github.com/italia/covid19-opendata-vaccini" aria-label="vai all'area Covid-19" rel="noreferrer" alt="vai all'area Covid-19"><b>Open Data <span className="fa-solid fa-chevron-right"></span></b></a>
                             </div>
 
 
