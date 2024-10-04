@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { isEmpty } from "lodash";
-import { StackedBarChart } from "./../components/StackedBarChart";
+
 import { RangeWeek } from "./../components/RangeWeek";
+import { StackedBarChart } from "./../components/StackedBarChart";
+import { isEmpty } from "lodash";
+import { useCampaignContext } from "../campaigns/CampaignContext";
 
 export const Weeks = ({ data }) => {
     const [suppliersColor, setSuppliersColor] = useState([]);
@@ -33,11 +35,13 @@ export const Weeks = ({ data }) => {
         }
       }, [data]);
 
+    const {title} = useCampaignContext('weeks')
+
     return (
         <div className="row">
             {/* Title Box - Desktop View */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title px-5 mx-2">
-                <span><h3>Somministrazioni su base settimanale<br />del richiamo con XBB 1.5<br/></h3>
+                <span><h3>{title}</h3>
                 <h6>Vaccinazioni dal <b>{fromLastWeek}</b> al <b>{toLastWeek}</b>: {totalLastWeek?.toLocaleString('it')}</h6>
                 </span>
             </div>
