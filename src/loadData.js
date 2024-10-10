@@ -148,12 +148,12 @@ const elaborate = (data) => {
         }
     }
 
-    // calcolo le diverse settimane partire dal 22/09/2023 (primo venerdi)
+    // calcolo le diverse settimane partire dal 13/09/2024 (primo venerdi)
     let weeksMappingOptimation = {};
-    var index = 0; // indice della settimana a partire dal 22/09/2023 (primo venerdi)
+    var index = 0; // indice della settimana a partire dal 13/09/2024 (primo venerdi)
 
     let suppliersWeek = [];
-    var date = new Date('2023-09-22'); // data di partenza delle somministrazioni che cambierò ad ogni iterazione
+    var date = new Date('2024-09-13'); // data di partenza delle somministrazioni che cambierò ad ogni iterazione
     do {
         let entry = {
             label: Moment(new Date(date.getTime() + 6 * 86400000)).format('DD/MM'), // giorno e mese del giovedi della settimana
@@ -184,7 +184,7 @@ const elaborate = (data) => {
     } while(date <= new Date());
 
     // aggiorno i totali per ogni fornitore e per l'intera settimana
-    for (let row of data.dataSommVaxDetailCampagna.data) { // per ogni valore presente nel JSON
+    for (let row of data.dataSommVaxDetailCampagna.data.filter((d) => d.data >= "2024-09-17T00:00:00.000Z")) { // per ogni valore presente nel JSON dal 17/09/2024
         let index = weeksMappingOptimation[Moment(new Date(row.data)).format('YYYY-MM-DD')]; // ottengo l'indice di quale settimana fa parte il giorno corrente
         let week = suppliersWeek[index];
 
@@ -192,7 +192,6 @@ const elaborate = (data) => {
         try{
             week.total += (row.f + row.m);
         } catch(e){
-            debugger;
 
         }
 
