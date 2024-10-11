@@ -39,7 +39,7 @@ The main library used to show plots is [D3.js](https://d3js.org/). Also,
 ## Development
 ### Local Dev
 
-Install all dependencies and start
+Install all dependencies and  start
 ```bash
 $ yarn install
 $ yarn start
