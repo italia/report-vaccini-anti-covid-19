@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { isEmpty, max } from "lodash";
+
 import { AgeHStackedBarChart } from "../components/AgeHStackedBarChart";
 import { MapArea } from "../components/MapArea";
+import { useCampaignContext } from "../campaigns/CampaignContext";
 
 export const AgeDoses = ({ data }) => {
     const [dosesAgesColor, setdosesAgesColor] = useState([]);
@@ -93,12 +95,13 @@ export const AgeDoses = ({ data }) => {
         }
     };
 
+    const {title} = useCampaignContext('ageDoses')
     return (
         <div className="row">
             {/* Box Title */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title mx-2">
                 <div>
-                    <h3>Somministrazioni di XBB 1.5 per fascia d'età</h3>
+                    <h3>{title}</h3>
                 </div>
             </div>
             {/* // Box Title */}

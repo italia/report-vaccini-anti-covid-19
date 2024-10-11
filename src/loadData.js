@@ -1,8 +1,9 @@
-import { sumDoseX, replaceArea } from "./utils";
-import _ from "lodash";
-import Moment from 'moment';
+import { replaceArea, sumDoseX } from "./utils";
 
-const baseURL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
+import Moment from 'moment';
+import _ from "lodash";
+
+export const baseURL = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati";
 
 const years                                 = [2020, 2021, 2022, 2023];
 const sommVaxSummaryURL                     = `${baseURL}/somministrazioni-vaccini-summary-latest.json`;
@@ -13,9 +14,6 @@ const plateaURL                             = `${baseURL}/platea.json`;
 const plateaDoseAddizionaleBoosterURL       = `${baseURL}/platea-dose-addizionale-booster.json`;
 const plateaDoseSecondBoosterURL            = `${baseURL}/platea-second-booster.json`;
 const plateaDoseThirdBoosterURL             = `${baseURL}/platea-3a-booster.json`;
-// campagna 2023-2024
-const sommVaxDetailCampagna2324URL          = `${baseURL}/somministrazioni-vaccini-latest-campagna-2023-2024.json`;
-const sommVaxSummaryCampagna2324URL         = `${baseURL}/somministrazioni-vaccini-summary-latest-campagna-2023-2024.json`;
 
 
 const elaborate = (data) => {
@@ -28,8 +26,8 @@ const elaborate = (data) => {
     const dataPlateaSecondBooster           = data?.dataPlateaSecondBooster?.data;
     const dataPlateaThirdBooster            = data?.dataPlateaThirdBooster?.data;
     // campagna 2023-2024
-    const dataSommVaxSummaryCampagna2324    = data?.dataSommVaxSummaryCampagna2324?.data;
-    const dataSommVaxDetailCampagna2324     = data?.dataSommVaxDetailCampagna2324?.data;
+    const dataSommVaxSummaryCampagna    = data?.dataSommVaxSummaryCampagna?.data;
+    const dataSommVaxDetailCampagna     = data?.dataSommVaxDetailCampagna?.data;
 
     /* array statico contenente tutte le fasce d'età */
     const fasciaEta = ['0-4', '05-11', '12-59', '60-69', '70-79', '80+'];
@@ -46,7 +44,7 @@ const elaborate = (data) => {
      * ------------------------- TOTALE SOMMINISTRAZIONI ----------------------------
      *******************************************************************************/
     const tot = dataSommVaxSummary?.filter((d) => d.area !== "ITA").reduce(sumDoseX("totale"), 0);   
-    const totCampagna = dataSommVaxSummaryCampagna2324?.filter((d) => d.area !== "ITA").reduce(sumDoseX("d"), 0);   
+    const totCampagna = dataSommVaxSummaryCampagna?.filter((d) => d.area !== "ITA").reduce(sumDoseX("d"), 0);   
 
     /********************************************************************************
      * --------------------------- BOX DI RIEPILOGO DATI ----------------------------
@@ -127,7 +125,7 @@ const elaborate = (data) => {
     let suppliersColor = {}; // colori associati alle serie
     let suppliers = []; // lista dinamica dei fornitori di vaccini
 
-    for (let row of data.dataSommVaxDetailCampagna2324.data) { // aggiungo i fornitori evitando duplicazioni
+    for (let row of data.dataSommVaxDetailCampagna.data) { // aggiungo i fornitori evitando duplicazioni
         if (!suppliers.includes(row.forn)) {
             suppliers.push(row.forn);
         }
@@ -150,12 +148,12 @@ const elaborate = (data) => {
         }
     }
 
-    // calcolo le diverse settimane partire dal 22/09/2023 (primo venerdi)
+    // calcolo le diverse settimane partire dal 13/09/2024 (primo venerdi)
     let weeksMappingOptimation = {};
-    var index = 0; // indice della settimana a partire dal 22/09/2023 (primo venerdi)
+    var index = 0; // indice della settimana a partire dal 13/09/2024 (primo venerdi)
 
     let suppliersWeek = [];
-    var date = new Date('2023-09-22'); // data di partenza delle somministrazioni che cambierò ad ogni iterazione
+    var date = new Date('2024-09-13'); // data di partenza delle somministrazioni che cambierò ad ogni iterazione
     do {
         let entry = {
             label: Moment(new Date(date.getTime() + 6 * 86400000)).format('DD/MM'), // giorno e mese del giovedi della settimana
@@ -186,12 +184,16 @@ const elaborate = (data) => {
     } while(date <= new Date());
 
     // aggiorno i totali per ogni fornitore e per l'intera settimana
-    for (let row of data.dataSommVaxDetailCampagna2324.data) { // per ogni valore presente nel JSON
+    for (let row of data.dataSommVaxDetailCampagna.data.filter((d) => d.data >= "2024-09-17T00:00:00.000Z")) { // per ogni valore presente nel JSON dal 17/09/2024
         let index = weeksMappingOptimation[Moment(new Date(row.data)).format('YYYY-MM-DD')]; // ottengo l'indice di quale settimana fa parte il giorno corrente
         let week = suppliersWeek[index];
 
         // Totale Somministrazioni Settimanale ottenuto sommando le somministrazioni di maschi e femmine
-        week.total += (row.f + row.m);
+        try{
+            week.total += (row.f + row.m);
+        } catch(e){
+
+        }
 
         // Totale Somministrazioni Settimanale per fornitore sommando le somministrazioni di maschi e femmine
         week[row.forn] += (row.f + row.m);
@@ -210,7 +212,7 @@ const elaborate = (data) => {
      * Istogramma + Mappa Italia
      * Possibilità di click sulla regione (Mappa) o sulla fascia anagrafica (Istogramma)
      *******************************************************************************/
-    // dataSommVaxDetailCampagna2324 contiene i dati della campagna
+    // dataSommVaxDetailCampagna contiene i dati della campagna
     let keyValueDoses = { // oggetto contenente le label delle serie (la legenda)
         "totale": "Totale fascia"
     }
@@ -219,7 +221,7 @@ const elaborate = (data) => {
     let dosesAgesColor     = ["#0a5dbb"]; // colori associati alle serie
 
     // array con i valori da visualizzare nell'istogramma senza filtri.
-    let dosesAgesData = _(dataSommVaxDetailCampagna2324).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+, e tutta la fascia 12-59
+    let dosesAgesData = _(dataSommVaxDetailCampagna).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+, e tutta la fascia 12-59
             if (e.eta === '90+' || e.eta === '80-89') {
                 e.eta = '80+';
             }
@@ -249,7 +251,7 @@ const elaborate = (data) => {
     }).value().sort((a, b) => a.label < b.label ? 1 : -1); // ordino la lista secondo la fascia anagrafica;
     
     // array con i valori da visualizzare nella mappa (regione, totale percentuale) con e senza filtri
-    const secondDosesMapData  = _(dataSommVaxDetailCampagna2324?.map(replaceArea)).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
+    const secondDosesMapData  = _(dataSommVaxDetailCampagna?.map(replaceArea)).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
             if (e.eta === '90+' || e.eta === '80-89') {
                 e.eta = '80+';
             }
@@ -274,7 +276,7 @@ const elaborate = (data) => {
 
     // array con i valori da visualizzare nell'istogramma con il filtro regione attivo
     const dosesAgesRegionData  = {};
-    _(dataSommVaxDetailCampagna2324?.map(replaceArea)).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
+    _(dataSommVaxDetailCampagna?.map(replaceArea)).map(e => { // poichè solo in questo file è prevista la fascia 90+ e 80-89, sostituisco 90+ e 80-89 con 80+
         if (e.eta === '90+' || e.eta === '80-89') {
             e.eta = '80+';
         }
@@ -482,7 +484,7 @@ const elaborate = (data) => {
  * Possibilità di click sulle barre
  *******************************************************************************/ 
 
-export const loadData = async () => {
+export const loadData = async ({campagnaUrl, summaryUrl}) => {
     const [
         resSommVaxSummary,
         resVaxSummary,
@@ -492,8 +494,8 @@ export const loadData = async () => {
         resPlateaDoseSecondBooster,
         resPlateaDoseThirdBooster,
         //campagna 2023-2024
-        resSommVaxSummaryCampagna2324,
-        resSommVaxDetailCampagna2324
+        resSommVaxSummaryCampagna,
+        resSommVaxDetailCampagna
     ] = await Promise.all([
         fetch(sommVaxSummaryURL),
         fetch(vaxSummaryURL),
@@ -503,8 +505,8 @@ export const loadData = async () => {
         fetch(plateaDoseSecondBoosterURL),
         fetch(plateaDoseThirdBoosterURL),
         //campagna 2023-2024
-        fetch(sommVaxSummaryCampagna2324URL),
-        fetch(sommVaxDetailCampagna2324URL),
+        fetch(summaryUrl), // sommVaxSummaryCampagnaURL),
+        fetch(campagnaUrl) //sommVaxDetailCampagnaURL),
     ]);
 
     const arrayLatestURL = [];
@@ -523,8 +525,8 @@ export const loadData = async () => {
         dataPlateaSecondBooster,
         dataPlateaThirdBooster,
         //campagna 2023-2024
-        dataSommVaxSummaryCampagna2324,
-        dataSommVaxDetailCampagna2324
+        dataSommVaxSummaryCampagna,
+        dataSommVaxDetailCampagna
     ] = await Promise.all([
         resSommVaxSummary.json(),
         resVaxSummary.json(),
@@ -534,8 +536,8 @@ export const loadData = async () => {
         resPlateaDoseSecondBooster.json(),
         resPlateaDoseThirdBooster.json(),
         //campagna 2023-2024
-        resSommVaxSummaryCampagna2324.json(),
-        resSommVaxDetailCampagna2324.json()
+        resSommVaxSummaryCampagna.json(),
+        resSommVaxDetailCampagna.json()
     ]);
 
     const arrayLatestJson = [];
@@ -560,8 +562,8 @@ export const loadData = async () => {
             dataPlateaSecondBooster,
             dataPlateaThirdBooster,
             //campagna 2023-2024
-            dataSommVaxSummaryCampagna2324,
-            dataSommVaxDetailCampagna2324
+            dataSommVaxSummaryCampagna,
+            dataSommVaxDetailCampagna
         })
     };
 };
