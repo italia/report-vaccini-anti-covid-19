@@ -66,11 +66,12 @@ export const MapArea = ({
                                 onClick={() => handleMapDeliveryClick(region)}
                             >
                                 <title>
-                                    <span className="bg-info">{tooltip(region)}</span>
+                                    {region.code !== undefined && (<span className="bg-info">{tooltip(region)}</span>)}
+                                    {region.code === undefined && (<span className="bg-info">{d.properties.reg_name} {'(0)'}</span>)}
                                 </title>
                             </path>
                         );
-                    })});
+                    })};
                 </g>
             </svg>
         </div>
