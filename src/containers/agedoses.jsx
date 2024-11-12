@@ -59,7 +59,7 @@ export const AgeDoses = ({ data }) => {
             resetFilter();
         }
 
-        if (categorySelectedRegion === region.code) {
+        if (categorySelectedRegion === region.code || region.code === undefined) {
             resetFilter();
         } else {
             setCategorySelectedRegion(region.code);
