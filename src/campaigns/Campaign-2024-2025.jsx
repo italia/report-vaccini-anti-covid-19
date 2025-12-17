@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { AgeDoses } from "../containers/agedoses";
 import {CampaignContext} from './CampaignContext';
 import { Total } from "../components/Total";
-import { hideLoader } from "../utils";
 
 const context = {
     total:{
