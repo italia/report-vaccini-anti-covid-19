@@ -3,37 +3,45 @@ import { useEffect, useState } from 'react';
 import { AgeDoses } from "../containers/agedoses";
 import {CampaignContext} from './CampaignContext';
 import { Total } from "../components/Total";
+import { Weeks } from "../containers/weeks";
 import { hideLoader } from "../utils";
 
 const context = {
     total:{
-        title: 'Dati storici vaccinazione anti Covid-19 fino al 21/09/2025',
-        subtitle: 'Dati e statistiche sulla vaccinazione anti Covid-19 a partire dal 18 Settembre 2024 al 21 Settembre 2025',
-        showLastUpdate: false,
-        periodTitle: 'Totale somministrazioni fino al 21/09/2025'
+        title: 'Campagna vaccinale Autunno-Inverno 2025/2026',
+        subtitle: 'I dati sono aggiornati su base settimanale e sono disponibili in formato aperto con il dettaglio giornaliero.',
+        showLastUpdate: true,
+        periodTitle: 'Totale somministrazioni',
+        periodSubtitle: 'Il dato può subire variazioni negative a seguito di rettifiche da parte delle regioni.'
+    },
+    weeks:{
+        title: 'Somministrazioni su base settimanale',
+        subtitle: 'con Comirnaty adattato'
     },
     ageDoses:{
-        title:"Somministrazioni di XBB 1.5 per fascia d'età - fino al 21/09/2025"
+        title:"Somministrazioni per fascia d'età"
     }
 }
 
-export const Campaign20242025 = () => {
+export const Campaign20252026 = () => {
 
     const [summary, setSummary] = useState({});
 
     useEffect(() => {
-        // campagna 2024-2025
-        const campagnaUrl = `${baseURL}/somministrazioni-vaccini-latest-campagna-2024-2025.json`;
-        const summaryUrl = `${baseURL}/somministrazioni-vaccini-summary-latest-campagna-2024-2025.json`;
+        // campagna 2025-2026
+        const campagnaUrl = `${baseURL}/somministrazioni-vaccini-latest-campagna-2025-2026.json`;
+        const summaryUrl = `${baseURL}/somministrazioni-vaccini-summary-latest-campagna-2025-2026.json`;
 
         loadData({campagnaUrl, summaryUrl}).then((d) => {
         setSummary(d);
+        hideLoader();
         });
     }, []);
 
     return (
         <CampaignContext.Provider value={context}>
             <Total summary={summary} />              {/* Totale Somministrazioni campagna attuale */}
+            <Weeks data={summary} />                        {/* Grafico Andamento Settimanale delle Somministrazioni */}
             <AgeDoses data={summary} />                     {/* Grafico Somministrazioni per fascia d'età dati storici */}
             <div className="row mt-5 mb-5">
                 <div className="flag-green col-md-4 col-3"></div>
@@ -45,4 +53,3 @@ export const Campaign20242025 = () => {
         </CampaignContext.Provider>
     )
 }
-

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { CampaignContext } from '../campaigns/CampaignContext';
 
 import { RangeWeek } from "./../components/RangeWeek";
 import { StackedBarChart } from "./../components/StackedBarChart";
 import { isEmpty } from "lodash";
-import { useCampaignContext } from "../campaigns/CampaignContext";
 
 export const Weeks = ({ data }) => {
+    const context = useContext(CampaignContext);
+
     const [suppliersColor, setSuppliersColor] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [suppliersWeek, setSuppliersWeek] = useState([]);
@@ -35,13 +37,12 @@ export const Weeks = ({ data }) => {
         }
       }, [data]);
 
-    const {title} = useCampaignContext('weeks')
-
     return (
         <div className="row">
             {/* Title Box - Desktop View */}
             <div className="col-12 d-flex justify-content-center align-items-center section-title px-5 mx-2">
-                <span><h3>{title}</h3>
+                <span><h3>{context.weeks?.title}</h3>
+                <h4>{context.weeks?.subtitle}</h4>
                 <h6>Vaccinazioni dal <b>{fromLastWeek}</b> al <b>{toLastWeek}</b>: {totalLastWeek?.toLocaleString('it')}</h6>
                 </span>
             </div>
