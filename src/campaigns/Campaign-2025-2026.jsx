@@ -3,23 +3,16 @@ import { useEffect, useState } from 'react';
 import { AgeDoses } from "../containers/agedoses";
 import {CampaignContext} from './CampaignContext';
 import { Total } from "../components/Total";
-import { Weeks } from "../containers/weeks";
-import { hideLoader } from "../utils";
 
 const context = {
     total:{
-        title: 'Campagna vaccinale Autunno-Inverno 2025/2026',
-        subtitle: 'I dati sono aggiornati su base settimanale e sono disponibili in formato aperto con il dettaglio giornaliero.',
-        showLastUpdate: true,
-        periodTitle: 'Totale somministrazioni',
-        periodSubtitle: 'Il dato può subire variazioni negative a seguito di rettifiche da parte delle regioni.'
-    },
-    weeks:{
-        title: 'Somministrazioni su base settimanale',
-        subtitle: 'con Comirnaty adattato'
+        title: 'Dati storici vaccinazione anti Covid-19 fino al 30/09/2026',
+        subtitle: 'Dati e statistiche sulla vaccinazione anti Covid-19 a partire dal 22 Settembre 2025 al 30 Settembre 2026',
+        showLastUpdate: false,
+        periodTitle: 'Totale somministrazioni fino al 30/09/2026'
     },
     ageDoses:{
-        title:"Somministrazioni per fascia d'età"
+        title:"Somministrazioni per fascia d'età - fino al 30/09/2026"
     }
 }
 
@@ -34,14 +27,12 @@ export const Campaign20252026 = () => {
 
         loadData({campagnaUrl, summaryUrl}).then((d) => {
         setSummary(d);
-        hideLoader();
         });
     }, []);
 
     return (
         <CampaignContext.Provider value={context}>
             <Total summary={summary} />              {/* Totale Somministrazioni campagna attuale */}
-            <Weeks data={summary} />                        {/* Grafico Andamento Settimanale delle Somministrazioni */}
             <AgeDoses data={summary} />                     {/* Grafico Somministrazioni per fascia d'età dati storici */}
             <div className="row mt-5 mb-5">
                 <div className="flag-green col-md-4 col-3"></div>
